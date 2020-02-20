@@ -20,7 +20,13 @@ under the License.
   <wicket:panel>
     <div class="details">
       <div class="form-group">
-        <span wicket:id="destinationRealm">[DESTINATION REALM]</span>
+        <span wicket:id="realmsFragment"></span>
+        <wicket:fragment wicket:id="realmsSearchFragment"> 
+          <span wicket:id="destinationRealm">[DESTINATION REALM]</span>
+        </wicket:fragment>
+        <wicket:fragment wicket:id="realmsTemplateFragment"> 
+          <span wicket:id="destinationRealm">[DESTINATION REALM]</span>
+        </wicket:fragment>
       </div>
       <wicket:child/>
     </div>

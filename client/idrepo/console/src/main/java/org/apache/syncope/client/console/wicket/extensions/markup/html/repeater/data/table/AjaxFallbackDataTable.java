@@ -129,7 +129,7 @@ public class AjaxFallbackDataTable<T extends Serializable, S> extends DataTable<
                 item.add(new AttributeModifier("style", "cursor: pointer;"));
                 item.add(new AjaxEventBehavior(Constants.ON_CLICK) {
 
-                    private static final long serialVersionUID = 1L;
+                    private static final long serialVersionUID = -4609215765213990763L;
 
                     @Override
                     protected String findIndicatorId() {

@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.to.ProvisioningResult;
 import org.apache.syncope.common.lib.to.RealmTO;
@@ -72,16 +73,29 @@ public class RealmLogic extends AbstractTransactionalLogic<RealmTO> {
 
     @PreAuthorize("hasRole('" + IdRepoEntitlement.REALM_LIST + "')")
     @Transactional(readOnly = true)
-    public List<RealmTO> search(final String keyword) {
-        Set<String> bases = AuthContextUtils.getAuthorizations().get(IdRepoEntitlement.REALM_LIST);
+    public Pair<Integer, List<RealmTO>> search(final String keyword, final String base) {
+        Realm baseRealm = base == null ? realmDAO.getRoot() : realmDAO.findByFullPath(base);
+        if (baseRealm == null) {
+            LOG.error("Could not find realm '" + base + "'");
 
-        return realmDAO.findMatching(keyword).stream().
-                filter(realm -> bases.stream().anyMatch(base -> realm.getFullPath().startsWith(base))).
-                flatMap(realm -> realmDAO.findDescendants(realm).stream()).
-                distinct().
-                map(realm -> binder.getRealmTO(realm, true)).
-                sorted(Comparator.comparing(RealmTO::getFullPath)).
-                collect(Collectors.toList());
+            throw new NotFoundException(base);
+        }
+
+        Set<String> roots = AuthContextUtils.getAuthorizations().get(IdRepoEntitlement.REALM_LIST).stream().
+                filter(auth -> auth.startsWith(baseRealm.getFullPath())).collect(Collectors.toSet());
+
+        Set<Realm> match = realmDAO.findMatching(keyword).stream().
+                filter(realm -> roots.stream().anyMatch(root -> realm.getFullPath().startsWith(root))).
+                collect(Collectors.toSet());
+
+        int descendants = Math.toIntExact(
+                match.stream().flatMap(realm -> realmDAO.findDescendants(realm).stream()).distinct().count());
+
+        return Pair.of(
+                descendants,
+                match.stream().map(realm -> binder.getRealmTO(realm, true)).
+                        sorted(Comparator.comparing(RealmTO::getFullPath)).
+                        collect(Collectors.toList()));
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -54,7 +54,7 @@ public abstract class AbstractSearchPanel extends Panel {
 
     protected IModel<List<SearchClause.Type>> types;
 
-    protected IModel<Map<String, String>> groupNames;
+    protected IModel<List<String>> groupNames;
 
     protected IModel<List<String>> roleNames;
 
@@ -85,7 +85,9 @@ public abstract class AbstractSearchPanel extends Panel {
         protected boolean enableSearch = false;
 
         protected SearchClausePanel.Customizer customizer = new SearchClausePanel.Customizer() {
-            private static final long serialVersionUID = 2177241588084108076L;
+
+            private static final long serialVersionUID = 4449199405807453441L;
+
         };
 
         protected IEventSink resultContainer;
@@ -126,7 +128,7 @@ public abstract class AbstractSearchPanel extends Panel {
 
         super(id);
         populate();
-        Pair<IModel<Map<String, String>>, Integer> groupInfo =
+        Pair<IModel<List<String>>, Integer> groupInfo =
                 SyncopeConsoleSession.get().owns(IdRepoEntitlement.GROUP_SEARCH)
                 ? Pair.of(groupNames, groupRestClient.count(SyncopeConstants.ROOT_REALM, null, null))
                 : Pair.of(groupNames, 0);
@@ -154,7 +156,7 @@ public abstract class AbstractSearchPanel extends Panel {
             searchClausePanel.enableSearch(builder.resultContainer);
         }
 
-        final MultiFieldPanel.Builder<SearchClause> searchView = new MultiFieldPanel.Builder<SearchClause>(model) {
+        MultiFieldPanel.Builder<SearchClause> searchView = new MultiFieldPanel.Builder<SearchClause>(model) {
 
             private static final long serialVersionUID = 1343431509987473047L;
 
