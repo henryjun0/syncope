@@ -43,7 +43,8 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OpenIdConnectRe
     @Override
     public OpenIdConnectRelyingParty findByName(final String name) {
         TypedQuery<OpenIdConnectRelyingParty> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName() + " e WHERE e.name=:name", OpenIdConnectRelyingParty.class);
+            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
+                + " e WHERE e.name=:name", OpenIdConnectRelyingParty.class);
         query.setParameter("name", name);
 
         OpenIdConnectRelyingParty result = null;
@@ -59,8 +60,9 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OpenIdConnectRe
     @Override
     public OpenIdConnectRelyingParty findByClientId(final String clientId) {
         TypedQuery<OpenIdConnectRelyingParty> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName() + " e WHERE e.clientId=:clientId", OpenIdConnectRelyingParty.class);
-        query.setParameter(clientId, clientId);
+            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
+                + " e WHERE e.clientId=:clientId", OpenIdConnectRelyingParty.class);
+        query.setParameter("clientId", clientId);
 
         OpenIdConnectRelyingParty result = null;
         try {
@@ -76,7 +78,8 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OpenIdConnectRe
     @Override
     public List<OpenIdConnectRelyingParty> findAll() {
         TypedQuery<OpenIdConnectRelyingParty> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName() + " e", OpenIdConnectRelyingParty.class);
+            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
+                + " e", OpenIdConnectRelyingParty.class);
 
         return query.getResultList();
     }
