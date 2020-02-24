@@ -61,31 +61,39 @@ public class JPAOpenIdConnectRelyingParty extends AbstractGeneratedKeyEntity imp
     @Override
     public String getName() {
         return name;
-    }    @Override
-    public List<String> getRedirectUris() {
-        return redirectUris;
     }
 
     @Override
     public void setName(final String name) {
         this.name = name;
     }    @Override
-    public void setRedirectUris(final List<String> redirectUris) {
-        this.redirectUris = redirectUris;
+    public List<String> getRedirectUris() {
+        return redirectUris;
     }
 
     @Override
     public String getDescription() {
         return description;
-    }    @Override
-    public String getClientId() {
-        return clientId;
     }
 
     @Override
     public void setDescription(final String description) {
         this.description = description;
     }    @Override
+    public void setRedirectUris(final List<String> redirectUris) {
+        this.redirectUris = redirectUris;
+    }
+
+
+
+    @Override
+    public String getClientId() {
+        return clientId;
+    }
+
+
+
+    @Override
     public void setClientId(final String clientId) {
         this.clientId = clientId;
     }
@@ -99,12 +107,6 @@ public class JPAOpenIdConnectRelyingParty extends AbstractGeneratedKeyEntity imp
     public void setClientSecret(final String clientSecret) {
         this.clientSecret = clientSecret;
     }
-
-
-
-
-
-
 
 
 }

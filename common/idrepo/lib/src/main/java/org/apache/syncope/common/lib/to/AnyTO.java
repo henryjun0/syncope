@@ -71,6 +71,9 @@ public abstract class AnyTO extends AbstractAnnotatedBean implements EntityTO, R
 
     private final Set<String> resources = new HashSet<>();
 
+    protected AnyTO() {
+    }
+
     @Schema(name = "@class", required = true)
     public abstract String getDiscriminator();
 
