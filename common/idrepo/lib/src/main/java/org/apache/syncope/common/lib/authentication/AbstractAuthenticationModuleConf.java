@@ -16,26 +16,40 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.persistence.api.dao.authentication;
+package org.apache.syncope.common.lib.authentication;
 
-import org.apache.syncope.core.persistence.api.dao.DAO;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
+import javax.xml.bind.annotation.XmlType;
 
-import java.util.List;
+import java.io.Serializable;
 
-public interface AuthenticationModuleDAO extends DAO<AuthenticationModule> {
+@XmlType
+public abstract class AbstractAuthenticationModuleConf implements Serializable, AuthenticationModuleConf {
 
-    AuthenticationModule find(String key);
+    private static final long serialVersionUID = 4153200197344709778L;
 
-    List<AuthenticationModule> findAll();
+    private String name;
 
-    AuthenticationModule save(AuthenticationModule authenticationModule);
+    private int order;
 
-    void delete(String key);
+    public AbstractAuthenticationModuleConf() {
+        setName(getClass().getName());
+    }
 
-    void delete(AuthenticationModule authenticationModule);
+    @Override
+    public final String getName() {
+        return name;
+    }
 
-    List<AuthenticationModule> findByConfiguration(Implementation configuration);
+    public final void setName(final String name) {
+        this.name = name;
+    }
 
+    @Override
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(final int order) {
+        this.order = order;
+    }
 }

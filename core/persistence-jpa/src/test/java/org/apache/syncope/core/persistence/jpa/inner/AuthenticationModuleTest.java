@@ -18,19 +18,26 @@
  */
 package org.apache.syncope.core.persistence.jpa.inner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.util.List;
-import java.util.UUID;
-
+import org.apache.syncope.common.lib.authentication.AuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.JaasAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.PredefinedAuthenticationModuleConf;
+import org.apache.syncope.common.lib.types.AMImplementationType;
+import org.apache.syncope.common.lib.types.ImplementationEngine;
+import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationModuleDAO;
+import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
+import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional("Master")
 public class AuthenticationModuleTest extends AbstractTest {
@@ -38,42 +45,89 @@ public class AuthenticationModuleTest extends AbstractTest {
     @Autowired
     private AuthenticationModuleDAO authenticationModuleDAO;
 
+    @Autowired
+    private ImplementationDAO implementationDAO;
+
     @Test
     public void find() {
-        AuthenticationModule athAuthenticationModule = authenticationModuleDAO.find(
-                "be456831-593d-4003-b273-4c3fb61700df");
-        assertNotNull(athAuthenticationModule);
+        AuthenticationModule module = authenticationModuleDAO.find(
+            "be456831-593d-4003-b273-4c3fb61700df");
+        assertNotNull(module);
 
-        athAuthenticationModule = authenticationModuleDAO.find(UUID.randomUUID().toString());
-        assertNull(athAuthenticationModule);
+        module = authenticationModuleDAO.find(UUID.randomUUID().toString());
+        assertNull(module);
     }
 
     @Test
     public void findAll() {
-        List<AuthenticationModule> athAuthenticationModules = authenticationModuleDAO.findAll();
-        assertNotNull(athAuthenticationModules);
-        assertEquals(1, athAuthenticationModules.size());
+        List<AuthenticationModule> modules = authenticationModuleDAO.findAll();
+        assertNotNull(modules);
+        assertEquals(1, modules.size());
     }
 
     @Test
-    public void save() {
+    public void saveWithPredefinedModule() {
+        PredefinedAuthenticationModuleConf conf =
+            new PredefinedAuthenticationModuleConf(Map.of("user", UUID.randomUUID().toString()));
 
-        int beforeCount = authenticationModuleDAO.findAll().size();
-        AuthenticationModule authenticationModule = entityFactory.newEntity(AuthenticationModule.class);
-        authenticationModule.setName("AuthenticationModuleTest");
-        authenticationModuleDAO.save(authenticationModule);
+        Implementation config = getImplementation(conf);
 
-        assertNotNull(authenticationModule);
-        assertNotNull(authenticationModule.getKey());
+        config = implementationDAO.save(config);
 
-        int afterCount = authenticationModuleDAO.findAll().size();
-        assertEquals(afterCount, beforeCount + 1);
+        assertNotNull(config);
+        assertNotNull(config.getKey());
+
+        AuthenticationModule module = entityFactory.newEntity(AuthenticationModule.class);
+        module.setName("AuthenticationModuleTest");
+        module.add(config);
+        authenticationModuleDAO.save(module);
+
+        assertNotNull(module);
+        assertNotNull(module.getKey());
+
+        assertNotNull(authenticationModuleDAO.find(module.getKey()));
+    }
+
+    @Test
+    public void saveWithJaasModule() {
+        JaasAuthenticationModuleConf conf = new JaasAuthenticationModuleConf();
+        conf.setKerberosKdcSystemProperty("sample-value");
+        conf.setKerberosRealmSystemProperty("sample-value");
+        conf.setLoginConfigType("JavaLoginConfig");
+        conf.setRealm("SYNCOPE");
+        conf.setLoginConfigurationFile("/opt/jaas/login.conf");
+        Implementation config = getImplementation(conf);
+
+        config = implementationDAO.save(config);
+
+        assertNotNull(config);
+        assertNotNull(config.getKey());
+
+        AuthenticationModule module = entityFactory.newEntity(AuthenticationModule.class);
+        module.setName("AuthenticationModuleTest");
+        module.add(config);
+        authenticationModuleDAO.save(module);
+
+        assertNotNull(module);
+        assertNotNull(module.getKey());
+
+        assertNotNull(authenticationModuleDAO.find(module.getKey()));
+    }
+
+
+    private Implementation getImplementation(final AuthenticationModuleConf conf) {
+        Implementation config = entityFactory.newEntity(Implementation.class);
+        config.setKey(UUID.randomUUID().toString());
+        config.setEngine(ImplementationEngine.JAVA);
+        config.setType(AMImplementationType.AUTH_MODULE_CONFIGURATIONS);
+        config.setBody(POJOHelper.serialize(conf));
+        return config;
     }
 
     @Test
     public void delete() {
         AuthenticationModule athAuthenticationModule = authenticationModuleDAO.find(
-                "be456831-593d-4003-b273-4c3fb61700df");
+            "be456831-593d-4003-b273-4c3fb61700df");
         assertNotNull(athAuthenticationModule);
 
         authenticationModuleDAO.delete("be456831-593d-4003-b273-4c3fb61700df");

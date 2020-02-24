@@ -19,6 +19,7 @@
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationModuleDAO;
+import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
 import org.apache.syncope.core.persistence.jpa.dao.AbstractDAO;
 import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAAuthenticationModule;
@@ -43,6 +44,16 @@ public class JPAAuthenticationModuleDAO extends AbstractDAO<AuthenticationModule
         TypedQuery<AuthenticationModule> query = entityManager().createQuery(
             "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e", AuthenticationModule.class);
 
+        return query.getResultList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<AuthenticationModule> findByConfiguration(final Implementation configuration) {
+        TypedQuery<AuthenticationModule> query = entityManager().createQuery(
+            "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e "
+                + "WHERE :configuration MEMBER OF e.configurations", AuthenticationModule.class);
+        query.setParameter("configuration", configuration);
         return query.getResultList();
     }
 

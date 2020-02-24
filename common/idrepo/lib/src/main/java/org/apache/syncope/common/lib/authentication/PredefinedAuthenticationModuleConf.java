@@ -16,26 +16,32 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.persistence.api.dao.authentication;
 
-import org.apache.syncope.core.persistence.api.dao.DAO;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
+package org.apache.syncope.common.lib.authentication;
 
-import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-public interface AuthenticationModuleDAO extends DAO<AuthenticationModule> {
+import java.util.HashMap;
+import java.util.Map;
 
-    AuthenticationModule find(String key);
+@XmlRootElement(name = "predefinedAuthenticationModuleConf")
+@XmlType
+public class PredefinedAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+    private static final long serialVersionUID = -7775771400318503131L;
 
-    List<AuthenticationModule> findAll();
+    private Map<String, String> users = new HashMap<>();
 
-    AuthenticationModule save(AuthenticationModule authenticationModule);
+    public PredefinedAuthenticationModuleConf(final Map<String, String> users) {
+        setName(getClass().getSimpleName());
+        setUsers(users);
+    }
 
-    void delete(String key);
+    public Map<String, String> getUsers() {
+        return users;
+    }
 
-    void delete(AuthenticationModule authenticationModule);
-
-    List<AuthenticationModule> findByConfiguration(Implementation configuration);
-
+    public void setUsers(final Map<String, String> users) {
+        this.users = users;
+    }
 }
