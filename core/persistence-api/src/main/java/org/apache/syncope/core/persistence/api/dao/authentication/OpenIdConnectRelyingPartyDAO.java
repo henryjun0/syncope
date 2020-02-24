@@ -6,8 +6,7 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -15,23 +14,31 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
-package org.apache.syncope.core.persistence.api.entity.authentication;
+package org.apache.syncope.core.persistence.api.dao.authentication;
+
+import org.apache.syncope.core.persistence.api.dao.DAO;
+import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
 
 import java.util.List;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
 
-public interface AuthenticationPostProcessor extends AuthenticationProcessor {
+public interface OpenIdConnectRelyingPartyDAO extends DAO<OpenIdConnectRelyingParty> {
 
-    String getDefaultSuccessLoginURL();
+    OpenIdConnectRelyingParty find(String key);
 
-    String getDefaultFailureLoginURL();
+    OpenIdConnectRelyingParty findByName(String name);
 
-    List<? extends Implementation> getAuthenticationPostProcessing();
+    OpenIdConnectRelyingParty findByClientId(String clientId);
 
-    void setDefaultSuccessLoginURL(String defaultSuccessLoginURL);
+    List<OpenIdConnectRelyingParty> findAll();
 
-    void setDefaultFailureLoginURL(String defaultFailureLoginURL);
+    OpenIdConnectRelyingParty save(OpenIdConnectRelyingParty application);
 
-    boolean addAuthPostProcessing(Implementation authPostProcessing);
+    void delete(String key);
+
+    void deleteByClientId(String clientId);
+
+    void delete(OpenIdConnectRelyingParty application);
+
 }

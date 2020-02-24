@@ -24,15 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 import java.util.UUID;
-import org.apache.syncope.common.lib.types.AMImplementationType;
-import org.apache.syncope.common.lib.types.ImplementationEngine;
-import org.apache.syncope.common.lib.types.TraceLevel;
-import org.apache.syncope.core.persistence.api.dao.AuthenticationModuleDAO;
-import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
+
+import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationModuleDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
-import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,9 +37,6 @@ public class AuthenticationModuleTest extends AbstractTest {
 
     @Autowired
     private AuthenticationModuleDAO authenticationModuleDAO;
-
-    @Autowired
-    private ImplementationDAO implementationDAO;
 
     @Test
     public void find() {
@@ -65,23 +57,10 @@ public class AuthenticationModuleTest extends AbstractTest {
 
     @Test
     public void save() {
-        Implementation authentificationModuleConf = entityFactory.newEntity(Implementation.class);
-        authentificationModuleConf.setKey(UUID.randomUUID().toString());
-        authentificationModuleConf.setEngine(ImplementationEngine.JAVA);
-        authentificationModuleConf.setType(AMImplementationType.AUTH_MODULE_CONFIGURATIONS);
-        authentificationModuleConf.setBody(POJOHelper.serialize(""));
 
         int beforeCount = authenticationModuleDAO.findAll().size();
-
-        authentificationModuleConf = implementationDAO.save(authentificationModuleConf);
-
-        assertNotNull(authentificationModuleConf);
-        assertNotNull(authentificationModuleConf.getKey());
-
         AuthenticationModule authenticationModule = entityFactory.newEntity(AuthenticationModule.class);
         authenticationModule.setName("AuthenticationModuleTest");
-        authenticationModule.setTraceLevel(TraceLevel.FAILURES);
-        authenticationModule.add(authentificationModuleConf);
         authenticationModuleDAO.save(authenticationModule);
 
         assertNotNull(authenticationModule);

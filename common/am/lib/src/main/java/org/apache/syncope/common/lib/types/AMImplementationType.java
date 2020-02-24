@@ -19,13 +19,7 @@
 package org.apache.syncope.common.lib.types;
 
 public final class AMImplementationType {
-
-    public static final String AUTH_CHAIN_RULES = "AUTH_CHAIN_RULES";
-
-    public static final String AUTH_POST_PROCESSING = "AUTH_POST_PROCESSING";
-
-    public static final String AUTH_PRE_PROCESSING = "AUTH_PRE_PROCESSING";
-
+    
     public static final String AUTH_MODULE_CONFIGURATIONS = "AUTH_MODULE_CONFIGURATIONS";
 
     public static final String AUTH_POLICY_CONFIGURATIONS = "AUTH_POLICY_CONFIGURATIONS";

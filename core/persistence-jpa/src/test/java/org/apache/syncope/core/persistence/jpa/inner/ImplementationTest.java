@@ -45,7 +45,7 @@ public class ImplementationTest extends AbstractTest {
         List<Implementation> implementations = implementationDAO.findAll();
         assertFalse(implementations.isEmpty());
 
-        assertEquals(23, implementations.size());
+        assertEquals(18, implementations.size());
 
         implementations = implementationDAO.findByType(IdMImplementationType.PULL_ACTIONS);
         assertEquals(1, implementations.size());
@@ -72,18 +72,6 @@ public class ImplementationTest extends AbstractTest {
         assertEquals(1, implementations.size());
 
         implementations = implementationDAO.findByType(IdMImplementationType.PUSH_CORRELATION_RULE);
-        assertEquals(1, implementations.size());
-
-        implementations = implementationDAO.findByType(AMImplementationType.AUTH_MODULE_CONFIGURATIONS);
-        assertEquals(1, implementations.size());
-
-        implementations = implementationDAO.findByType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
-        assertEquals(1, implementations.size());
-
-        implementations = implementationDAO.findByType(AMImplementationType.AUTH_POST_PROCESSING);
-        assertEquals(1, implementations.size());
-
-        implementations = implementationDAO.findByType(AMImplementationType.AUTH_PRE_PROCESSING);
         assertEquals(1, implementations.size());
     }
 

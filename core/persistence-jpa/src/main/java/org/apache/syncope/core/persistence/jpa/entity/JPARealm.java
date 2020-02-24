@@ -18,10 +18,21 @@
  */
 package org.apache.syncope.core.persistence.jpa.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.syncope.common.lib.SyncopeConstants;
+import org.apache.syncope.common.lib.types.IdRepoImplementationType;
+import org.apache.syncope.core.persistence.api.entity.AnyTemplateRealm;
+import org.apache.syncope.core.persistence.api.entity.AnyType;
+import org.apache.syncope.core.persistence.api.entity.Implementation;
+import org.apache.syncope.core.persistence.api.entity.Realm;
+import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
+import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPasswordPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.resource.JPAExternalResource;
+import org.apache.syncope.core.persistence.jpa.validation.entity.RealmCheck;
+
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,22 +45,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.syncope.common.lib.SyncopeConstants;
-import org.apache.syncope.common.lib.types.IdRepoImplementationType;
-import org.apache.syncope.core.persistence.api.entity.AnyTemplateRealm;
-import org.apache.syncope.core.persistence.api.entity.AnyType;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
-import org.apache.syncope.core.persistence.api.entity.Realm;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
-import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPasswordPolicy;
-import org.apache.syncope.core.persistence.jpa.entity.resource.JPAExternalResource;
-import org.apache.syncope.core.persistence.jpa.validation.entity.RealmCheck;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = JPARealm.TABLE, uniqueConstraints =
@@ -73,9 +73,6 @@ public class JPARealm extends AbstractGeneratedKeyEntity implements Realm {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private JPAAccountPolicy accountPolicy;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private JPAAuthenticationPolicy authenticationPolicy;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = TABLE + "Action",
@@ -127,13 +124,6 @@ public class JPARealm extends AbstractGeneratedKeyEntity implements Realm {
     }
 
     @Override
-    public AuthenticationPolicy getAuthenticationPolicy() {
-        return authenticationPolicy == null && getParent() != null
-                ? getParent().getAuthenticationPolicy() 
-                : authenticationPolicy;
-    }
-
-    @Override
     public void setName(final String name) {
         this.name = name;
     }
@@ -154,12 +144,6 @@ public class JPARealm extends AbstractGeneratedKeyEntity implements Realm {
     public void setPasswordPolicy(final PasswordPolicy passwordPolicy) {
         checkType(passwordPolicy, JPAPasswordPolicy.class);
         this.passwordPolicy = (JPAPasswordPolicy) passwordPolicy;
-    }
-
-    @Override
-    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
-        checkType(authenticationPolicy, JPAAuthenticationPolicy.class);
-        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
     }
 
     @Override

@@ -19,16 +19,14 @@
 package org.apache.syncope.core.persistence.api.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.Entity;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 
-public interface AuthenticationProcessor extends Entity {
-
-    AuthenticationPolicy getAuthenticationPolicy();
+public interface ClientApplication extends Entity {
 
     String getName();
 
-    void setAuthenticationPolicy(AuthenticationPolicy authenticationPolicy);
-
     void setName(String name);
 
+    String getDescription();
+
+    void setDescription(String description);
 }

@@ -18,46 +18,9 @@
  */
 package org.apache.syncope.core.persistence.api.entity.policy;
 
-import java.util.List;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationPostProcessor;
-import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationPreProcessor;
-
 public interface AuthenticationPolicy extends Policy {
 
     String getName();
 
-    List<? extends Implementation> getConfigurations();
-
-    int getMaxAuthenticationAttempts();
-
-    int getAuthenticationAttemptsInterval();
-
-    int getAuthenticationFailureLockoutDuration();
-
-    String getLockoutAttributeName();
-
-    String getLockoutAttributeValue();
-
-    AuthenticationPostProcessor getAuthenticationPostProcessor();
-
-    AuthenticationPreProcessor getAuthenticationPreProcessor();
-
     void setName(String name);
-
-    boolean addConfiguration(Implementation configuration);
-
-    void setMaxAuthenticationAttempts(int maxAuthenticationAttempts);
-
-    void setAuthenticationAttemptsInterval(int authenticationAttemptsInterval);
-
-    void setAuthenticationFailureLockoutDuration(int authenticationFailureLockoutDuration);
-
-    void setLockoutAttributeName(String lockoutAttributeName);
-
-    void setLockoutAttributeValue(String lockoutAttributeValue);
-
-    void setAuthenticationPostProcessor(AuthenticationPostProcessor authenticationPostProcessor);
-
-    void setAuthenticationPreProcessor(AuthenticationPreProcessor authenticationPreProcessor);
 }

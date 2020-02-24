@@ -6,8 +6,7 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -15,17 +14,23 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
-package org.apache.syncope.common.lib.authentication;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+package org.apache.syncope.core.persistence.api.entity.authentication;
 
-@XmlRootElement(name = "defaultAuthenticationModuleConf")
-@XmlType
-public class DefaultAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+import java.util.List;
 
-    private static final long serialVersionUID = -7775771400318503131L;
-    
-    
+public interface OpenIdConnectRelyingParty extends ClientApplication {
+    void setClientId(String id);
+
+    String getClientId();
+
+    void setClientSecret(String secret);
+
+    String getClientSecret();
+
+    List<String> getRedirectUris();
+
+    void setRedirectUris(List<String> uris);
 }

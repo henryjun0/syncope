@@ -6,8 +6,7 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -15,17 +14,20 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
-package org.apache.syncope.core.persistence.jpa.dao;
+package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
-import java.util.List;
-import javax.persistence.TypedQuery;
-import org.apache.syncope.core.persistence.api.dao.AuthenticationModuleDAO;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
+import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationModuleDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
+import org.apache.syncope.core.persistence.jpa.dao.AbstractDAO;
 import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAAuthenticationModule;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.TypedQuery;
+
+import java.util.List;
 
 @Repository
 public class JPAAuthenticationModuleDAO extends AbstractDAO<AuthenticationModule> implements AuthenticationModuleDAO {
@@ -35,20 +37,11 @@ public class JPAAuthenticationModuleDAO extends AbstractDAO<AuthenticationModule
         return entityManager().find(JPAAuthenticationModule.class, key);
     }
 
-    @Override
-    public List<AuthenticationModule> findByConfiguration(final Implementation configuration) {
-        TypedQuery<AuthenticationModule> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e "
-                + "WHERE :configuration MEMBER OF e.configurations", AuthenticationModule.class);
-        query.setParameter("configuration", configuration);
-        return query.getResultList();
-    }
-
     @Transactional(readOnly = true)
     @Override
     public List<AuthenticationModule> findAll() {
         TypedQuery<AuthenticationModule> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e", AuthenticationModule.class);
+            "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e", AuthenticationModule.class);
 
         return query.getResultList();
     }

@@ -6,8 +6,7 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -15,16 +14,31 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
-package org.apache.syncope.common.lib.authentication;
+package org.apache.syncope.core.persistence.api.dao.authentication;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import org.apache.syncope.core.persistence.api.dao.DAO;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 
-@XmlRootElement(name = "chainAuthenticationPolicyConf")
-@XmlType
-public class ChainAuthenticationPolicyConf extends AbstractAuthenticationPolicyConf {
+import java.util.List;
 
-    private static final long serialVersionUID = -984521961849586727L;
+public interface SAML2ServiceProviderDAO extends DAO<SAML2ServiceProvider> {
+
+    SAML2ServiceProvider find(String key);
+
+    SAML2ServiceProvider findByName(String name);
+
+    SAML2ServiceProvider findByEntityId(String clientId);
+
+    List<SAML2ServiceProvider> findAll();
+
+    SAML2ServiceProvider save(SAML2ServiceProvider application);
+
+    void delete(String key);
+
+    void deleteByEntityId(String entityId);
+
+    void delete(SAML2ServiceProvider application);
 
 }

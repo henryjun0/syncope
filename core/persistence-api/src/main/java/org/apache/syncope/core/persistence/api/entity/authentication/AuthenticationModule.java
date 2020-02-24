@@ -18,23 +18,11 @@
  */
 package org.apache.syncope.core.persistence.api.entity.authentication;
 
-import java.util.List;
-import org.apache.syncope.common.lib.types.TraceLevel;
 import org.apache.syncope.core.persistence.api.entity.Entity;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
 
 public interface AuthenticationModule extends Entity {
 
-    void setName(String displayName);
-
     String getName();
 
-    List<? extends Implementation> getConfigurations();
-    
-    boolean add(Implementation configuration);
-    
-    TraceLevel getTraceLevel();
-
-    void setTraceLevel(TraceLevel createTraceLevel);
-
+    void setName(String name);
 }

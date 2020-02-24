@@ -123,16 +123,6 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     }
 
     @Override
-    public List<AuthenticationPolicy> findByAuthenticationPolicy(final Implementation authenticationRule) {
-        TypedQuery<AuthenticationPolicy> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
-                + "WHERE :authenticationRule MEMBER OF e.configurations", AuthenticationPolicy.class);
-        query.setParameter("authenticationRule", authenticationRule);
-
-        return query.getResultList();
-    }
-
-    @Override
     public List<AccountPolicy> findByResource(final ExternalResource resource) {
         TypedQuery<AccountPolicy> query = entityManager().createQuery(
                 "SELECT e FROM " + JPAAccountPolicy.class.getSimpleName() + " e "
@@ -161,8 +151,6 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
                 realm.setAccountPolicy(null);
             } else if (policy instanceof PasswordPolicy) {
                 realm.setPasswordPolicy(null);
-            } else if (policy instanceof AuthenticationPolicy) {
-                realm.setAuthenticationPolicy(null);
             }
         });
 
