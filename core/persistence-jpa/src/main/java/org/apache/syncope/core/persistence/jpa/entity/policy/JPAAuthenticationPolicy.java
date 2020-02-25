@@ -18,11 +18,22 @@
  */
 package org.apache.syncope.core.persistence.jpa.entity.policy;
 
+import org.apache.syncope.common.lib.types.AMImplementationType;
+import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.JPAImplementation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = JPAAuthenticationPolicy.TABLE)
@@ -35,6 +46,16 @@ public class JPAAuthenticationPolicy extends AbstractPolicy implements Authentic
     @Column(unique = true, nullable = false)
     private String name;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = TABLE + "Conf",
+        joinColumns =
+        @JoinColumn(name = "authentication_policy_id"),
+        inverseJoinColumns =
+        @JoinColumn(name = "implementation_id"),
+        uniqueConstraints =
+        @UniqueConstraint(columnNames = {"authentication_policy_id", "implementation_id"}))
+    private List<JPAImplementation> configurations = new ArrayList<>();
+
     @Override
     public String getName() {
         return name;
@@ -43,5 +64,18 @@ public class JPAAuthenticationPolicy extends AbstractPolicy implements Authentic
     @Override
     public void setName(final String name) {
         this.name = name;
+    }
+
+    @Override
+    public List<? extends Implementation> getConfigurations() {
+        return configurations;
+    }
+
+    @Override
+    public boolean addConfiguration(final Implementation configuration) {
+        checkType(configuration, JPAImplementation.class);
+        checkImplementationType(configuration, AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
+        return configurations.contains((JPAImplementation) configuration)
+            || configurations.add((JPAImplementation) configuration);
     }
 }

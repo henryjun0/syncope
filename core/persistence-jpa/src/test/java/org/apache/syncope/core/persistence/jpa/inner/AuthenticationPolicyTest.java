@@ -18,9 +18,15 @@
  */
 package org.apache.syncope.core.persistence.jpa.inner;
 
+import org.apache.syncope.common.lib.authentication.DefaultAuthenticationPolicyConf;
+import org.apache.syncope.common.lib.types.AMImplementationType;
+import org.apache.syncope.common.lib.types.ImplementationEngine;
+import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationPolicyDAO;
+import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
+import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +41,9 @@ public class AuthenticationPolicyTest extends AbstractTest {
 
     @Autowired
     private AuthenticationPolicyDAO authenticationPolicyDAO;
+
+    @Autowired
+    private ImplementationDAO implementationDAO;
 
     @Test
     public void find() {
@@ -53,11 +62,22 @@ public class AuthenticationPolicyTest extends AbstractTest {
 
     @Test
     public void save() {
-
         int beforeCount = authenticationPolicyDAO.findAll().size();
         AuthenticationPolicy authenticationPolicy = entityFactory.newEntity(AuthenticationPolicy.class);
         authenticationPolicy.setName("AuthenticationPolicyTest");
         authenticationPolicy.setDescription("This is a sample authentication policy");
+
+        DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
+        conf.setAuthenticationModules(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
+        
+        Implementation type = entityFactory.newEntity(Implementation.class);
+        type.setKey("AuthPolicyConfKey");
+        type.setEngine(ImplementationEngine.JAVA);
+        type.setType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
+        type.setBody(POJOHelper.serialize(conf));
+        type = implementationDAO.save(type);
+
+        authenticationPolicy.addConfiguration(type);
         authenticationPolicyDAO.save(authenticationPolicy);
 
         assertNotNull(authenticationPolicy);
