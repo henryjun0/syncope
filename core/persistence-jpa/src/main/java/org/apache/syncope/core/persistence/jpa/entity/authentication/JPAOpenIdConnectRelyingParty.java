@@ -20,7 +20,9 @@
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.AbstractGeneratedKeyEntity;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -28,6 +30,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import java.util.ArrayList;
@@ -53,6 +56,10 @@ public class JPAOpenIdConnectRelyingParty extends AbstractGeneratedKeyEntity imp
     @Column
     private String clientSecret;
 
+    @Column(nullable = false)
+    @OneToOne(fetch = FetchType.EAGER)
+    private JPAAuthenticationPolicy authenticationPolicy;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "redirectUris")
     @CollectionTable(name = "OpenIdConnectRelyingParty_RedirectUris", joinColumns = @JoinColumn(name = "clientId"))
@@ -66,9 +73,6 @@ public class JPAOpenIdConnectRelyingParty extends AbstractGeneratedKeyEntity imp
     @Override
     public void setName(final String name) {
         this.name = name;
-    }    @Override
-    public List<String> getRedirectUris() {
-        return redirectUris;
     }
 
     @Override
@@ -79,18 +83,33 @@ public class JPAOpenIdConnectRelyingParty extends AbstractGeneratedKeyEntity imp
     @Override
     public void setDescription(final String description) {
         this.description = description;
-    }    @Override
+    }
+
+    @Override
+    public JPAAuthenticationPolicy getAuthenticationPolicy() {
+        return authenticationPolicy;
+    }
+
+    @Override
+    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
+        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
+    }
+
+    @Override
+    public List<String> getRedirectUris() {
+        return redirectUris;
+    }
+    
+    @Override
     public void setRedirectUris(final List<String> redirectUris) {
         this.redirectUris = redirectUris;
     }
-
 
 
     @Override
     public String getClientId() {
         return clientId;
     }
-
 
 
     @Override

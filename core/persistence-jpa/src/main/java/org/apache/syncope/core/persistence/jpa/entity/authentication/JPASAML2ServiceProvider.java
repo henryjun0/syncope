@@ -20,10 +20,14 @@
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.AbstractGeneratedKeyEntity;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -44,6 +48,20 @@ public class JPASAML2ServiceProvider extends AbstractGeneratedKeyEntity implemen
 
     @Column(nullable = false)
     private String metadataLocation;
+
+    @Column(nullable = false)
+    @OneToOne(fetch = FetchType.EAGER)
+    private JPAAuthenticationPolicy authenticationPolicy;
+
+    @Override
+    public JPAAuthenticationPolicy getAuthenticationPolicy() {
+        return authenticationPolicy;
+    }
+
+    @Override
+    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
+        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
+    }
 
     @Override
     public String getEntityId() {

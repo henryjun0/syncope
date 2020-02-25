@@ -19,12 +19,22 @@
 
 package org.apache.syncope.core.persistence.jpa.inner;
 
+import org.apache.syncope.common.lib.authentication.DefaultAuthenticationPolicyConf;
+import org.apache.syncope.common.lib.types.AMImplementationType;
+import org.apache.syncope.common.lib.types.ImplementationEngine;
+import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
+import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationPolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
+import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
+import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,16 +42,27 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OpenIdConnectRelyingPartyTest extends AbstractTest {
 
     @Autowired
+    private AuthenticationPolicyDAO authenticationPolicyDAO;
+
+    @Autowired
+    private ImplementationDAO implementationDAO;
+
+    @Autowired
     private OpenIdConnectRelyingPartyDAO openIdConnectRelyingPartyDAO;
 
     @Test
     public void find() {
         int beforeCount = openIdConnectRelyingPartyDAO.findAll().size();
+        
         OpenIdConnectRelyingParty rp = entityFactory.newEntity(OpenIdConnectRelyingParty.class);
         rp.setName("OIDC");
         rp.setDescription("This is a sample OIDC RP");
         rp.setClientId("clientid");
         rp.setClientSecret("secret");
+
+        AuthenticationPolicy policy = buildAndSaveAuthenticationPolicy();
+        rp.setAuthenticationPolicy(policy);
+
         openIdConnectRelyingPartyDAO.save(rp);
 
         assertNotNull(rp);
@@ -52,7 +73,8 @@ public class OpenIdConnectRelyingPartyTest extends AbstractTest {
 
         rp = openIdConnectRelyingPartyDAO.findByClientId("clientid");
         assertNotNull(rp);
-
+        assertNotNull(rp.getAuthenticationPolicy());
+        
         rp = openIdConnectRelyingPartyDAO.findByName("OIDC");
         assertNotNull(rp);
 
@@ -60,4 +82,22 @@ public class OpenIdConnectRelyingPartyTest extends AbstractTest {
         assertNull(openIdConnectRelyingPartyDAO.findByName("OIDC"));
     }
 
+    private AuthenticationPolicy buildAndSaveAuthenticationPolicy() {
+        AuthenticationPolicy authenticationPolicy = entityFactory.newEntity(AuthenticationPolicy.class);
+        authenticationPolicy.setName("AuthenticationPolicyTest");
+        authenticationPolicy.setDescription("This is a sample authentication policy");
+
+        DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
+        conf.setAuthenticationModules(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
+
+        Implementation type = entityFactory.newEntity(Implementation.class);
+        type.setKey("AuthPolicyConfKey");
+        type.setEngine(ImplementationEngine.JAVA);
+        type.setType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
+        type.setBody(POJOHelper.serialize(conf));
+        type = implementationDAO.save(type);
+
+        authenticationPolicy.addConfiguration(type);
+        return authenticationPolicyDAO.save(authenticationPolicy);
+    }
 }

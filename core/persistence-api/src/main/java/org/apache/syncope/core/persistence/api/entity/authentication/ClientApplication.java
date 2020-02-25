@@ -19,6 +19,7 @@
 package org.apache.syncope.core.persistence.api.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.Entity;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 
 public interface ClientApplication extends Entity {
 
@@ -29,4 +30,8 @@ public interface ClientApplication extends Entity {
     String getDescription();
 
     void setDescription(String description);
+
+    AuthenticationPolicy getAuthenticationPolicy();
+
+    void setAuthenticationPolicy(AuthenticationPolicy policy);
 }
