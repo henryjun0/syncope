@@ -32,7 +32,10 @@ public interface AuthenticationModuleConf extends Serializable {
      */
     String getName();
 
+    /**
+     * Execution order of this authentication module in the policy chain.
+     *
+     * @return numeric order
+     */
     int getOrder();
-
-    
 }
