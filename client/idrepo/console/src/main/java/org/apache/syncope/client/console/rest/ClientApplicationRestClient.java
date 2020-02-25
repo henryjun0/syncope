@@ -18,7 +18,7 @@
  */
 package org.apache.syncope.client.console.rest;
 
-import org.apache.syncope.common.lib.to.ApplicationTO;
+import org.apache.syncope.common.lib.to.ClientApplicationTO;
 import org.apache.syncope.common.rest.api.service.ClientApplicationService;
 
 import java.util.List;
@@ -34,19 +34,19 @@ public class ClientApplicationRestClient extends BaseRestClient {
         getService(ClientApplicationService.class).delete(key);
     }
 
-    public static ApplicationTO read(final String key) {
+    public static ClientApplicationTO read(final String key) {
         return getService(ClientApplicationService.class).read(key);
     }
 
-    public static void update(final ApplicationTO applicationTO) {
+    public static void update(final ClientApplicationTO applicationTO) {
         getService(ClientApplicationService.class).update(applicationTO);
     }
 
-    public static void create(final ApplicationTO applicationTO) {
+    public static void create(final ClientApplicationTO applicationTO) {
         getService(ClientApplicationService.class).create(applicationTO);
     }
 
-    public static List<ApplicationTO> list() {
+    public static List<ClientApplicationTO> list() {
         return getService(ClientApplicationService.class).list();
     }
 

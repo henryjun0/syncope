@@ -6,7 +6,8 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -14,32 +15,17 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-
-package org.apache.syncope.core.logic;
+package org.apache.syncope.core.provisioning.api.data;
 
 import org.apache.syncope.common.lib.to.ClientApplicationTO;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 
-import java.lang.reflect.Method;
-import java.util.List;
+public interface SAML2ServiceProviderDataBinder {
 
-public abstract class AbstractClientApplicationLogic extends AbstractTransactionalLogic<ClientApplicationTO> {
+    SAML2ServiceProvider create(ClientApplicationTO applicationTO);
 
-    @Override
-    protected ClientApplicationTO resolveReference(final Method method, final Object... args)
-        throws UnresolvedReferenceException {
-        throw new UnresolvedReferenceException();
-    }
+    SAML2ServiceProvider update(SAML2ServiceProvider application, ClientApplicationTO applicationTO);
 
-    public abstract ClientApplicationTO delete(String key);
-
-    public abstract List<ClientApplicationTO> list();
-
-    public abstract ClientApplicationTO read(String key);
-
-    public abstract ClientApplicationTO create(ClientApplicationTO applicationTO);
-
-    public abstract ClientApplicationTO update(ClientApplicationTO applicationTO);
-
+    ClientApplicationTO getClientApplicationTO(SAML2ServiceProvider application);
 }

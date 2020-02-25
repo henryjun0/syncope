@@ -17,29 +17,15 @@
  *
  */
 
-package org.apache.syncope.core.logic;
+package org.apache.syncope.core.provisioning.api.data;
 
 import org.apache.syncope.common.lib.to.ClientApplicationTO;
+import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
 
-import java.lang.reflect.Method;
-import java.util.List;
+public interface OpenIdConnectRelyingPartyDataBinder {
+    OpenIdConnectRelyingParty create(ClientApplicationTO applicationTO);
 
-public abstract class AbstractClientApplicationLogic extends AbstractTransactionalLogic<ClientApplicationTO> {
+    OpenIdConnectRelyingParty update(OpenIdConnectRelyingParty application, ClientApplicationTO applicationTO);
 
-    @Override
-    protected ClientApplicationTO resolveReference(final Method method, final Object... args)
-        throws UnresolvedReferenceException {
-        throw new UnresolvedReferenceException();
-    }
-
-    public abstract ClientApplicationTO delete(String key);
-
-    public abstract List<ClientApplicationTO> list();
-
-    public abstract ClientApplicationTO read(String key);
-
-    public abstract ClientApplicationTO create(ClientApplicationTO applicationTO);
-
-    public abstract ClientApplicationTO update(ClientApplicationTO applicationTO);
-
+    ClientApplicationTO getClientApplicationTO(OpenIdConnectRelyingParty application);
 }
