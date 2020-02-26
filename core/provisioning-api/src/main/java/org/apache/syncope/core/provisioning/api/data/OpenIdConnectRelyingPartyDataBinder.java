@@ -19,13 +19,13 @@
 
 package org.apache.syncope.core.provisioning.api.data;
 
-import org.apache.syncope.common.lib.to.ClientApplicationTO;
+import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
 
 public interface OpenIdConnectRelyingPartyDataBinder {
-    OpenIdConnectRelyingParty create(ClientApplicationTO applicationTO);
+    OpenIdConnectRelyingParty create(OpenIdConnectRelyingPartyTO applicationTO);
 
-    OpenIdConnectRelyingParty update(OpenIdConnectRelyingParty application, ClientApplicationTO applicationTO);
+    OpenIdConnectRelyingParty update(OpenIdConnectRelyingParty application, OpenIdConnectRelyingPartyTO applicationTO);
 
-    ClientApplicationTO getClientApplicationTO(OpenIdConnectRelyingParty application);
+    OpenIdConnectRelyingPartyTO getClientApplicationTO(OpenIdConnectRelyingParty application);
 }

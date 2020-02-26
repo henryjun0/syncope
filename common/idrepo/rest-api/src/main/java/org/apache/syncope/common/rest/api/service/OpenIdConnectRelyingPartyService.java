@@ -17,22 +17,18 @@
  *
  */
 
-package org.apache.syncope.core.rest.cxf.service;
+package org.apache.syncope.common.rest.api.service;
 
-import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
-import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
-import org.apache.syncope.core.logic.OpenIdConnectRelyingPartyLogic;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Service
-public class OpenIdConnectRelyingPartyServiceImpl extends AbstractClientApplicationServiceImpl
-    implements OpenIdConnectRelyingPartyService {
-    @Autowired
-    private OpenIdConnectRelyingPartyLogic logic;
+import javax.ws.rs.Path;
 
-    @Override
-    protected AbstractClientApplicationLogic getLogic() {
-        return this.logic;
-    }
+@Tag(name = "OpenIdConnectRelyingParties")
+@SecurityRequirements({
+    @SecurityRequirement(name = "BasicAuthentication"),
+    @SecurityRequirement(name = "Bearer")})
+@Path("openIdConnectRelyingParties")
+public interface OpenIdConnectRelyingPartyService extends ClientApplicationService {
 }

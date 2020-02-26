@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlSeeAlso({OpenIdConnectRelyingPartyTO.class, SAML2ServiceProviderTO.class})
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@class")
-@JsonPropertyOrder(value = {"@class", "key", "name", "description"})
+@JsonPropertyOrder(value = {"@class", "key", "name", "description", "authenticationPolicy"})
 @Schema(subTypes = {OpenIdConnectRelyingPartyTO.class, SAML2ServiceProviderTO.class}, discriminatorProperty = "@class")
 public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
 
@@ -43,6 +43,16 @@ public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
     private String name;
 
     private String description;
+
+    private AuthenticationPolicyTO authenticationPolicy;
+
+    public AuthenticationPolicyTO getAuthenticationPolicy() {
+        return authenticationPolicy;
+    }
+
+    public void setAuthenticationPolicy(final AuthenticationPolicyTO authenticationPolicy) {
+        this.authenticationPolicy = authenticationPolicy;
+    }
 
     @Override
     public String getKey() {
@@ -73,9 +83,19 @@ public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
     @Schema(name = "@class", required = true)
     public abstract String getDiscriminator();
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .appendSuper(super.hashCode())
+            .append(key)
+            .append(name)
+            .append(description)
+            .append(authenticationPolicy)
+            .toHashCode();
+    }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }
@@ -91,16 +111,7 @@ public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
             .append(this.key, rhs.key)
             .append(this.name, rhs.name)
             .append(this.description, rhs.description)
+            .append(this.authenticationPolicy, rhs.authenticationPolicy)
             .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .appendSuper(super.hashCode())
-            .append(key)
-            .append(name)
-            .append(description)
-            .toHashCode();
     }
 }

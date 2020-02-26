@@ -54,16 +54,6 @@ public class JPASAML2ServiceProvider extends AbstractGeneratedKeyEntity implemen
     private JPAAuthenticationPolicy authenticationPolicy;
 
     @Override
-    public JPAAuthenticationPolicy getAuthenticationPolicy() {
-        return authenticationPolicy;
-    }
-
-    @Override
-    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
-        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
-    }
-
-    @Override
     public String getEntityId() {
         return entityId;
     }
@@ -101,5 +91,16 @@ public class JPASAML2ServiceProvider extends AbstractGeneratedKeyEntity implemen
     @Override
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    @Override
+    public JPAAuthenticationPolicy getAuthenticationPolicy() {
+        return authenticationPolicy;
+    }
+
+    @Override
+    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
+        checkType(authenticationPolicy, JPAAuthenticationPolicy.class);
+        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
     }
 }

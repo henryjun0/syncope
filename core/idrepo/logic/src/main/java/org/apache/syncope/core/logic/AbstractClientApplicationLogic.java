@@ -24,7 +24,8 @@ import org.apache.syncope.common.lib.to.ClientApplicationTO;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public abstract class AbstractClientApplicationLogic extends AbstractTransactionalLogic<ClientApplicationTO> {
+public abstract class AbstractClientApplicationLogic<T extends ClientApplicationTO>
+    extends AbstractTransactionalLogic<ClientApplicationTO> {
 
     @Override
     protected ClientApplicationTO resolveReference(final Method method, final Object... args)
@@ -32,14 +33,14 @@ public abstract class AbstractClientApplicationLogic extends AbstractTransaction
         throw new UnresolvedReferenceException();
     }
 
-    public abstract ClientApplicationTO delete(String key);
+    public abstract T delete(String key);
 
-    public abstract List<ClientApplicationTO> list();
+    public abstract List<T> list();
 
-    public abstract ClientApplicationTO read(String key);
+    public abstract T read(String key);
 
-    public abstract ClientApplicationTO create(ClientApplicationTO applicationTO);
+    public abstract T create(T applicationTO);
 
-    public abstract ClientApplicationTO update(ClientApplicationTO applicationTO);
+    public abstract T update(T applicationTO);
 
 }

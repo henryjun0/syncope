@@ -19,7 +19,7 @@
 
 package org.apache.syncope.core.logic;
 
-import org.apache.syncope.common.lib.to.ClientApplicationTO;
+import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
 import org.apache.syncope.common.lib.types.IdRepoEntitlement;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic {
+public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SAML2ServiceProviderTO> {
 
     @Autowired
     private SAML2ServiceProviderDAO saml2ServiceProviderDAO;
@@ -44,7 +44,7 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic {
 
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.SAML2_SERVICE_PROVIDER_DELETE + "')")
-    public ClientApplicationTO delete(final String key) {
+    public SAML2ServiceProviderTO delete(final String key) {
         SAML2ServiceProvider application = saml2ServiceProviderDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
@@ -52,7 +52,7 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic {
             throw new NotFoundException(key);
         }
 
-        ClientApplicationTO deleted = binder.getClientApplicationTO(application);
+        SAML2ServiceProviderTO deleted = binder.getClientApplicationTO(application);
         saml2ServiceProviderDAO.delete(key);
         return deleted;
     }
@@ -60,14 +60,15 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic {
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.SAML2_SERVICE_PROVIDER_LIST + "')")
     @Transactional(readOnly = true)
-    public List<ClientApplicationTO> list() {
-        return saml2ServiceProviderDAO.findAll().stream().map(binder::getClientApplicationTO).collect(Collectors.toList());
+    public List<SAML2ServiceProviderTO> list() {
+        return saml2ServiceProviderDAO.findAll().stream()
+            .map(binder::getClientApplicationTO).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('" + IdRepoEntitlement.SAML2_SERVICE_PROVIDER_READ + "')")
     @Transactional(readOnly = true)
     @Override
-    public ClientApplicationTO read(final String key) {
+    public SAML2ServiceProviderTO read(final String key) {
         SAML2ServiceProvider application = saml2ServiceProviderDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
@@ -80,13 +81,13 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic {
 
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.SAML2_SERVICE_PROVIDER_CREATE + "')")
-    public ClientApplicationTO create(final ClientApplicationTO applicationTO) {
+    public SAML2ServiceProviderTO create(final SAML2ServiceProviderTO applicationTO) {
         return binder.getClientApplicationTO(saml2ServiceProviderDAO.save(binder.create(applicationTO)));
     }
 
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.APPLICATION_UPDATE + "')")
-    public ClientApplicationTO update(final ClientApplicationTO applicationTO) {
+    public SAML2ServiceProviderTO update(final SAML2ServiceProviderTO applicationTO) {
         SAML2ServiceProvider application = saml2ServiceProviderDAO.find(applicationTO.getKey());
         if (application == null) {
             LOG.error("Could not find application '" + applicationTO.getKey() + '\'');

@@ -17,22 +17,25 @@
  *
  */
 
-package org.apache.syncope.core.rest.cxf.service;
+package org.apache.syncope.common.lib.to;
 
-import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
-import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
-import org.apache.syncope.core.logic.OpenIdConnectRelyingPartyLogic;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-@Service
-public class OpenIdConnectRelyingPartyServiceImpl extends AbstractClientApplicationServiceImpl
-    implements OpenIdConnectRelyingPartyService {
-    @Autowired
-    private OpenIdConnectRelyingPartyLogic logic;
+@XmlRootElement(name = "authenticationPolicy")
+@XmlType
+public class AuthenticationPolicyTO implements EntityTO {
+    private static final long serialVersionUID = -6711411162433533300L;
+
+    private String key;
 
     @Override
-    protected AbstractClientApplicationLogic getLogic() {
-        return this.logic;
+    public String getKey() {
+        return key;
+    }
+
+    @Override
+    public void setKey(final String key) {
+        this.key = key;
     }
 }

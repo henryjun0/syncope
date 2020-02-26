@@ -19,7 +19,7 @@
 
 package org.apache.syncope.core.logic;
 
-import org.apache.syncope.common.lib.to.ClientApplicationTO;
+import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 import org.apache.syncope.common.lib.types.IdRepoEntitlement;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
 import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLogic {
+public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLogic<OpenIdConnectRelyingPartyTO> {
     @Autowired
     private OpenIdConnectRelyingPartyDAO openIdConnectRelyingPartyDAO;
 
@@ -44,7 +44,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
     @PreAuthorize("hasRole('" + IdRepoEntitlement.OIDC_RELYING_PARTY_READ + "')")
     @Transactional(readOnly = true)
     @Override
-    public ClientApplicationTO read(final String key) {
+    public OpenIdConnectRelyingPartyTO read(final String key) {
         OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
@@ -58,32 +58,32 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
     @PreAuthorize("hasRole('" + IdRepoEntitlement.OIDC_RELYING_PARTY_LIST + "')")
     @Transactional(readOnly = true)
     @Override
-    public List<ClientApplicationTO> list() {
+    public List<OpenIdConnectRelyingPartyTO> list() {
         return openIdConnectRelyingPartyDAO.findAll()
             .stream().map(binder::getClientApplicationTO).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('" + IdRepoEntitlement.OIDC_RELYING_PARTY_CREATE + "')")
     @Override
-    public ClientApplicationTO create(final ClientApplicationTO applicationTO) {
+    public OpenIdConnectRelyingPartyTO create(final OpenIdConnectRelyingPartyTO applicationTO) {
         return binder.getClientApplicationTO(openIdConnectRelyingPartyDAO.save(binder.create(applicationTO)));
     }
 
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.APPLICATION_UPDATE + "')")
-    public ClientApplicationTO update(final ClientApplicationTO applicationTO) {
+    public OpenIdConnectRelyingPartyTO update(final OpenIdConnectRelyingPartyTO applicationTO) {
         OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.find(applicationTO.getKey());
         if (application == null) {
             LOG.error("Could not find application '" + applicationTO.getKey() + '\'');
             throw new NotFoundException(applicationTO.getKey());
         }
-
-        return binder.getClientApplicationTO(openIdConnectRelyingPartyDAO.save(binder.update(application, applicationTO)));
+        return binder.getClientApplicationTO(
+            openIdConnectRelyingPartyDAO.save(binder.update(application, applicationTO)));
     }
 
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.OIDC_RELYING_PARTY_DELETE + "')")
-    public ClientApplicationTO delete(final String key) {
+    public OpenIdConnectRelyingPartyTO delete(final String key) {
         OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
@@ -91,7 +91,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
             throw new NotFoundException(key);
         }
 
-        ClientApplicationTO deleted = binder.getClientApplicationTO(application);
+        OpenIdConnectRelyingPartyTO deleted = binder.getClientApplicationTO(application);
         openIdConnectRelyingPartyDAO.delete(key);
         return deleted;
     }

@@ -92,6 +92,7 @@ public class JPAOpenIdConnectRelyingParty extends AbstractGeneratedKeyEntity imp
 
     @Override
     public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
+        checkType(authenticationPolicy, JPAAuthenticationPolicy.class);
         this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
     }
 

@@ -25,9 +25,6 @@ import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityRequirements;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.syncope.common.lib.to.ClientApplicationTO;
 import org.apache.syncope.common.rest.api.RESTHeaders;
 
@@ -49,11 +46,6 @@ import java.util.List;
 /**
  * REST operations for applications.
  */
-@Tag(name = "ClientApplications")
-@SecurityRequirements({
-    @SecurityRequirement(name = "BasicAuthentication"),
-    @SecurityRequirement(name = "Bearer")})
-@Path("clientApplications")
 public interface ClientApplicationService extends JAXRSService {
 
     /**

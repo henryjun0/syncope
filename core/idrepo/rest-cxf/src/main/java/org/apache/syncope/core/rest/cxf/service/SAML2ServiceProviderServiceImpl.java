@@ -19,13 +19,16 @@
 
 package org.apache.syncope.core.rest.cxf.service;
 
+import org.apache.syncope.common.rest.api.service.SAML2ServiceProviderService;
 import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
 import org.apache.syncope.core.logic.SAML2ServiceProviderLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SAML2ServiceProviderServiceImpl extends AbstractClientApplicationServiceImpl {
+public class SAML2ServiceProviderServiceImpl extends AbstractClientApplicationServiceImpl
+    implements SAML2ServiceProviderService {
+    
     @Autowired
     private SAML2ServiceProviderLogic logic;
 
