@@ -17,25 +17,25 @@
  *
  */
 
-package org.apache.syncope.common.lib.to;
+package org.apache.syncope.common.lib.policy;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "authenticationPolicy")
+@XmlRootElement(name = "accessPolicy")
 @XmlType
-public class AuthenticationPolicyTO implements EntityTO {
+public class AccessPolicyTO extends PolicyTO {
     private static final long serialVersionUID = -6711411162433533300L;
 
-    private String key;
-
+    @XmlTransient
+    @JsonProperty("@class")
+    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.policy.AccessPolicyTO")
     @Override
-    public String getKey() {
-        return key;
-    }
-
-    @Override
-    public void setKey(final String key) {
-        this.key = key;
+    public String getDiscriminator() {
+        return getClass().getName();
     }
 }

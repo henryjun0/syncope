@@ -32,6 +32,14 @@ public enum PolicyType {
      */
     PASSWORD,
     /**
+     * How authentication policies should look like.
+     */
+    AUTHENTICATION,
+    /**
+     * How access policies should be defined.
+     */
+    ACCESS,
+    /**
      * For handling conflicts resolution during pull.
      */
     PULL,
