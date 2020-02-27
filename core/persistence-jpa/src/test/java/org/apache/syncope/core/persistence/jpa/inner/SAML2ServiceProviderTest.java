@@ -20,9 +20,9 @@
 package org.apache.syncope.core.persistence.jpa.inner;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
-import org.apache.syncope.core.persistence.jpa.AbstractTest;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional("Master")
-public class SAML2ServiceProviderTest extends AbstractTest {
+public class SAML2ServiceProviderTest extends AbstractClientApplicationTest {
 
     @Autowired
     private SAML2ServiceProviderDAO saml2ServiceProviderDAO;
@@ -39,10 +39,17 @@ public class SAML2ServiceProviderTest extends AbstractTest {
     public void find() {
         int beforeCount = saml2ServiceProviderDAO.findAll().size();
         SAML2ServiceProvider rp = entityFactory.newEntity(SAML2ServiceProvider.class);
-        rp.setName("OIDC");
-        rp.setDescription("This is a sample OIDC RP");
+        rp.setName("SAML2");
+        rp.setDescription("This is a sample SAML2 SP");
         rp.setEntityId("urn:example:saml2:sp");
         rp.setMetadataLocation("https://example.org/metadata.xml");
+
+        AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
+        rp.setAccessPolicy(accessPolicy);
+
+        AuthenticationPolicy authnPolicy = buildAndSaveAuthenticationPolicy();
+        rp.setAuthenticationPolicy(authnPolicy);
+        
         saml2ServiceProviderDAO.save(rp);
 
         assertNotNull(rp);
@@ -54,11 +61,11 @@ public class SAML2ServiceProviderTest extends AbstractTest {
         rp = saml2ServiceProviderDAO.findByEntityId(rp.getEntityId());
         assertNotNull(rp);
 
-        rp = saml2ServiceProviderDAO.findByName("OIDC");
+        rp = saml2ServiceProviderDAO.findByName(rp.getName());
         assertNotNull(rp);
 
         saml2ServiceProviderDAO.deleteByEntityId(rp.getEntityId());
-        assertNull(saml2ServiceProviderDAO.findByName("OIDC"));
+        assertNull(saml2ServiceProviderDAO.findByName(rp.getName()));
     }
 
 }

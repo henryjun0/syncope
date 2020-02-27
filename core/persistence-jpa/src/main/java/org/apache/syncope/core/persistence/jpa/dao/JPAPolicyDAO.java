@@ -24,6 +24,7 @@ import org.apache.syncope.core.persistence.api.dao.ExternalResourceDAO;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.RealmDAO;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
@@ -32,6 +33,7 @@ import org.apache.syncope.core.persistence.api.entity.policy.Policy;
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.AbstractPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPullCorrelationRuleEntity;
@@ -65,6 +67,8 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
                 ? JPAPushPolicy.class
                 : AuthenticationPolicy.class.isAssignableFrom(reference)
                 ? JPAAuthenticationPolicy.class
+                : AccessPolicy.class.isAssignableFrom(reference)
+                ? JPAAccessPolicy.class
                 : null;
     }
 
@@ -154,7 +158,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
             }
         });
 
-        if (!(policy instanceof AuthenticationPolicy)) {
+        if (!(policy instanceof AuthenticationPolicy) && !(policy instanceof AccessPolicy)) {
             resourceDAO.findByPolicy(policy).forEach(resource -> {
                 if (policy instanceof AccountPolicy) {
                     resource.setAccountPolicy(null);

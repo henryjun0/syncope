@@ -64,6 +64,7 @@ import org.apache.syncope.core.persistence.api.entity.group.GPlainAttrUniqueValu
 import org.apache.syncope.core.persistence.api.entity.group.GPlainAttrValue;
 import org.apache.syncope.core.persistence.api.entity.group.Group;
 import org.apache.syncope.core.persistence.api.entity.group.TypeExtension;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
@@ -114,6 +115,7 @@ import org.apache.syncope.core.persistence.jpa.entity.group.JPAGPlainAttrUniqueV
 import org.apache.syncope.core.persistence.jpa.entity.group.JPAGPlainAttrValue;
 import org.apache.syncope.core.persistence.jpa.entity.group.JPAGroup;
 import org.apache.syncope.core.persistence.jpa.entity.group.JPATypeExtension;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPasswordPolicy;
@@ -305,6 +307,8 @@ public class JPAEntityFactory implements EntityFactory {
             result = (E) new JPAAuthenticationModule();
         } else if (reference.equals(AuthenticationPolicy.class)) {
             result = (E) new JPAAuthenticationPolicy();
+        }  else if (reference.equals(AccessPolicy.class)) {
+            result = (E) new JPAAccessPolicy();
         } else if (reference.equals(OpenIdConnectRelyingParty.class)) {
             result = (E) new JPAOpenIdConnectRelyingParty();
         } else if (reference.equals(SAML2ServiceProvider.class)) {

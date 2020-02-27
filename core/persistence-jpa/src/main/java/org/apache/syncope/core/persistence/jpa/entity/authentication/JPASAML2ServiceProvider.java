@@ -20,38 +20,23 @@
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
-import org.apache.syncope.core.persistence.jpa.entity.AbstractGeneratedKeyEntity;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = JPASAML2ServiceProvider.TABLE)
-public class JPASAML2ServiceProvider extends AbstractGeneratedKeyEntity implements SAML2ServiceProvider {
+public class JPASAML2ServiceProvider extends AbstractClientApplication implements SAML2ServiceProvider {
     public static final String TABLE = "SAML2ServiceProvider";
 
     private static final long serialVersionUID = 6422422526695279794L;
-
-    @Column(unique = true, nullable = false)
-    private String name;
-
-    @Column(unique = true, nullable = false)
-    private String description;
 
     @Column(unique = true, nullable = false)
     private String entityId;
 
     @Column(nullable = false)
     private String metadataLocation;
-
-    @Column(nullable = false)
-    @OneToOne(fetch = FetchType.EAGER)
-    private JPAAuthenticationPolicy authenticationPolicy;
 
     @Override
     public String getEntityId() {
@@ -71,36 +56,5 @@ public class JPASAML2ServiceProvider extends AbstractGeneratedKeyEntity implemen
     @Override
     public void setMetadataLocation(final String metadataLocation) {
         this.metadataLocation = metadataLocation;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    @Override
-    public JPAAuthenticationPolicy getAuthenticationPolicy() {
-        return authenticationPolicy;
-    }
-
-    @Override
-    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
-        checkType(authenticationPolicy, JPAAuthenticationPolicy.class);
-        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
     }
 }

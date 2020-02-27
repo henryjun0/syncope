@@ -6,8 +6,7 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -15,18 +14,29 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
-package org.apache.syncope.common.lib.types;
 
-public final class AMImplementationType {
-    
-    public static final String AUTH_MODULE_CONFIGURATIONS = "AUTH_MODULE_CONFIGURATIONS";
+package org.apache.syncope.common.lib.authentication;
 
-    public static final String AUTH_POLICY_CONFIGURATIONS = "AUTH_POLICY_CONFIGURATIONS";
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-    public static final String ACCESS_POLICY_CONFIGURATIONS = "ACCESS_POLICY_CONFIGURATIONS";
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
-    private AMImplementationType() {
-        // private constructor for static utility class
-    }
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+public interface AccessPolicyConf extends Serializable {
+    /**
+     * Give name of related access policy.
+     *
+     * @return name of this access policy
+     */
+    String getName();
+
+    boolean isEnabled();
+
+    boolean isSingleSignOnEnabled();
+
+    Map<String, List<String>> getRequiredAttributes();
 }
