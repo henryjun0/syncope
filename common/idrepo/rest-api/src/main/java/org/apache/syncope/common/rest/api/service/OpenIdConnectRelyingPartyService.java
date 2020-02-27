@@ -22,6 +22,7 @@ package org.apache.syncope.common.rest.api.service;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 
 import javax.ws.rs.Path;
 
@@ -30,5 +31,5 @@ import javax.ws.rs.Path;
     @SecurityRequirement(name = "BasicAuthentication"),
     @SecurityRequirement(name = "Bearer")})
 @Path("openIdConnectRelyingParties")
-public interface OpenIdConnectRelyingPartyService extends ClientApplicationService {
+public interface OpenIdConnectRelyingPartyService extends ClientApplicationService<OpenIdConnectRelyingPartyTO> {
 }

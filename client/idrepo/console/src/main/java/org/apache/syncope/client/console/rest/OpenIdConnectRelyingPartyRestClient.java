@@ -18,36 +18,36 @@
  */
 package org.apache.syncope.client.console.rest;
 
-import org.apache.syncope.common.lib.to.ClientApplicationTO;
-import org.apache.syncope.common.rest.api.service.ClientApplicationService;
+import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
+import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
 
 import java.util.List;
 
 /**
  * Console client for invoking Rest Client Application's services.
  */
-public class ClientApplicationRestClient extends BaseRestClient {
+public class OpenIdConnectRelyingPartyRestClient extends BaseRestClient {
 
     private static final long serialVersionUID = -3161863874876938094L;
 
     public static void delete(final String key) {
-        getService(ClientApplicationService.class).delete(key);
+        getService(OpenIdConnectRelyingPartyService.class).delete(key);
     }
 
-    public static ClientApplicationTO read(final String key) {
-        return getService(ClientApplicationService.class).read(key);
+    public static OpenIdConnectRelyingPartyTO read(final String key) {
+        return getService(OpenIdConnectRelyingPartyService.class).read(key);
     }
 
-    public static void update(final ClientApplicationTO applicationTO) {
-        getService(ClientApplicationService.class).update(applicationTO);
+    public static void update(final OpenIdConnectRelyingPartyTO applicationTO) {
+        getService(OpenIdConnectRelyingPartyService.class).update(applicationTO);
     }
 
-    public static void create(final ClientApplicationTO applicationTO) {
-        getService(ClientApplicationService.class).create(applicationTO);
+    public static void create(final OpenIdConnectRelyingPartyTO applicationTO) {
+        getService(OpenIdConnectRelyingPartyService.class).create(applicationTO);
     }
 
-    public static List<ClientApplicationTO> list() {
-        return getService(ClientApplicationService.class).list();
+    public static List<OpenIdConnectRelyingPartyTO> list() {
+        return getService(OpenIdConnectRelyingPartyService.class).list();
     }
 
 }

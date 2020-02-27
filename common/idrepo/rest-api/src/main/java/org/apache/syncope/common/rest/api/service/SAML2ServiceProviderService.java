@@ -22,6 +22,7 @@ package org.apache.syncope.common.rest.api.service;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
 
 import javax.ws.rs.Path;
 
@@ -30,5 +31,5 @@ import javax.ws.rs.Path;
     @SecurityRequirement(name = "BasicAuthentication"),
     @SecurityRequirement(name = "Bearer")})
 @Path("saml2ServiceProviders")
-public interface SAML2ServiceProviderService extends ClientApplicationService {
+public interface SAML2ServiceProviderService extends ClientApplicationService<SAML2ServiceProviderTO> {
 }

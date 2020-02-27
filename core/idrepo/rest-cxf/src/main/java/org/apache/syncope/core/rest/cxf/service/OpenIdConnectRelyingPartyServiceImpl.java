@@ -19,6 +19,7 @@
 
 package org.apache.syncope.core.rest.cxf.service;
 
+import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
 import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
 import org.apache.syncope.core.logic.OpenIdConnectRelyingPartyLogic;
@@ -26,8 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OpenIdConnectRelyingPartyServiceImpl extends AbstractClientApplicationServiceImpl
+public class OpenIdConnectRelyingPartyServiceImpl
+    extends AbstractClientApplicationServiceImpl<OpenIdConnectRelyingPartyTO>
     implements OpenIdConnectRelyingPartyService {
+
     @Autowired
     private OpenIdConnectRelyingPartyLogic logic;
 

@@ -28,25 +28,25 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 
-public abstract class AbstractClientApplicationServiceImpl extends AbstractServiceImpl
-    implements ClientApplicationService {
+public abstract class AbstractClientApplicationServiceImpl<T extends ClientApplicationTO> extends AbstractServiceImpl
+    implements ClientApplicationService<T> {
 
-    protected abstract AbstractClientApplicationLogic getLogic();
+    protected abstract AbstractClientApplicationLogic<T> getLogic();
 
     @Override
-    public List<ClientApplicationTO> list() {
+    public List<T> list() {
         return getLogic().list();
     }
 
     @Override
-    public ClientApplicationTO read(final String key) {
+    public T read(final String key) {
         return getLogic().read(key);
     }
 
 
     @Override
-    public Response create(final ClientApplicationTO applicationTO) {
-        ClientApplicationTO created = getLogic().create(applicationTO);
+    public Response create(final T applicationTO) {
+        T created = getLogic().create(applicationTO);
         URI location = uriInfo.getAbsolutePathBuilder().path(created.getKey()).build();
         return Response.created(location).
             header(RESTHeaders.RESOURCE_KEY, created.getKey()).
@@ -54,7 +54,7 @@ public abstract class AbstractClientApplicationServiceImpl extends AbstractServi
     }
 
     @Override
-    public void update(final ClientApplicationTO applicationTO) {
+    public void update(final T applicationTO) {
         getLogic().update(applicationTO);
     }
 

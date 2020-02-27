@@ -46,7 +46,7 @@ import java.util.List;
 /**
  * REST operations for applications.
  */
-public interface ClientApplicationService extends JAXRSService {
+public interface ClientApplicationService<T extends ClientApplicationTO> extends JAXRSService {
 
     /**
      * Returns a list of all applications.
@@ -55,7 +55,7 @@ public interface ClientApplicationService extends JAXRSService {
      */
     @GET
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
-    List<ClientApplicationTO> list();
+    List<T> list();
 
     /**
      * Returns application with matching key.
@@ -66,7 +66,7 @@ public interface ClientApplicationService extends JAXRSService {
     @GET
     @Path("{key}")
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
-    ClientApplicationTO read(@NotNull @PathParam("key") String key);
+    T read(@NotNull @PathParam("key") String key);
 
     /**
      * Creates a new application.
@@ -86,7 +86,7 @@ public interface ClientApplicationService extends JAXRSService {
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
-    Response create(@NotNull ClientApplicationTO applicationTO);
+    Response create(@NotNull T applicationTO);
 
     /**
      * Updates the application matching the provided key.
@@ -101,7 +101,7 @@ public interface ClientApplicationService extends JAXRSService {
     @Path("{key}")
     @Consumes({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
-    void update(@NotNull ClientApplicationTO applicationTO);
+    void update(@NotNull T applicationTO);
 
     /**
      * Deletes the application matching the provided key.
