@@ -27,7 +27,7 @@ import java.util.List;
 
 @XmlRootElement(name = "defaultAuthenticationModuleConf")
 @XmlType
-public class DefaultAuthenticationPolicyConf extends AbstractAuthenticationModuleConf {
+public class DefaultAuthenticationPolicyConf extends AbstractAuthenticationPolicyConf {
     private static final long serialVersionUID = -2969836600059025380L;
 
     private List<String> authenticationModules = new ArrayList<>();

@@ -90,6 +90,7 @@ import org.apache.syncope.common.rest.api.service.ConnectorService;
 import org.apache.syncope.common.rest.api.service.DynRealmService;
 import org.apache.syncope.common.rest.api.service.LoggerService;
 import org.apache.syncope.common.rest.api.service.NotificationService;
+import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
 import org.apache.syncope.common.rest.api.service.PolicyService;
 import org.apache.syncope.common.rest.api.service.ReportService;
 import org.apache.syncope.common.rest.api.service.ResourceService;
@@ -106,6 +107,7 @@ import org.apache.syncope.common.rest.api.service.ReportTemplateService;
 import org.apache.syncope.common.rest.api.service.RoleService;
 import org.apache.syncope.common.rest.api.service.SAML2IdPService;
 import org.apache.syncope.common.rest.api.service.SAML2SPService;
+import org.apache.syncope.common.rest.api.service.SAML2ServiceProviderService;
 import org.apache.syncope.common.rest.api.service.SCIMConfService;
 import org.apache.syncope.common.rest.api.service.SchemaService;
 import org.apache.syncope.common.rest.api.service.SecurityQuestionService;
@@ -117,6 +119,7 @@ import org.apache.syncope.common.rest.api.service.UserRequestService;
 import org.apache.syncope.common.rest.api.service.BpmnProcessService;
 import org.apache.syncope.common.rest.api.service.GatewayRouteService;
 import org.apache.syncope.common.rest.api.service.UserWorkflowTaskService;
+import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
 import org.apache.syncope.fit.core.CoreITContext;
 import org.apache.syncope.fit.core.UserITCase;
 import org.identityconnectors.common.security.Encryptor;
@@ -286,6 +289,10 @@ public abstract class AbstractITCase {
 
     protected static SCIMConfService scimConfService;
 
+    protected static OpenIdConnectRelyingPartyService openIdConnectRelyingPartyService;
+
+    protected static SAML2ServiceProviderService saml2ServiceProviderService;
+
     @BeforeAll
     public static void securitySetup() {
         try (InputStream propStream = Encryptor.class.getResourceAsStream("/security.properties")) {
@@ -355,6 +362,8 @@ public abstract class AbstractITCase {
         oidcClientService = adminClient.getService(OIDCClientService.class);
         oidcProviderService = adminClient.getService(OIDCProviderService.class);
         scimConfService = adminClient.getService(SCIMConfService.class);
+        openIdConnectRelyingPartyService = adminClient.getService(OpenIdConnectRelyingPartyService.class);
+        saml2ServiceProviderService = adminClient.getService(SAML2ServiceProviderService.class);
     }
 
     @Autowired

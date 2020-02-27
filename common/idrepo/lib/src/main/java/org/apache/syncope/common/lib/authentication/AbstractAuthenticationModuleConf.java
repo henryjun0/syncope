@@ -18,11 +18,13 @@
  */
 package org.apache.syncope.common.lib.authentication;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 import java.io.Serializable;
 
 @XmlType
+@XmlSeeAlso({JaasAuthenticationModuleConf.class, PredefinedAuthenticationModuleConf.class})
 public abstract class AbstractAuthenticationModuleConf implements Serializable, AuthenticationModuleConf {
 
     private static final long serialVersionUID = 4153200197344709778L;
