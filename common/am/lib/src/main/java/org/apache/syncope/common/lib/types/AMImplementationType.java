@@ -18,6 +18,10 @@
  */
 package org.apache.syncope.common.lib.types;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Map;
+
 public final class AMImplementationType {
     
     public static final String AUTH_MODULE_CONFIGURATIONS = "AUTH_MODULE_CONFIGURATIONS";
@@ -29,4 +33,14 @@ public final class AMImplementationType {
     private AMImplementationType() {
         // private constructor for static utility class
     }
+
+    private static final Map<String, String> VALUES = Map.ofEntries(
+        Pair.of(AUTH_MODULE_CONFIGURATIONS, "org.apache.syncope.common.lib.authentication.AuthenticationPolicyConf"),
+        Pair.of(AUTH_POLICY_CONFIGURATIONS, "org.apache.syncope.common.lib.authentication.AuthenticationModuleConf"),
+        Pair.of(ACCESS_POLICY_CONFIGURATIONS, "org.apache.syncope.core.persistence.api.dao.AccessPolicyConf"));
+
+    public static Map<String, String> values() {
+        return VALUES;
+    }
+
 }

@@ -18,6 +18,7 @@
  */
 package org.apache.syncope.core.logic.init;
 
+import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.IdMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationTypesHolder;
 import org.apache.syncope.core.persistence.api.SyncopeCoreLoader;
@@ -34,6 +35,8 @@ public class IdMImplementationTypeLoader implements SyncopeCoreLoader {
 
     @Override
     public void load() {
-        ImplementationTypesHolder.getInstance().putAll(IdMImplementationType.values());
+        ImplementationTypesHolder instance = ImplementationTypesHolder.getInstance();
+        instance.putAll(IdMImplementationType.values());
+        instance.putAll(AMImplementationType.values());
     }
 }

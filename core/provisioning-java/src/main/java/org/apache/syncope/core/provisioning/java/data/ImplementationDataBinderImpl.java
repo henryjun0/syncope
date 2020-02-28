@@ -24,6 +24,7 @@ import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.policy.RuleConf;
 import org.apache.syncope.common.lib.report.ReportletConf;
 import org.apache.syncope.common.lib.to.ImplementationTO;
+import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ClientExceptionType;
 import org.apache.syncope.common.lib.types.IdMImplementationType;
 import org.apache.syncope.common.lib.types.IdRepoImplementationType;
@@ -34,6 +35,9 @@ import org.apache.syncope.core.persistence.api.dao.PasswordRule;
 import org.apache.syncope.core.persistence.api.dao.Reportlet;
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
+import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.provisioning.api.LogicActions;
 import org.apache.syncope.core.provisioning.api.data.ImplementationDataBinder;
 import org.apache.syncope.core.provisioning.api.data.ItemTransformer;
@@ -149,6 +153,18 @@ public class ImplementationDataBinderImpl implements ImplementationDataBinder {
                     base = ProvisionSorter.class;
                     break;
 
+                case AMImplementationType.ACCESS_POLICY_CONFIGURATIONS:
+                    base = AccessPolicy.class;
+                    break;
+
+                case AMImplementationType.AUTH_MODULE_CONFIGURATIONS:
+                    base = AuthenticationModule.class;
+                    break;
+
+                case AMImplementationType.AUTH_POLICY_CONFIGURATIONS:
+                    base = AuthenticationPolicy.class;
+                    break;
+
                 default:
             }
 
@@ -158,6 +174,29 @@ public class ImplementationDataBinderImpl implements ImplementationDataBinder {
             }
 
             switch (implementation.getType()) {
+                case AMImplementationType.ACCESS_POLICY_CONFIGURATIONS:
+                    AccessPolicy accessPolicy = POJOHelper.deserialize(implementation.getBody(), AccessPolicy.class);
+                    if (accessPolicy == null) {
+                        sce.getElements().add("Could not deserialize as AccessPolicy");
+                        throw sce;
+                    }
+                    break;
+                case AMImplementationType.AUTH_MODULE_CONFIGURATIONS:
+                    AuthenticationModule authenticationModule =
+                        POJOHelper.deserialize(implementation.getBody(), AuthenticationModule.class);
+                    if (authenticationModule == null) {
+                        sce.getElements().add("Could not deserialize as AuthenticationModule");
+                        throw sce;
+                    }
+                    break;
+                case AMImplementationType.AUTH_POLICY_CONFIGURATIONS:
+                    AuthenticationPolicy authenticationPolicy =
+                        POJOHelper.deserialize(implementation.getBody(), AuthenticationPolicy.class);
+                    if (authenticationPolicy == null) {
+                        sce.getElements().add("Could not deserialize as AuthenticationPolicy");
+                        throw sce;
+                    }
+                    break;
                 case IdRepoImplementationType.REPORTLET:
                     ReportletConf reportlet = POJOHelper.deserialize(implementation.getBody(), ReportletConf.class);
                     if (reportlet == null) {

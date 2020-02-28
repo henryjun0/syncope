@@ -33,10 +33,14 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.syncope.common.lib.SyncopeClientException;
+import org.apache.syncope.common.lib.authentication.DefaultAuthenticationPolicyConf;
+import org.apache.syncope.common.lib.policy.AccessPolicyTO;
 import org.apache.syncope.common.lib.policy.AccountPolicyTO;
+import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.policy.PasswordPolicyTO;
 import org.apache.syncope.common.lib.policy.PullPolicyTO;
 import org.apache.syncope.common.lib.policy.DefaultAccountRuleConf;
+import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.AnyTypeKind;
 import org.apache.syncope.common.lib.policy.DefaultPasswordRuleConf;
 import org.apache.syncope.common.lib.policy.PushPolicyTO;
@@ -53,6 +57,35 @@ import org.apache.syncope.fit.core.reference.DummyPushCorrelationRule;
 import org.junit.jupiter.api.Test;
 
 public class PolicyITCase extends AbstractITCase {
+
+    private static AuthenticationPolicyTO buildAuthenticationPolicyTO() {
+        ImplementationTO implementationTO = null;
+        try {
+            implementationTO = implementationService.read(AMImplementationType.AUTH_POLICY_CONFIGURATIONS, "TestAuthenticationPolicy");
+        } catch (SyncopeClientException e) {
+            if (e.getType().getResponseStatus() == Response.Status.NOT_FOUND) {
+                implementationTO = new ImplementationTO();
+                implementationTO.setKey("TestAuthenticationPolicy");
+                implementationTO.setEngine(ImplementationEngine.JAVA);
+                implementationTO.setType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
+
+                DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
+                conf.setAuthenticationModules(List.of("LdapAuthentication1"));
+                implementationTO.setBody(POJOHelper.serialize(conf));
+                
+                Response response = implementationService.create(implementationTO);
+                implementationTO = implementationService.read(
+                    implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                assertNotNull(implementationTO);
+            }
+        }
+        assertNotNull(implementationTO);
+
+        AuthenticationPolicyTO policy = new AuthenticationPolicyTO();
+        policy.setDescription("Test AuthN policy");
+        policy.setKey(implementationTO.getKey());
+        return policy;
+    }
 
     private PullPolicyTO buildPullPolicyTO() throws IOException {
         ImplementationTO corrRule = null;
@@ -144,6 +177,9 @@ public class PolicyITCase extends AbstractITCase {
 
     @Test
     public void create() throws IOException {
+        AuthenticationPolicyTO authenticationPolicyTO = createPolicy(PolicyType.AUTHENTICATION, buildAuthenticationPolicyTO());
+        assertNotNull(authenticationPolicyTO);
+
         PullPolicyTO pullPolicyTO = createPolicy(PolicyType.PULL, buildPullPolicyTO());
         assertNotNull(pullPolicyTO);
         assertEquals("TestPullRule", pullPolicyTO.getCorrelationRules().get(AnyTypeKind.USER.name()));
@@ -151,7 +187,12 @@ public class PolicyITCase extends AbstractITCase {
         PushPolicyTO pushPolicyTO = createPolicy(PolicyType.PUSH, buildPushPolicyTO());
         assertNotNull(pushPolicyTO);
         assertEquals("TestPushRule", pushPolicyTO.getCorrelationRules().get(AnyTypeKind.USER.name()));
+
+
+//        AccessPolicyTO accessPolicyTO = createPolicy(PolicyType.ACCESS, buildAccessPolicyTO());
+//        assertNotNull(authenticationPolicyTO);
     }
+
 
     @Test
     public void update() {
