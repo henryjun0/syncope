@@ -46,6 +46,22 @@ public final class AMEntitlement {
 
     private static final Set<String> VALUES;
 
+    public static final String SAML2_SERVICE_PROVIDER_READ = "OIDC_RELYING_PARTY_READ";
+
+    public static final String OIDC_RELYING_PARTY_DELETE = "OIDC_RELYING_PARTY_DELETE";
+
+    public static final String OIDC_RELYING_PARTY_READ = "OIDC_RELYING_PARTY_READ";
+
+    public static final String SAML2_SERVICE_PROVIDER_LIST = "SAML2_SERVICE_PROVIDER_LIST";
+
+    public static final String OIDC_RELYING_PARTY_CREATE = "OIDC_RELYING_PARTY_CREATE";
+
+    public static final String SAML2_SERVICE_PROVIDER_DELETE = "SAML2_SERVICE_PROVIDER_DELETE";
+
+    public static final String OIDC_RELYING_PARTY_LIST = "OIDC_RELYING_PARTY_LIST";
+
+    public static final String SAML2_SERVICE_PROVIDER_CREATE = "SAML2_SERVICE_PROVIDER_CREATE";
+
     static {
         Set<String> values = new TreeSet<>();
         for (Field field : AMEntitlement.class.getDeclaredFields()) {

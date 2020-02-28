@@ -16,31 +16,26 @@
  * under the License.
  *
  */
+package org.apache.syncope.common.lib.policy;
 
-package org.apache.syncope.core.logic;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import org.apache.syncope.common.lib.to.ClientApplicationTO;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
-import java.lang.reflect.Method;
-import java.util.List;
+@XmlRootElement(name = "authenticationPolicy")
+@XmlType
+public class AuthenticationPolicyTO extends PolicyTO {
 
-public abstract class AbstractClientApplicationLogic<T extends ClientApplicationTO>
-    extends AbstractTransactionalLogic<ClientApplicationTO> {
+    private static final long serialVersionUID = -6711411162433533300L;
 
+    @XmlTransient
+    @JsonProperty("@class")
+    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.policy.AuthenticationPolicyTO")
     @Override
-    protected ClientApplicationTO resolveReference(final Method method, final Object... args)
-        throws UnresolvedReferenceException {
-        throw new UnresolvedReferenceException();
+    public String getDiscriminator() {
+        return getClass().getName();
     }
-
-    public abstract T delete(String key);
-
-    public abstract List<T> list();
-
-    public abstract T read(String key);
-
-    public abstract T create(T applicationTO);
-
-    public abstract T update(T applicationTO);
-
 }

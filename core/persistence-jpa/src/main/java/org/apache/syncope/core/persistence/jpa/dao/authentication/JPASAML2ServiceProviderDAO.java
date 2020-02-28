@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
@@ -33,7 +32,7 @@ import java.util.List;
 
 @Repository
 public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider>
-    implements SAML2ServiceProviderDAO {
+        implements SAML2ServiceProviderDAO {
 
     @Override
     public SAML2ServiceProvider find(final String key) {
@@ -43,7 +42,8 @@ public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider
     @Override
     public SAML2ServiceProvider findByName(final String name) {
         final TypedQuery<SAML2ServiceProvider> query = entityManager().createQuery(
-            "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e WHERE e.name=:name", SAML2ServiceProvider.class);
+                "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e WHERE e.name=:name",
+                SAML2ServiceProvider.class);
         query.setParameter("name", name);
 
         SAML2ServiceProvider result = null;
@@ -59,7 +59,8 @@ public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider
     @Override
     public SAML2ServiceProvider findByEntityId(final String entityId) {
         final TypedQuery<SAML2ServiceProvider> query = entityManager().createQuery(
-            "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e WHERE e.entityId=:entityId", SAML2ServiceProvider.class);
+                "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e WHERE e.entityId=:entityId",
+                SAML2ServiceProvider.class);
         query.setParameter("entityId", entityId);
 
         SAML2ServiceProvider result = null;
@@ -76,7 +77,7 @@ public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider
     @Override
     public List<SAML2ServiceProvider> findAll() {
         final TypedQuery<SAML2ServiceProvider> query = entityManager().createQuery(
-            "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e", SAML2ServiceProvider.class);
+                "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e", SAML2ServiceProvider.class);
 
         return query.getResultList();
     }

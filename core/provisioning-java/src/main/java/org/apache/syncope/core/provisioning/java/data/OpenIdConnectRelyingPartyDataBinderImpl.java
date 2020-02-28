@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.core.provisioning.java.data;
 
 import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
@@ -33,6 +32,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRelyingPartyDataBinder {
+
     private static final Logger LOG = LoggerFactory.getLogger(OpenIdConnectRelyingPartyDataBinderImpl.class);
 
     @Autowired
@@ -43,14 +43,17 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
 
     @Autowired
     private AuthenticationPolicyDAO authenticationPolicyDAO;
-    
+
     @Override
     public OpenIdConnectRelyingParty create(final OpenIdConnectRelyingPartyTO applicationTO) {
         return update(entityFactory.newEntity(OpenIdConnectRelyingParty.class), applicationTO);
     }
 
     @Override
-    public OpenIdConnectRelyingParty update(final OpenIdConnectRelyingParty toBeUpdated, final OpenIdConnectRelyingPartyTO applicationTO) {
+    public OpenIdConnectRelyingParty update(
+            final OpenIdConnectRelyingParty toBeUpdated,
+            final OpenIdConnectRelyingPartyTO applicationTO) {
+
         OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.save(toBeUpdated);
 
         application.setDescription(applicationTO.getDescription());
@@ -60,7 +63,7 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
         application.setRedirectUris(applicationTO.getRedirectUris());
 
         AuthenticationPolicy authenticationPolicy = authenticationPolicyDAO.
-            find(applicationTO.getAuthenticationPolicy().getKey());
+                find(applicationTO.getAuthenticationPolicy().getKey());
         application.setAuthenticationPolicy(authenticationPolicy);
 
         return application;

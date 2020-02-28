@@ -238,22 +238,6 @@ public final class IdRepoEntitlement {
 
     public static final String IMPLEMENTATION_DELETE = "IMPLEMENTATION_DELETE";
 
-    public static final String OIDC_RELYING_PARTY_READ = "OIDC_RELYING_PARTY_READ";
-
-    public static final String OIDC_RELYING_PARTY_DELETE = "OIDC_RELYING_PARTY_DELETE";
-
-    public static final String OIDC_RELYING_PARTY_CREATE = "OIDC_RELYING_PARTY_CREATE";
-
-    public static final String OIDC_RELYING_PARTY_LIST = "OIDC_RELYING_PARTY_LIST";
-
-    public static final String SAML2_SERVICE_PROVIDER_READ = "OIDC_RELYING_PARTY_READ";
-
-    public static final String SAML2_SERVICE_PROVIDER_DELETE = "SAML2_SERVICE_PROVIDER_DELETE";
-
-    public static final String SAML2_SERVICE_PROVIDER_CREATE = "SAML2_SERVICE_PROVIDER_CREATE";
-
-    public static final String SAML2_SERVICE_PROVIDER_LIST = "SAML2_SERVICE_PROVIDER_LIST";
-
     private static final Set<String> VALUES;
 
     static {

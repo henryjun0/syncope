@@ -19,8 +19,8 @@
 
 package org.apache.syncope.core.rest.cxf.service;
 
-import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
 import org.apache.syncope.common.rest.api.service.SAML2ServiceProviderService;
+import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
 import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
 import org.apache.syncope.core.logic.SAML2ServiceProviderLogic;
 import org.springframework.beans.factory.annotation.Autowired;

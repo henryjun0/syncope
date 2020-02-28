@@ -18,14 +18,14 @@
  */
 package org.apache.syncope.core.logic.init;
 
-import org.apache.syncope.common.lib.types.IdMImplementationType;
+import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationTypesHolder;
 import org.apache.syncope.core.persistence.api.SyncopeCoreLoader;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IdMImplementationTypeLoader implements SyncopeCoreLoader {
+public class AMImplementationTypeLoader implements SyncopeCoreLoader {
 
     @Override
     public int getOrder() {
@@ -34,6 +34,6 @@ public class IdMImplementationTypeLoader implements SyncopeCoreLoader {
 
     @Override
     public void load() {
-        ImplementationTypesHolder.getInstance().putAll(IdMImplementationType.values());
+        ImplementationTypesHolder.getInstance().putAll(AMImplementationType.values());
     }
 }

@@ -16,26 +16,30 @@
  * under the License.
  *
  */
+package org.apache.syncope.core.logic;
 
-package org.apache.syncope.core.rest.cxf.service;
+import org.apache.syncope.common.lib.to.ClientApplicationTO;
 
-import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
-import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
-import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
-import org.apache.syncope.core.logic.OpenIdConnectRelyingPartyLogic;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.lang.reflect.Method;
+import java.util.List;
 
-@Service
-public class OpenIdConnectRelyingPartyServiceImpl
-    extends AbstractClientApplicationServiceImpl<OpenIdConnectRelyingPartyTO>
-    implements OpenIdConnectRelyingPartyService {
-
-    @Autowired
-    private OpenIdConnectRelyingPartyLogic logic;
+public abstract class AbstractClientApplicationLogic<T extends ClientApplicationTO>
+        extends AbstractTransactionalLogic<ClientApplicationTO> {
 
     @Override
-    protected AbstractClientApplicationLogic getLogic() {
-        return this.logic;
+    protected ClientApplicationTO resolveReference(final Method method, final Object... args)
+            throws UnresolvedReferenceException {
+        throw new UnresolvedReferenceException();
     }
+
+    public abstract T delete(String key);
+
+    public abstract List<T> list();
+
+    public abstract T read(String key);
+
+    public abstract T create(T applicationTO);
+
+    public abstract T update(T applicationTO);
+
 }

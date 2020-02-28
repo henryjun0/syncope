@@ -17,25 +17,25 @@
  *
  */
 
-package org.apache.syncope.common.lib.policy;
+package org.apache.syncope.core.rest.cxf.service;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
+import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
+import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
+import org.apache.syncope.core.logic.OpenIdConnectRelyingPartyLogic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+@Service
+public class OpenIdConnectRelyingPartyServiceImpl
+    extends AbstractClientApplicationServiceImpl<OpenIdConnectRelyingPartyTO>
+    implements OpenIdConnectRelyingPartyService {
 
-@XmlRootElement(name = "authenticationPolicy")
-@XmlType
-public class AuthenticationPolicyTO extends PolicyTO {
-    private static final long serialVersionUID = -6711411162433533300L;
+    @Autowired
+    private OpenIdConnectRelyingPartyLogic logic;
 
-    @XmlTransient
-    @JsonProperty("@class")
-    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.policy.AuthenticationPolicyTO")
     @Override
-    public String getDiscriminator() {
-        return getClass().getName();
+    protected AbstractClientApplicationLogic getLogic() {
+        return this.logic;
     }
 }

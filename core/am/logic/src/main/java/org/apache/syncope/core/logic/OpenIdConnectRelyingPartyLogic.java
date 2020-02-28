@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.syncope.common.lib.types.AMEntitlement;
 
 @Component
 public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLogic<OpenIdConnectRelyingPartyTO> {
@@ -41,7 +42,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
     @Autowired
     private OpenIdConnectRelyingPartyDataBinder binder;
 
-    @PreAuthorize("hasRole('" + IdRepoEntitlement.OIDC_RELYING_PARTY_READ + "')")
+    @PreAuthorize("hasRole('" + AMEntitlement.OIDC_RELYING_PARTY_READ + "')")
     @Transactional(readOnly = true)
     @Override
     public OpenIdConnectRelyingPartyTO read(final String key) {
@@ -55,7 +56,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
         return binder.getClientApplicationTO(application);
     }
 
-    @PreAuthorize("hasRole('" + IdRepoEntitlement.OIDC_RELYING_PARTY_LIST + "')")
+    @PreAuthorize("hasRole('" + AMEntitlement.OIDC_RELYING_PARTY_LIST + "')")
     @Transactional(readOnly = true)
     @Override
     public List<OpenIdConnectRelyingPartyTO> list() {
@@ -63,7 +64,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
             .stream().map(binder::getClientApplicationTO).collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasRole('" + IdRepoEntitlement.OIDC_RELYING_PARTY_CREATE + "')")
+    @PreAuthorize("hasRole('" + AMEntitlement.OIDC_RELYING_PARTY_CREATE + "')")
     @Override
     public OpenIdConnectRelyingPartyTO create(final OpenIdConnectRelyingPartyTO applicationTO) {
         return binder.getClientApplicationTO(openIdConnectRelyingPartyDAO.save(binder.create(applicationTO)));
@@ -82,7 +83,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
     }
 
     @Override
-    @PreAuthorize("hasRole('" + IdRepoEntitlement.OIDC_RELYING_PARTY_DELETE + "')")
+    @PreAuthorize("hasRole('" + AMEntitlement.OIDC_RELYING_PARTY_DELETE + "')")
     public OpenIdConnectRelyingPartyTO delete(final String key) {
         OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.find(key);
         if (application == null) {

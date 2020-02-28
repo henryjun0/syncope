@@ -18,9 +18,9 @@
  */
 package org.apache.syncope.core.rest.cxf.service;
 
+import org.apache.syncope.common.rest.api.service.ClientApplicationService;
 import org.apache.syncope.common.lib.to.ClientApplicationTO;
 import org.apache.syncope.common.rest.api.RESTHeaders;
-import org.apache.syncope.common.rest.api.service.ClientApplicationService;
 import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
 
 import javax.ws.rs.core.Response;
@@ -29,7 +29,7 @@ import java.net.URI;
 import java.util.List;
 
 public abstract class AbstractClientApplicationServiceImpl<T extends ClientApplicationTO> extends AbstractServiceImpl
-    implements ClientApplicationService<T> {
+        implements ClientApplicationService<T> {
 
     protected abstract AbstractClientApplicationLogic<T> getLogic();
 
@@ -43,14 +43,13 @@ public abstract class AbstractClientApplicationServiceImpl<T extends ClientAppli
         return getLogic().read(key);
     }
 
-
     @Override
     public Response create(final T applicationTO) {
         T created = getLogic().create(applicationTO);
         URI location = uriInfo.getAbsolutePathBuilder().path(created.getKey()).build();
         return Response.created(location).
-            header(RESTHeaders.RESOURCE_KEY, created.getKey()).
-            build();
+                header(RESTHeaders.RESOURCE_KEY, created.getKey()).
+                build();
     }
 
     @Override

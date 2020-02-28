@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.rest.api.service;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -75,14 +74,14 @@ public interface ClientApplicationService<T extends ClientApplicationTO> extends
      * @return Response object featuring Location header of created application
      */
     @ApiResponses(
-        @ApiResponse(responseCode = "201",
-            description = "Application successfully created", headers = {
-            @Header(name = RESTHeaders.RESOURCE_KEY, schema =
-            @Schema(type = "string"),
-                description = "Key value for the entity created"),
-            @Header(name = HttpHeaders.LOCATION, schema =
-            @Schema(type = "string"),
-                description = "URL of the entity created") }))
+            @ApiResponse(responseCode = "201",
+                    description = "Application successfully created", headers = {
+                @Header(name = RESTHeaders.RESOURCE_KEY, schema =
+                        @Schema(type = "string"),
+                        description = "Key value for the entity created"),
+                @Header(name = HttpHeaders.LOCATION, schema =
+                        @Schema(type = "string"),
+                        description = "URL of the entity created") }))
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
@@ -94,9 +93,9 @@ public interface ClientApplicationService<T extends ClientApplicationTO> extends
      * @param applicationTO application to be stored
      */
     @Parameter(name = "key", description = "Application's key", in = ParameterIn.PATH, schema =
-    @Schema(type = "string"))
+            @Schema(type = "string"))
     @ApiResponses(
-        @ApiResponse(responseCode = "204", description = "Operation was successful"))
+            @ApiResponse(responseCode = "204", description = "Operation was successful"))
     @PUT
     @Path("{key}")
     @Consumes({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
@@ -109,7 +108,7 @@ public interface ClientApplicationService<T extends ClientApplicationTO> extends
      * @param key application key to be deleted
      */
     @ApiResponses(
-        @ApiResponse(responseCode = "204", description = "Operation was successful"))
+            @ApiResponse(responseCode = "204", description = "Operation was successful"))
     @DELETE
     @Path("{key}")
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
