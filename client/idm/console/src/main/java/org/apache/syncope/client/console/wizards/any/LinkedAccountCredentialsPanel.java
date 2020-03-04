@@ -20,6 +20,7 @@ package org.apache.syncope.client.console.wizards.any;
 
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.checkbox.bootstraptoggle.BootstrapToggle;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.checkbox.bootstraptoggle.BootstrapToggleConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.syncope.common.lib.to.LinkedAccountTO;
 import org.apache.syncope.client.console.commons.LinkedAccountPlainAttrProperty;
 import org.apache.syncope.client.ui.commons.Constants;
@@ -27,6 +28,7 @@ import org.apache.syncope.client.ui.commons.ajax.form.IndicatorAjaxFormComponent
 import org.apache.syncope.client.ui.commons.markup.html.form.AjaxPasswordFieldPanel;
 import org.apache.syncope.client.ui.commons.markup.html.form.AjaxTextFieldPanel;
 import org.apache.syncope.client.ui.commons.markup.html.form.FieldPanel;
+import org.apache.syncope.client.ui.commons.wizards.any.EntityWrapper;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.markup.ComponentTag;
@@ -41,39 +43,45 @@ public class LinkedAccountCredentialsPanel extends WizardStep {
 
     private static final long serialVersionUID = 5116461957402341603L;
 
-    public LinkedAccountCredentialsPanel(final LinkedAccountTO linkedAccountTO) {
+    private String usernameValue;
+
+    private String passwordValue;
+
+    private final LinkedAccountTO linkedAccountTO;
+
+    public LinkedAccountCredentialsPanel(final EntityWrapper<LinkedAccountTO> modelObject) {
         super();
         setOutputMarkupId(true);
+
+        linkedAccountTO = modelObject.getInnerObject();
 
         AjaxTextFieldPanel usernameField = new AjaxTextFieldPanel(
                 "username",
                 "username",
-                new PropertyModel<>(linkedAccountTO, "username"),
-                false);
-        usernameField.setOutputMarkupId(true);
-        FieldPanel.class.cast(usernameField).setReadOnly(true);
-        LinkedAccountPlainAttrProperty property = new LinkedAccountPlainAttrProperty();
-        property.setOverridable(false);
-        property.setSchema("username");
-        property.getValues().add(linkedAccountTO.getUsername());
-        usernameField.showExternAction(checkboxToggle(property, usernameField));
-        add(usernameField);
+                new PropertyModel<>(linkedAccountTO, "username"));
+        FieldPanel.class.cast(usernameField).setReadOnly(StringUtils.isBlank(linkedAccountTO.getUsername()));
+        LinkedAccountPlainAttrProperty usernameProperty = new LinkedAccountPlainAttrProperty();
+        usernameProperty.setOverridable(StringUtils.isNotBlank(linkedAccountTO.getUsername()));
+        usernameProperty.setSchema("username");
+        usernameProperty.getValues().add(linkedAccountTO.getUsername());
+        usernameField.showExternAction(checkboxToggle(usernameProperty, usernameField));
+        add(usernameField.setOutputMarkupId(true));
 
         AjaxPasswordFieldPanel passwordField = new AjaxPasswordFieldPanel(
                 "password",
                 "password",
-                new PropertyModel<>(linkedAccountTO, "password"));
-        passwordField.setOutputMarkupId(true);
-        passwordField.setRequired(true);
+                new PropertyModel<>(linkedAccountTO, "password"),
+                false);
         passwordField.setMarkupId("password");
-        FieldPanel.class.cast(passwordField).setReadOnly(true);
-        property = new LinkedAccountPlainAttrProperty();
-        property.setOverridable(false);
-        property.setSchema("password");
-        property.getValues().add(linkedAccountTO.getPassword());
-        passwordField.showExternAction(checkboxToggle(property, passwordField));
-        ((PasswordTextField) passwordField.getField()).setResetPassword(true);
-        add(passwordField);
+        passwordField.setRequired(true);
+        FieldPanel.class.cast(passwordField).setReadOnly(StringUtils.isBlank(linkedAccountTO.getPassword()));
+        LinkedAccountPlainAttrProperty passwordProperty = new LinkedAccountPlainAttrProperty();
+        passwordProperty.setOverridable(StringUtils.isNotBlank(linkedAccountTO.getPassword()));
+        passwordProperty.setSchema("password");
+        passwordProperty.getValues().add(linkedAccountTO.getPassword());
+        passwordField.showExternAction(checkboxToggle(passwordProperty, passwordField));
+        ((PasswordTextField) passwordField.getField()).setResetPassword(false);
+        add(passwordField.setOutputMarkupId(true));
     }
 
     private FormComponent<?> checkboxToggle(
@@ -97,7 +105,22 @@ public class LinkedAccountCredentialsPanel extends WizardStep {
 
                     @Override
                     protected void onUpdate(final AjaxRequestTarget target) {
-                        panel.setReadOnly(!model.getObject());
+                        FieldPanel.class.cast(panel).setReadOnly(!model.getObject());
+                        if (model.getObject()) {
+                            if (property.getSchema().equals("password")) {
+                                linkedAccountTO.setPassword(passwordValue);
+                            } else if (property.getSchema().equals("username")) {
+                                linkedAccountTO.setUsername(usernameValue);
+                            }
+                        } else {
+                            if (property.getSchema().equals("password")) {
+                                passwordValue = linkedAccountTO.getPassword();
+                                linkedAccountTO.setPassword(null);
+                            } else if (property.getSchema().equals("username")) {
+                                usernameValue = linkedAccountTO.getUsername();
+                                linkedAccountTO.setUsername(null);
+                            }
+                        }
                         target.add(panel);
                     }
                 });
@@ -121,5 +144,4 @@ public class LinkedAccountCredentialsPanel extends WizardStep {
             }
         };
     }
-
 }
