@@ -24,7 +24,8 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 @XmlType
-@XmlSeeAlso({JaasAuthenticationModuleConf.class, PredefinedAuthenticationModuleConf.class})
+@XmlSeeAlso({JaasAuthenticationModuleConf.class, PredefinedAuthenticationModuleConf.class,
+    LdapAuthenticationModuleConf.class})
 public abstract class AbstractAuthenticationModuleConf implements Serializable, AuthenticationModuleConf {
 
     private static final long serialVersionUID = 4153200197344709778L;

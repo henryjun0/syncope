@@ -19,7 +19,9 @@
 package org.apache.syncope.core.persistence.jpa.inner;
 
 import org.apache.syncope.common.lib.authentication.AuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.GoogleAuthenticatorAuthenticationModuleConf;
 import org.apache.syncope.common.lib.authentication.JaasAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.LdapAuthenticationModuleConf;
 import org.apache.syncope.common.lib.authentication.PredefinedAuthenticationModuleConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
@@ -114,6 +116,61 @@ public class AuthenticationModuleTest extends AbstractTest {
         assertNotNull(authenticationModuleDAO.find(module.getKey()));
     }
 
+    @Test
+    public void saveWithLdapModule() {
+        LdapAuthenticationModuleConf conf = new LdapAuthenticationModuleConf();
+        conf.setAttributes(List.of("cn", "uid"));
+        conf.setBaseDn("dc=example,dc=org");
+        conf.setSearchFilter("cn={user}");
+        conf.setSubtreeSearch(true);
+        conf.setLdapUrl("ldap://localhost:1389");
+        conf.setUserIdAttribute("uid");
+        conf.setBaseDn("cn=Directory Manager,dc=example,dc=org");
+        conf.setBindCredential("Password");
+        Implementation config = getImplementation(conf);
+
+        config = implementationDAO.save(config);
+
+        assertNotNull(config);
+        assertNotNull(config.getKey());
+
+        AuthenticationModule module = entityFactory.newEntity(AuthenticationModule.class);
+        module.setName("AuthenticationModuleTest");
+        module.add(config);
+        authenticationModuleDAO.save(module);
+
+        assertNotNull(module);
+        assertNotNull(module.getKey());
+
+        assertNotNull(authenticationModuleDAO.find(module.getKey()));
+    }
+
+    @Test
+    public void saveWithGoogleAuthenticatorModule() {
+        GoogleAuthenticatorAuthenticationModuleConf conf =
+            new GoogleAuthenticatorAuthenticationModuleConf();
+        conf.setCodeDigits(6);
+        conf.setIssuer("SyncopeTest");
+        conf.setLabel("Syncope");
+        conf.setTimeStepSize(30);
+        conf.setWindowSize(3);
+        Implementation config = getImplementation(conf);
+
+        config = implementationDAO.save(config);
+
+        assertNotNull(config);
+        assertNotNull(config.getKey());
+
+        AuthenticationModule module = entityFactory.newEntity(AuthenticationModule.class);
+        module.setName("AuthenticationModuleTest");
+        module.add(config);
+        authenticationModuleDAO.save(module);
+
+        assertNotNull(module);
+        assertNotNull(module.getKey());
+
+        assertNotNull(authenticationModuleDAO.find(module.getKey()));
+    }
 
     private Implementation getImplementation(final AuthenticationModuleConf conf) {
         Implementation config = entityFactory.newEntity(Implementation.class);
