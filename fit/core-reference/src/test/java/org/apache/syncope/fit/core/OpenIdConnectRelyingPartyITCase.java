@@ -34,12 +34,12 @@ import org.apache.syncope.common.lib.SyncopeClientException;
 public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
 
     @Test
-    public void createRelyingParty() throws IOException {
+    public void create() throws IOException {
         createOpenIdConnectRelyingParty(buildRelyingParty());
     }
 
     @Test
-    public void findRelyingParty() {
+    public void read() {
         OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
         rpTO = createOpenIdConnectRelyingParty(rpTO);
 
@@ -52,7 +52,7 @@ public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
     }
 
     @Test
-    public void updateRelyingParty() {
+    public void update() {
         OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
         rpTO = createOpenIdConnectRelyingParty(rpTO);
 
@@ -75,7 +75,7 @@ public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
     }
 
     @Test
-    public void deleteRelyingParty() {
+    public void delete() {
         OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
         rpTO = createOpenIdConnectRelyingParty(rpTO);
 
