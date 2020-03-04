@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
@@ -48,7 +47,8 @@ public class JPAOpenIdConnectRelyingParty extends AbstractClientApplication impl
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "redirectUris")
-    @CollectionTable(name = "OpenIdConnectRelyingParty_RedirectUris", joinColumns = @JoinColumn(name = "clientId"))
+    @CollectionTable(name = "OpenIdConnectRelyingParty_RedirectUris", joinColumns =
+            @JoinColumn(name = "clientId"))
     private List<String> redirectUris = new ArrayList<>();
 
     @Override
@@ -81,4 +81,3 @@ public class JPAOpenIdConnectRelyingParty extends AbstractClientApplication impl
         this.clientSecret = clientSecret;
     }
 }
-

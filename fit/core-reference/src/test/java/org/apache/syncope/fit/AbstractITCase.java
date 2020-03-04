@@ -18,7 +18,6 @@
  */
 package org.apache.syncope.fit;
 
-import static de.agilecoders.wicket.extensions.markup.html.bootstrap.icon.FontAwesome5IconType.java;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -71,6 +70,7 @@ import org.apache.syncope.common.lib.to.ResourceTO;
 import org.apache.syncope.common.lib.to.GroupTO;
 import org.apache.syncope.common.lib.to.MembershipTO;
 import org.apache.syncope.common.lib.to.NotificationTO;
+import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 import org.apache.syncope.common.lib.to.ProvisioningResult;
 import org.apache.syncope.common.lib.to.ReportTO;
 import org.apache.syncope.common.lib.to.RoleTO;
@@ -121,7 +121,6 @@ import org.apache.syncope.common.rest.api.service.UserRequestService;
 import org.apache.syncope.common.rest.api.service.BpmnProcessService;
 import org.apache.syncope.common.rest.api.service.GatewayRouteService;
 import org.apache.syncope.common.rest.api.service.UserWorkflowTaskService;
-import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
 import org.apache.syncope.fit.core.CoreITContext;
 import org.apache.syncope.fit.core.UserITCase;
 import org.identityconnectors.common.security.Encryptor;
@@ -566,6 +565,18 @@ public abstract class AbstractITCase {
             }
         }
         return (T) getObject(response.getLocation(), PolicyService.class, policy.getClass());
+    }
+
+    protected OpenIdConnectRelyingPartyTO createOpenIdConnectRelyingParty(final OpenIdConnectRelyingPartyTO rpTO) {
+        Response response = openIdConnectRelyingPartyService.create(rpTO);
+        if (response.getStatusInfo().getStatusCode() != Response.Status.CREATED.getStatusCode()) {
+            Exception ex = clientFactory.getExceptionMapper().fromResponse(response);
+            if (ex != null) {
+                throw (RuntimeException) ex;
+            }
+        }
+        return getObject(response.getLocation(), OpenIdConnectRelyingPartyService.class,
+                OpenIdConnectRelyingPartyTO.class);
     }
 
     protected ResourceTO createResource(final ResourceTO resourceTO) {

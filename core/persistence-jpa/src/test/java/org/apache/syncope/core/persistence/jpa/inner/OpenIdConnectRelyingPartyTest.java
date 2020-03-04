@@ -48,8 +48,8 @@ public class OpenIdConnectRelyingPartyTest extends AbstractClientApplicationTest
         AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
         rp.setAccessPolicy(accessPolicy);
 
-        AuthenticationPolicy authnPolicy = buildAndSaveAuthenticationPolicy();
-        rp.setAuthenticationPolicy(authnPolicy);
+        AuthenticationPolicy authPolicy = buildAndSaveAuthenticationPolicy();
+        rp.setAuthenticationPolicy(authPolicy);
 
         openIdConnectRelyingPartyDAO.save(rp);
 

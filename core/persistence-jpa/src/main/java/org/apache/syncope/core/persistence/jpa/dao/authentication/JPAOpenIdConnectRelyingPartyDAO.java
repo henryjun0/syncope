@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
@@ -33,7 +32,7 @@ import java.util.List;
 
 @Repository
 public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OpenIdConnectRelyingParty>
-    implements OpenIdConnectRelyingPartyDAO {
+        implements OpenIdConnectRelyingPartyDAO {
 
     @Override
     public OpenIdConnectRelyingParty find(final String key) {
@@ -43,7 +42,7 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OpenIdConnectRe
     @Override
     public OpenIdConnectRelyingParty findByName(final String name) {
         TypedQuery<OpenIdConnectRelyingParty> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
+                "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
                 + " e WHERE e.name=:name", OpenIdConnectRelyingParty.class);
         query.setParameter("name", name);
 
@@ -60,7 +59,7 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OpenIdConnectRe
     @Override
     public OpenIdConnectRelyingParty findByClientId(final String clientId) {
         TypedQuery<OpenIdConnectRelyingParty> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
+                "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
                 + " e WHERE e.clientId=:clientId", OpenIdConnectRelyingParty.class);
         query.setParameter("clientId", clientId);
 
@@ -78,38 +77,38 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OpenIdConnectRe
     @Override
     public List<OpenIdConnectRelyingParty> findAll() {
         TypedQuery<OpenIdConnectRelyingParty> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
+                "SELECT e FROM " + JPAOpenIdConnectRelyingParty.class.getSimpleName()
                 + " e", OpenIdConnectRelyingParty.class);
 
         return query.getResultList();
     }
 
     @Override
-    public OpenIdConnectRelyingParty save(final OpenIdConnectRelyingParty policy) {
-        return entityManager().merge(policy);
+    public OpenIdConnectRelyingParty save(final OpenIdConnectRelyingParty rpTO) {
+        return entityManager().merge(rpTO);
     }
 
     @Override
     public void delete(final String key) {
-        OpenIdConnectRelyingParty policy = find(key);
-        if (policy == null) {
+        OpenIdConnectRelyingParty rpTO = find(key);
+        if (rpTO == null) {
             return;
         }
 
-        delete(policy);
+        delete(rpTO);
     }
 
     @Override
     public void deleteByClientId(final String clientId) {
-        OpenIdConnectRelyingParty policy = findByClientId(clientId);
-        if (policy == null) {
+        OpenIdConnectRelyingParty rpTO = findByClientId(clientId);
+        if (rpTO == null) {
             return;
         }
-        delete(policy);
+        delete(rpTO);
     }
 
     @Override
-    public void delete(final OpenIdConnectRelyingParty policy) {
-        entityManager().remove(policy);
+    public void delete(final OpenIdConnectRelyingParty rpTO) {
+        entityManager().remove(rpTO);
     }
 }

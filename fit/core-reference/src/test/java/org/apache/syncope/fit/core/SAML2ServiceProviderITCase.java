@@ -16,21 +16,16 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.persistence.api.entity.authentication;
+package org.apache.syncope.fit.core;
 
-import java.util.List;
+import org.apache.syncope.fit.AbstractITCase;
+import org.junit.jupiter.api.Test;
+import java.io.IOException;
 
-public interface OpenIdConnectRelyingParty extends ClientApplication {
+public class SAML2ServiceProviderITCase extends AbstractITCase {
 
-    void setClientId(String id);
+    @Test
+    public void createSAMLSP() throws IOException {
 
-    String getClientId();
-
-    void setClientSecret(String secret);
-
-    String getClientSecret();
-
-    List<String> getRedirectUris();
-
-    void setRedirectUris(List<String> uris);
+    }
 }

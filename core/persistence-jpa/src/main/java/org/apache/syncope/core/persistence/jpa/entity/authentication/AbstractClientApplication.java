@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.authentication.ClientApplication;
@@ -28,8 +27,8 @@ import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
 
 @MappedSuperclass
 public class AbstractClientApplication extends AbstractGeneratedKeyEntity implements ClientApplication {
@@ -39,15 +38,14 @@ public class AbstractClientApplication extends AbstractGeneratedKeyEntity implem
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private String description;
 
     @Column(nullable = false)
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private JPAAuthenticationPolicy authenticationPolicy;
 
-    @Column(nullable = false)
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private JPAAccessPolicy accessPolicy;
 
     @Override
@@ -91,4 +89,3 @@ public class AbstractClientApplication extends AbstractGeneratedKeyEntity implem
     }
 
 }
-
