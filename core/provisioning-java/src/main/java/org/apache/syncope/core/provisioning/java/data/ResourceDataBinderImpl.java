@@ -61,6 +61,8 @@ import org.apache.syncope.core.persistence.api.entity.Entity;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.PlainSchema;
 import org.apache.syncope.core.persistence.api.entity.VirSchema;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.Item;
@@ -357,6 +359,12 @@ public class ResourceDataBinderImpl implements ResourceDataBinder {
 
         resource.setPushPolicy(resourceTO.getPushPolicy() == null
                 ? null : (PushPolicy) policyDAO.find(resourceTO.getPushPolicy()));
+
+        resource.setAuthenticationPolicy(resourceTO.getAuthenticationPolicy() == null
+                ? null : (AuthenticationPolicy) policyDAO.find(resourceTO.getAuthenticationPolicy()));
+
+        resource.setAccessPolicy(resourceTO.getAccessPolicy() == null
+                ? null : (AccessPolicy) policyDAO.find(resourceTO.getAccessPolicy()));
 
         if (resourceTO.getProvisionSorter() == null) {
             resource.setProvisionSorter(null);
@@ -686,6 +694,12 @@ public class ResourceDataBinderImpl implements ResourceDataBinder {
 
         resourceTO.setPushPolicy(resource.getPushPolicy() == null
                 ? null : resource.getPushPolicy().getKey());
+
+        resourceTO.setAuthenticationPolicy(resource.getAuthenticationPolicy() == null
+                ? null : resource.getAuthenticationPolicy().getKey());
+
+        resourceTO.setAccessPolicy(resource.getAccessPolicy() == null
+                ? null : resource.getAccessPolicy().getKey());
 
         resourceTO.setProvisionSorter(resource.getProvisionSorter() == null
                 ? null : resource.getProvisionSorter().getKey());

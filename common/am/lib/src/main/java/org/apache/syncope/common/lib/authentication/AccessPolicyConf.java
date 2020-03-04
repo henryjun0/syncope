@@ -16,17 +16,16 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.authentication;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public interface AccessPolicyConf extends Serializable {
+
     /**
      * Give name of related access policy.
      *

@@ -21,9 +21,10 @@ package org.apache.syncope.core.persistence.api.entity;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
-
 import java.util.List;
 import java.util.Optional;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 
 public interface Realm extends Entity {
 
@@ -44,6 +45,14 @@ public interface Realm extends Entity {
     PasswordPolicy getPasswordPolicy();
 
     void setPasswordPolicy(PasswordPolicy passwordPolicy);
+
+    void setAuthenticationPolicy(AuthenticationPolicy authenticationPolicy);
+
+    AuthenticationPolicy getAuthenticationPolicy();
+
+    void setAccessPolicy(AccessPolicy accessPolicy);
+
+    AccessPolicy getAccessPolicy();
 
     boolean add(Implementation action);
 

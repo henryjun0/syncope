@@ -18,14 +18,15 @@
  */
 package org.apache.syncope.common.lib.authentication;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 @XmlType
+@XmlSeeAlso({ DefaultAccessPolicyConf.class })
 public abstract class AbstractAccessPolicyConf implements Serializable, AccessPolicyConf {
 
     private static final long serialVersionUID = 1153200197344709778L;

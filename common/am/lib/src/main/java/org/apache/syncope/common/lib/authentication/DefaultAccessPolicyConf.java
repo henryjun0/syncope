@@ -16,14 +16,15 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.authentication;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "defaultAuthenticationModuleConf")
+@XmlRootElement(name = "DefaultAccessPolicyConf")
 @XmlType
-public class DefaultAccessPolicyConf extends AbstractAccessPolicyConf {
+public class DefaultAccessPolicyConf extends AbstractAccessPolicyConf implements AccessPolicyConf {
+
     private static final long serialVersionUID = -1969836600059025380L;
+
 }

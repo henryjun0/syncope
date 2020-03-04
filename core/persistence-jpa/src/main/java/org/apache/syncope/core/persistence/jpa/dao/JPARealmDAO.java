@@ -32,6 +32,7 @@ import org.apache.syncope.core.persistence.api.dao.RoleDAO;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
 import org.apache.syncope.core.persistence.api.entity.Realm;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
@@ -155,6 +156,8 @@ public class JPARealmDAO extends AbstractDAO<Realm> implements RealmDAO {
             policyColumn = "passwordPolicy";
         } else if (policy instanceof AuthenticationPolicy) {
             policyColumn = "authenticationPolicy";
+        } else if (policy instanceof AccessPolicy) {
+            policyColumn = "accessPolicy";
         }
 
         TypedQuery<Realm> query = entityManager().createQuery(

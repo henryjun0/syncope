@@ -19,9 +19,11 @@
 package org.apache.syncope.core.provisioning.java.data;
 
 import java.util.stream.Collectors;
+import org.apache.syncope.common.lib.policy.AccessPolicyTO;
 import org.apache.syncope.core.provisioning.api.data.PolicyDataBinder;
 import org.apache.syncope.common.lib.policy.PolicyTO;
 import org.apache.syncope.common.lib.policy.AccountPolicyTO;
+import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.policy.PasswordPolicyTO;
 import org.apache.syncope.common.lib.policy.PullPolicyTO;
 import org.apache.syncope.common.lib.policy.PushPolicyTO;
@@ -38,6 +40,8 @@ import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.Realm;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
 import org.apache.syncope.core.persistence.api.entity.policy.PullCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
@@ -192,6 +196,24 @@ public class PolicyDataBinderImpl implements PolicyDataBinder {
             // remove all rules not contained in the TO
             pushPolicy.getCorrelationRules().removeIf(anyFilter
                     -> !pushPolicyTO.getCorrelationRules().containsKey(anyFilter.getAnyType().getKey()));
+        } else if (policyTO instanceof AuthenticationPolicyTO) {
+            if (result == null) {
+                result = (T) entityFactory.newEntity(AuthenticationPolicy.class);
+            }
+
+            AuthenticationPolicy authenticationPolicy = AuthenticationPolicy.class.cast(result);
+            AuthenticationPolicyTO authenticationPolicyTO = AuthenticationPolicyTO.class.cast(policyTO);
+
+            authenticationPolicy.setName(authenticationPolicyTO.getKey());
+        } else if (policyTO instanceof AccessPolicyTO) {
+            if (result == null) {
+                result = (T) entityFactory.newEntity(AccessPolicy.class);
+            }
+
+            AccessPolicy accessPolicy = AccessPolicy.class.cast(result);
+            AccessPolicyTO accessPolicyTO = AccessPolicyTO.class.cast(policyTO);
+
+            accessPolicy.setName(accessPolicyTO.getKey());
         }
 
         if (result != null) {
@@ -257,6 +279,12 @@ public class PolicyDataBinderImpl implements PolicyDataBinder {
             pushPolicy.getCorrelationRules().
                     forEach(rule -> pushPolicyTO.getCorrelationRules().
                     put(rule.getAnyType().getKey(), rule.getImplementation().getKey()));
+        } else if (policy instanceof AuthenticationPolicy) {
+            AuthenticationPolicyTO authenticationPolicyTO = new AuthenticationPolicyTO();
+            policyTO = (T) authenticationPolicyTO;
+        } else if (policy instanceof AccessPolicy) {
+            AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
+            policyTO = (T) accessPolicyTO;
         }
 
         if (policyTO != null) {

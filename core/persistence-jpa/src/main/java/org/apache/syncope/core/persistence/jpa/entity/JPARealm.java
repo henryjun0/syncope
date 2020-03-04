@@ -50,6 +50,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 
 @Entity
 @Table(name = JPARealm.TABLE, uniqueConstraints =
@@ -73,6 +77,12 @@ public class JPARealm extends AbstractGeneratedKeyEntity implements Realm {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private JPAAccountPolicy accountPolicy;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private JPAAuthenticationPolicy authenticationPolicy;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private JPAAccessPolicy accessPolicy;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = TABLE + "Action",
@@ -144,6 +154,28 @@ public class JPARealm extends AbstractGeneratedKeyEntity implements Realm {
     public void setPasswordPolicy(final PasswordPolicy passwordPolicy) {
         checkType(passwordPolicy, JPAPasswordPolicy.class);
         this.passwordPolicy = (JPAPasswordPolicy) passwordPolicy;
+    }
+
+    @Override
+    public AuthenticationPolicy getAuthenticationPolicy() {
+        return authenticationPolicy;
+    }
+
+    @Override
+    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
+        checkType(authenticationPolicy, JPAAuthenticationPolicy.class);
+        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
+    }
+
+    @Override
+    public AccessPolicy getAccessPolicy() {
+        return accessPolicy;
+    }
+
+    @Override
+    public void setAccessPolicy(final AccessPolicy accessPolicy) {
+        checkType(accessPolicy, JPAAccessPolicy.class);
+        this.accessPolicy = (JPAAccessPolicy) accessPolicy;
     }
 
     @Override
