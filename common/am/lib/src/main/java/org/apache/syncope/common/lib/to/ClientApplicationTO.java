@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.syncope.common.lib.BaseBean;
+import org.apache.syncope.common.lib.policy.AccessPolicyTO;
 import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -46,6 +47,16 @@ public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
     private String description;
 
     private AuthenticationPolicyTO authenticationPolicy;
+
+    private AccessPolicyTO accessPolicy;
+
+    public AccessPolicyTO getAccessPolicy() {
+        return accessPolicy;
+    }
+
+    public void setAccessPolicy(final AccessPolicyTO accessPolicy) {
+        this.accessPolicy = accessPolicy;
+    }
 
     public AuthenticationPolicyTO getAuthenticationPolicy() {
         return authenticationPolicy;
@@ -92,6 +103,7 @@ public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
             .append(name)
             .append(description)
             .append(authenticationPolicy)
+            .append(accessPolicy)
             .toHashCode();
     }
 
@@ -113,6 +125,7 @@ public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
             .append(this.name, rhs.name)
             .append(this.description, rhs.description)
             .append(this.authenticationPolicy, rhs.authenticationPolicy)
+            .append(this.accessPolicy, rhs.accessPolicy)
             .isEquals();
     }
 }

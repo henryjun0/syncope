@@ -18,23 +18,23 @@
  */
 package org.apache.syncope.core.provisioning.java.data;
 
+import org.apache.syncope.common.lib.SyncopeClientException;
+import org.apache.syncope.common.lib.policy.AccessPolicyTO;
+import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
-import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationPolicyDAO;
+import org.apache.syncope.common.lib.types.ClientExceptionType;
+import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;
 import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.provisioning.api.data.OpenIdConnectRelyingPartyDataBinder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRelyingPartyDataBinder {
-
-    private static final Logger LOG = LoggerFactory.getLogger(OpenIdConnectRelyingPartyDataBinderImpl.class);
-
     @Autowired
     private OpenIdConnectRelyingPartyDAO openIdConnectRelyingPartyDAO;
 
@@ -42,7 +42,7 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
     private EntityFactory entityFactory;
 
     @Autowired
-    private AuthenticationPolicyDAO authenticationPolicyDAO;
+    private PolicyDAO policyDAO;
 
     @Override
     public OpenIdConnectRelyingParty create(final OpenIdConnectRelyingPartyTO applicationTO) {
@@ -51,8 +51,8 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
 
     @Override
     public OpenIdConnectRelyingParty update(
-            final OpenIdConnectRelyingParty toBeUpdated,
-            final OpenIdConnectRelyingPartyTO applicationTO) {
+        final OpenIdConnectRelyingParty toBeUpdated,
+        final OpenIdConnectRelyingPartyTO applicationTO) {
 
         OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.save(toBeUpdated);
 
@@ -62,24 +62,44 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
         application.setClientId(applicationTO.getClientId());
         application.setRedirectUris(applicationTO.getRedirectUris());
 
-        AuthenticationPolicy authenticationPolicy = authenticationPolicyDAO.
-                find(applicationTO.getAuthenticationPolicy().getKey());
+        AuthenticationPolicy authenticationPolicy = policyDAO.
+            find(applicationTO.getAuthenticationPolicy().getKey());
+        if (authenticationPolicy == null) {
+            SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidEntity);
+            sce.getElements().add("Unable to locate authentication policy "
+                + applicationTO.getAuthenticationPolicy().getKey());
+            throw sce;
+        }
         application.setAuthenticationPolicy(authenticationPolicy);
+
+        AccessPolicy accessPolicy = policyDAO.find(applicationTO.getAccessPolicy().getKey());
+        application.setAccessPolicy(accessPolicy);
 
         return application;
     }
 
     @Override
-    public OpenIdConnectRelyingPartyTO getClientApplicationTO(final OpenIdConnectRelyingParty serviceProvider) {
+    public OpenIdConnectRelyingPartyTO getClientApplicationTO(final OpenIdConnectRelyingParty rp) {
         OpenIdConnectRelyingPartyTO applicationTO = new OpenIdConnectRelyingPartyTO();
 
-        applicationTO.setKey(serviceProvider.getKey());
-        applicationTO.setDescription(serviceProvider.getDescription());
-        applicationTO.setClientId(serviceProvider.getClientId());
-        applicationTO.setClientSecret(serviceProvider.getClientSecret());
-        applicationTO.setRedirectUris(serviceProvider.getRedirectUris());
-        applicationTO.setName(serviceProvider.getName());
+        applicationTO.setKey(rp.getKey());
+        applicationTO.setDescription(rp.getDescription());
+        applicationTO.setClientId(rp.getClientId());
+        applicationTO.setClientSecret(rp.getClientSecret());
+        applicationTO.setRedirectUris(rp.getRedirectUris());
+        applicationTO.setName(rp.getName());
 
+        AuthenticationPolicyTO authenticationPolicyTO = new AuthenticationPolicyTO();
+        authenticationPolicyTO.setDescription(rp.getAuthenticationPolicy().getDescription());
+        authenticationPolicyTO.setKey(rp.getAuthenticationPolicy().getKey());
+        applicationTO.setAuthenticationPolicy(authenticationPolicyTO);
+
+        if (rp.getAccessPolicy() != null) {
+            AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
+            accessPolicyTO.setDescription(rp.getAccessPolicy().getDescription());
+            accessPolicyTO.setKey(rp.getAccessPolicy().getKey());
+            applicationTO.setAccessPolicy(accessPolicyTO);
+        }
         return applicationTO;
     }
 }

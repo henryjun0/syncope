@@ -107,6 +107,24 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     }
 
     @Override
+    public List<AuthenticationPolicy> findByAuthenticationPolicy(final Implementation policy) {
+        TypedQuery<AuthenticationPolicy> query = entityManager().createQuery(
+            "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
+                + "WHERE :authenticationPolicy MEMBER OF e.rules", AuthenticationPolicy.class);
+        query.setParameter("authenticationPolicy", policy);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<AccessPolicy> findByAccessPolicy(final Implementation policy) {
+        TypedQuery<AccessPolicy> query = entityManager().createQuery(
+            "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
+                + "WHERE :accessPolicy MEMBER OF e.rules", AccessPolicy.class);
+        query.setParameter("accessPolicy", policy);
+        return query.getResultList();
+    }
+
+    @Override
     public List<PullPolicy> findByPullCorrelationRule(final Implementation correlationRule) {
         TypedQuery<PullPolicy> query = entityManager().createQuery(
                 "SELECT DISTINCT e.pullPolicy FROM " + JPAPullCorrelationRuleEntity.class.getSimpleName() + " e "
