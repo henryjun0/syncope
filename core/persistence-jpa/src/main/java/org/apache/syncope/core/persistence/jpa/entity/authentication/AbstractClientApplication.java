@@ -86,7 +86,7 @@ public class AbstractClientApplication extends AbstractGeneratedKeyEntity implem
     }
 
     public void setAccessPolicy(final AccessPolicy accessPolicy) {
-        checkType(authenticationPolicy, JPAAccessPolicy.class);
+        checkType(accessPolicy, JPAAccessPolicy.class);
         this.accessPolicy = (JPAAccessPolicy) accessPolicy;
     }
 
