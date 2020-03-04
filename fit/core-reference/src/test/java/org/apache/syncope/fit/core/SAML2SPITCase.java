@@ -20,12 +20,26 @@ package org.apache.syncope.fit.core;
 
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
 
-public class SAML2ServiceProviderITCase extends AbstractITCase {
+public class SAML2SPITCase extends AbstractITCase {
 
     @Test
-    public void createSAMLSP() throws IOException {
+    public void create() {
+
+    }
+
+    @Test
+    public void read() {
+
+    }
+
+    @Test
+    public void update() {
+
+    }
+
+    @Test
+    public void delete() {
 
     }
 }

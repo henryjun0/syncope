@@ -24,7 +24,6 @@ import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
 import org.apache.syncope.common.lib.policy.AccessPolicyTO;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +33,7 @@ import org.apache.syncope.common.lib.SyncopeClientException;
 public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
 
     @Test
-    public void create() throws IOException {
+    public void create() {
         createOpenIdConnectRelyingParty(buildRelyingParty());
     }
 
