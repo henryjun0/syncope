@@ -19,7 +19,7 @@
 
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
-import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = JPAOpenIdConnectRelyingParty.TABLE)
-public class JPAOpenIdConnectRelyingParty extends AbstractClientApplication implements OpenIdConnectRelyingParty {
+@Table(name = JPAOIDCRelyingParty.TABLE)
+public class JPAOIDCRelyingParty extends AbstractClientApp implements OIDCRelyingParty {
 
     public static final String TABLE = "OpenIdConnectRelyingParty";
 

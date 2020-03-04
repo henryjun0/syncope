@@ -23,7 +23,7 @@ import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
 import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationPolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.provisioning.api.data.SAML2ServiceProviderDataBinder;
 import org.slf4j.Logger;
@@ -45,14 +45,14 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
     private AuthenticationPolicyDAO authenticationPolicyDAO;
 
     @Override
-    public SAML2ServiceProvider create(final SAML2ServiceProviderTO applicationTO) {
-        return update(entityFactory.newEntity(SAML2ServiceProvider.class), applicationTO);
+    public SAML2SP create(final SAML2ServiceProviderTO applicationTO) {
+        return update(entityFactory.newEntity(SAML2SP.class), applicationTO);
     }
 
     @Override
-    public SAML2ServiceProvider update(final SAML2ServiceProvider toBeUpdated,
-                                       final SAML2ServiceProviderTO applicationTO) {
-        SAML2ServiceProvider application = saml2ServiceProviderDAO.save(toBeUpdated);
+    public SAML2SP update(final SAML2SP toBeUpdated,
+                          final SAML2ServiceProviderTO applicationTO) {
+        SAML2SP application = saml2ServiceProviderDAO.save(toBeUpdated);
 
         application.setDescription(applicationTO.getDescription());
         application.setName(applicationTO.getName());
@@ -67,7 +67,7 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
     }
 
     @Override
-    public SAML2ServiceProviderTO getClientApplicationTO(final SAML2ServiceProvider serviceProvider) {
+    public SAML2ServiceProviderTO getClientApplicationTO(final SAML2SP serviceProvider) {
         SAML2ServiceProviderTO applicationTO = new SAML2ServiceProviderTO();
 
         applicationTO.setKey(serviceProvider.getKey());

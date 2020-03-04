@@ -20,7 +20,7 @@
 package org.apache.syncope.core.persistence.jpa.inner;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ public class OpenIdConnectRelyingPartyTest extends AbstractClientApplicationTest
     public void find() {
         int beforeCount = openIdConnectRelyingPartyDAO.findAll().size();
 
-        OpenIdConnectRelyingParty rp = entityFactory.newEntity(OpenIdConnectRelyingParty.class);
+        OIDCRelyingParty rp = entityFactory.newEntity(OIDCRelyingParty.class);
         rp.setName("OIDC");
         rp.setDescription("This is a sample OIDC RP");
         rp.setClientId("clientid");

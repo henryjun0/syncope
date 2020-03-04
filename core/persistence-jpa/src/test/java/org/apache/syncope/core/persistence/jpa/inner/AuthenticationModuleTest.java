@@ -19,10 +19,10 @@
 package org.apache.syncope.core.persistence.jpa.inner;
 
 import org.apache.syncope.common.lib.authentication.AuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.GoogleAuthenticatorAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.GoogleMfaAuthenticationModuleConf;
 import org.apache.syncope.common.lib.authentication.JaasAuthenticationModuleConf;
 import org.apache.syncope.common.lib.authentication.LdapAuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.PredefinedAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.StaticAuthenticationModuleConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
 import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
@@ -69,8 +69,8 @@ public class AuthenticationModuleTest extends AbstractTest {
 
     @Test
     public void saveWithPredefinedModule() {
-        PredefinedAuthenticationModuleConf conf =
-            new PredefinedAuthenticationModuleConf(Map.of("user", UUID.randomUUID().toString()));
+        StaticAuthenticationModuleConf conf =
+            new StaticAuthenticationModuleConf(Map.of("user", UUID.randomUUID().toString()));
 
         Implementation config = getImplementation(conf);
 
@@ -147,8 +147,8 @@ public class AuthenticationModuleTest extends AbstractTest {
 
     @Test
     public void saveWithGoogleAuthenticatorModule() {
-        GoogleAuthenticatorAuthenticationModuleConf conf =
-            new GoogleAuthenticatorAuthenticationModuleConf();
+        GoogleMfaAuthenticationModuleConf conf =
+            new GoogleMfaAuthenticationModuleConf();
         conf.setCodeDigits(6);
         conf.setIssuer("SyncopeTest");
         conf.setLabel("Syncope");

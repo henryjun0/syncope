@@ -25,14 +25,14 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
-@XmlRootElement(name = "predefinedAuthenticationModuleConf")
+@XmlRootElement(name = "staticAuthenticationModuleConf")
 @XmlType
-public class PredefinedAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+public class StaticAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
     private static final long serialVersionUID = -7775771400318503131L;
 
     private Map<String, String> users = new HashMap<>();
 
-    public PredefinedAuthenticationModuleConf(final Map<String, String> users) {
+    public StaticAuthenticationModuleConf(final Map<String, String> users) {
         setName(getClass().getSimpleName());
         setUsers(users);
     }

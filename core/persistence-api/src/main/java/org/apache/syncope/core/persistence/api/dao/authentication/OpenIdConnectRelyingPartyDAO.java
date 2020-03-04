@@ -19,26 +19,26 @@
 package org.apache.syncope.core.persistence.api.dao.authentication;
 
 import org.apache.syncope.core.persistence.api.dao.DAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 
 import java.util.List;
 
-public interface OpenIdConnectRelyingPartyDAO extends DAO<OpenIdConnectRelyingParty> {
+public interface OpenIdConnectRelyingPartyDAO extends DAO<OIDCRelyingParty> {
 
-    OpenIdConnectRelyingParty find(String key);
+    OIDCRelyingParty find(String key);
 
-    OpenIdConnectRelyingParty findByName(String name);
+    OIDCRelyingParty findByName(String name);
 
-    OpenIdConnectRelyingParty findByClientId(String clientId);
+    OIDCRelyingParty findByClientId(String clientId);
 
-    List<OpenIdConnectRelyingParty> findAll();
+    List<OIDCRelyingParty> findAll();
 
-    OpenIdConnectRelyingParty save(OpenIdConnectRelyingParty application);
+    OIDCRelyingParty save(OIDCRelyingParty application);
 
     void delete(String key);
 
     void deleteByClientId(String clientId);
 
-    void delete(OpenIdConnectRelyingParty application);
+    void delete(OIDCRelyingParty application);
 
 }

@@ -20,7 +20,7 @@
 package org.apache.syncope.core.persistence.jpa.inner;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ public class SAML2ServiceProviderTest extends AbstractClientApplicationTest {
     @Test
     public void find() {
         int beforeCount = saml2ServiceProviderDAO.findAll().size();
-        SAML2ServiceProvider rp = entityFactory.newEntity(SAML2ServiceProvider.class);
+        SAML2SP rp = entityFactory.newEntity(SAML2SP.class);
         rp.setName("SAML2");
         rp.setDescription("This is a sample SAML2 SP");
         rp.setEntityId("urn:example:saml2:sp");

@@ -57,8 +57,8 @@ import org.apache.syncope.core.persistence.api.entity.anyobject.APlainAttrValue;
 import org.apache.syncope.core.persistence.api.entity.anyobject.ARelationship;
 import org.apache.syncope.core.persistence.api.entity.anyobject.AnyObject;
 import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
-import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
+import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 import org.apache.syncope.core.persistence.api.entity.group.GPlainAttr;
 import org.apache.syncope.core.persistence.api.entity.group.GPlainAttrUniqueValue;
 import org.apache.syncope.core.persistence.api.entity.group.GPlainAttrValue;
@@ -108,8 +108,8 @@ import org.apache.syncope.core.persistence.jpa.entity.anyobject.JPAAPlainAttrVal
 import org.apache.syncope.core.persistence.jpa.entity.anyobject.JPAARelationship;
 import org.apache.syncope.core.persistence.jpa.entity.anyobject.JPAAnyObject;
 import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAAuthenticationModule;
-import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAOpenIdConnectRelyingParty;
-import org.apache.syncope.core.persistence.jpa.entity.authentication.JPASAML2ServiceProvider;
+import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAOIDCRelyingParty;
+import org.apache.syncope.core.persistence.jpa.entity.authentication.JPASAML2SP;
 import org.apache.syncope.core.persistence.jpa.entity.group.JPAGPlainAttr;
 import org.apache.syncope.core.persistence.jpa.entity.group.JPAGPlainAttrUniqueValue;
 import org.apache.syncope.core.persistence.jpa.entity.group.JPAGPlainAttrValue;
@@ -309,10 +309,10 @@ public class JPAEntityFactory implements EntityFactory {
             result = (E) new JPAAuthenticationPolicy();
         }  else if (reference.equals(AccessPolicy.class)) {
             result = (E) new JPAAccessPolicy();
-        } else if (reference.equals(OpenIdConnectRelyingParty.class)) {
-            result = (E) new JPAOpenIdConnectRelyingParty();
-        } else if (reference.equals(SAML2ServiceProvider.class)) {
-            result = (E) new JPASAML2ServiceProvider();
+        } else if (reference.equals(OIDCRelyingParty.class)) {
+            result = (E) new JPAOIDCRelyingParty();
+        } else if (reference.equals(SAML2SP.class)) {
+            result = (E) new JPASAML2SP();
         } else {
             throw new IllegalArgumentException("Could not find a JPA implementation of " + reference.getName());
         }

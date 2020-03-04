@@ -23,7 +23,7 @@ import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 import org.apache.syncope.common.lib.types.IdRepoEntitlement;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
 import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.provisioning.api.data.OpenIdConnectRelyingPartyDataBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,7 +46,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
     @Transactional(readOnly = true)
     @Override
     public OpenIdConnectRelyingPartyTO read(final String key) {
-        OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.find(key);
+        OIDCRelyingParty application = openIdConnectRelyingPartyDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
 
@@ -73,7 +73,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.APPLICATION_UPDATE + "')")
     public OpenIdConnectRelyingPartyTO update(final OpenIdConnectRelyingPartyTO applicationTO) {
-        OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.find(applicationTO.getKey());
+        OIDCRelyingParty application = openIdConnectRelyingPartyDAO.find(applicationTO.getKey());
         if (application == null) {
             LOG.error("Could not find application '" + applicationTO.getKey() + '\'');
             throw new NotFoundException(applicationTO.getKey());
@@ -85,7 +85,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
     @Override
     @PreAuthorize("hasRole('" + AMEntitlement.OIDC_RELYING_PARTY_DELETE + "')")
     public OpenIdConnectRelyingPartyTO delete(final String key) {
-        OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.find(key);
+        OIDCRelyingParty application = openIdConnectRelyingPartyDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
 

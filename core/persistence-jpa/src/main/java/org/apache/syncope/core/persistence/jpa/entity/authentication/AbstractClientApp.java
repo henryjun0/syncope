@@ -19,7 +19,7 @@
 
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
-import org.apache.syncope.core.persistence.api.entity.authentication.ClientApplication;
+import org.apache.syncope.core.persistence.api.entity.authentication.ClientApp;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.AbstractGeneratedKeyEntity;
@@ -32,7 +32,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
 @MappedSuperclass
-public class AbstractClientApplication extends AbstractGeneratedKeyEntity implements ClientApplication {
+public class AbstractClientApp extends AbstractGeneratedKeyEntity implements ClientApp {
 
     private static final long serialVersionUID = 7422422526695279794L;
 

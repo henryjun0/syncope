@@ -22,7 +22,7 @@ import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
 import org.apache.syncope.common.lib.types.IdRepoEntitlement;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 import org.apache.syncope.core.provisioning.api.data.SAML2ServiceProviderDataBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,7 +44,7 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SA
     @Override
     @PreAuthorize("hasRole('" + AMEntitlement.SAML2_SERVICE_PROVIDER_DELETE + "')")
     public SAML2ServiceProviderTO delete(final String key) {
-        SAML2ServiceProvider application = saml2ServiceProviderDAO.find(key);
+        SAML2SP application = saml2ServiceProviderDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
 
@@ -68,7 +68,7 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SA
     @Transactional(readOnly = true)
     @Override
     public SAML2ServiceProviderTO read(final String key) {
-        SAML2ServiceProvider application = saml2ServiceProviderDAO.find(key);
+        SAML2SP application = saml2ServiceProviderDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
 
@@ -87,7 +87,7 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SA
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.APPLICATION_UPDATE + "')")
     public SAML2ServiceProviderTO update(final SAML2ServiceProviderTO applicationTO) {
-        SAML2ServiceProvider application = saml2ServiceProviderDAO.find(applicationTO.getKey());
+        SAML2SP application = saml2ServiceProviderDAO.find(applicationTO.getKey());
         if (application == null) {
             LOG.error("Could not find application '" + applicationTO.getKey() + '\'');
             throw new NotFoundException(applicationTO.getKey());

@@ -26,7 +26,7 @@ import org.apache.syncope.common.lib.types.ClientExceptionType;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;
-import org.apache.syncope.core.persistence.api.entity.authentication.OpenIdConnectRelyingParty;
+import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.provisioning.api.data.OpenIdConnectRelyingPartyDataBinder;
@@ -45,16 +45,16 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
     private PolicyDAO policyDAO;
 
     @Override
-    public OpenIdConnectRelyingParty create(final OpenIdConnectRelyingPartyTO applicationTO) {
-        return update(entityFactory.newEntity(OpenIdConnectRelyingParty.class), applicationTO);
+    public OIDCRelyingParty create(final OpenIdConnectRelyingPartyTO applicationTO) {
+        return update(entityFactory.newEntity(OIDCRelyingParty.class), applicationTO);
     }
 
     @Override
-    public OpenIdConnectRelyingParty update(
-        final OpenIdConnectRelyingParty toBeUpdated,
+    public OIDCRelyingParty update(
+        final OIDCRelyingParty toBeUpdated,
         final OpenIdConnectRelyingPartyTO applicationTO) {
 
-        OpenIdConnectRelyingParty application = openIdConnectRelyingPartyDAO.save(toBeUpdated);
+        OIDCRelyingParty application = openIdConnectRelyingPartyDAO.save(toBeUpdated);
 
         application.setDescription(applicationTO.getDescription());
         application.setName(applicationTO.getName());
@@ -79,7 +79,7 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
     }
 
     @Override
-    public OpenIdConnectRelyingPartyTO getClientApplicationTO(final OpenIdConnectRelyingParty rp) {
+    public OpenIdConnectRelyingPartyTO getClientApplicationTO(final OIDCRelyingParty rp) {
         OpenIdConnectRelyingPartyTO applicationTO = new OpenIdConnectRelyingPartyTO();
 
         applicationTO.setKey(rp.getKey());

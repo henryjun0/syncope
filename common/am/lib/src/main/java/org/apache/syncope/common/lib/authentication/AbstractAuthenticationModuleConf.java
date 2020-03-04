@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 @XmlType
-@XmlSeeAlso({JaasAuthenticationModuleConf.class, PredefinedAuthenticationModuleConf.class,
+@XmlSeeAlso({JaasAuthenticationModuleConf.class, StaticAuthenticationModuleConf.class,
     LdapAuthenticationModuleConf.class})
 public abstract class AbstractAuthenticationModuleConf implements Serializable, AuthenticationModuleConf {
 

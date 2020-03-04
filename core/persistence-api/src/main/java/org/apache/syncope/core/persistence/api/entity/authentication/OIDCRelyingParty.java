@@ -19,12 +19,18 @@
 
 package org.apache.syncope.core.persistence.api.entity.authentication;
 
-public interface SAML2ServiceProvider extends ClientApplication {
-    String getEntityId();
+import java.util.List;
 
-    void setEntityId(String id);
+public interface OIDCRelyingParty extends ClientApp {
+    void setClientId(String id);
 
-    String getMetadataLocation();
+    String getClientId();
 
-    void setMetadataLocation(String location);
+    void setClientSecret(String secret);
+
+    String getClientSecret();
+
+    List<String> getRedirectUris();
+
+    void setRedirectUris(List<String> uris);
 }

@@ -19,9 +19,9 @@
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 import org.apache.syncope.core.persistence.jpa.dao.AbstractDAO;
-import org.apache.syncope.core.persistence.jpa.entity.authentication.JPASAML2ServiceProvider;
+import org.apache.syncope.core.persistence.jpa.entity.authentication.JPASAML2SP;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,22 +31,22 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider>
+public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2SP>
         implements SAML2ServiceProviderDAO {
 
     @Override
-    public SAML2ServiceProvider find(final String key) {
-        return entityManager().find(JPASAML2ServiceProvider.class, key);
+    public SAML2SP find(final String key) {
+        return entityManager().find(JPASAML2SP.class, key);
     }
 
     @Override
-    public SAML2ServiceProvider findByName(final String name) {
-        final TypedQuery<SAML2ServiceProvider> query = entityManager().createQuery(
-                "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e WHERE e.name=:name",
-                SAML2ServiceProvider.class);
+    public SAML2SP findByName(final String name) {
+        final TypedQuery<SAML2SP> query = entityManager().createQuery(
+                "SELECT e FROM " + JPASAML2SP.class.getSimpleName() + " e WHERE e.name=:name",
+                SAML2SP.class);
         query.setParameter("name", name);
 
-        SAML2ServiceProvider result = null;
+        SAML2SP result = null;
         try {
             result = query.getSingleResult();
         } catch (final NoResultException e) {
@@ -57,13 +57,13 @@ public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider
     }
 
     @Override
-    public SAML2ServiceProvider findByEntityId(final String entityId) {
-        final TypedQuery<SAML2ServiceProvider> query = entityManager().createQuery(
-                "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e WHERE e.entityId=:entityId",
-                SAML2ServiceProvider.class);
+    public SAML2SP findByEntityId(final String entityId) {
+        final TypedQuery<SAML2SP> query = entityManager().createQuery(
+                "SELECT e FROM " + JPASAML2SP.class.getSimpleName() + " e WHERE e.entityId=:entityId",
+                SAML2SP.class);
         query.setParameter("entityId", entityId);
 
-        SAML2ServiceProvider result = null;
+        SAML2SP result = null;
         try {
             result = query.getSingleResult();
         } catch (final NoResultException e) {
@@ -75,21 +75,21 @@ public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider
 
     @Transactional(readOnly = true)
     @Override
-    public List<SAML2ServiceProvider> findAll() {
-        final TypedQuery<SAML2ServiceProvider> query = entityManager().createQuery(
-                "SELECT e FROM " + JPASAML2ServiceProvider.class.getSimpleName() + " e", SAML2ServiceProvider.class);
+    public List<SAML2SP> findAll() {
+        final TypedQuery<SAML2SP> query = entityManager().createQuery(
+                "SELECT e FROM " + JPASAML2SP.class.getSimpleName() + " e", SAML2SP.class);
 
         return query.getResultList();
     }
 
     @Override
-    public SAML2ServiceProvider save(final SAML2ServiceProvider policy) {
+    public SAML2SP save(final SAML2SP policy) {
         return entityManager().merge(policy);
     }
 
     @Override
     public void delete(final String key) {
-        final SAML2ServiceProvider policy = find(key);
+        final SAML2SP policy = find(key);
         if (policy == null) {
             return;
         }
@@ -99,7 +99,7 @@ public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider
 
     @Override
     public void deleteByEntityId(final String entityId) {
-        final SAML2ServiceProvider app = findByEntityId(entityId);
+        final SAML2SP app = findByEntityId(entityId);
         if (app == null) {
             return;
         }
@@ -107,7 +107,7 @@ public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2ServiceProvider
     }
 
     @Override
-    public void delete(final SAML2ServiceProvider policy) {
+    public void delete(final SAML2SP policy) {
         entityManager().remove(policy);
     }
 }

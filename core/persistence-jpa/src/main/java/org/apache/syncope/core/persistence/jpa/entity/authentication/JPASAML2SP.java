@@ -19,15 +19,15 @@
 
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = JPASAML2ServiceProvider.TABLE)
-public class JPASAML2ServiceProvider extends AbstractClientApplication implements SAML2ServiceProvider {
+@Table(name = JPASAML2SP.TABLE)
+public class JPASAML2SP extends AbstractClientApp implements SAML2SP {
     public static final String TABLE = "SAML2ServiceProvider";
 
     private static final long serialVersionUID = 6422422526695279794L;

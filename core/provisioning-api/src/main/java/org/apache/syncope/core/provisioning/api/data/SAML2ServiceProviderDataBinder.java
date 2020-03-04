@@ -19,13 +19,13 @@
 package org.apache.syncope.core.provisioning.api.data;
 
 import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 
 public interface SAML2ServiceProviderDataBinder {
 
-    SAML2ServiceProvider create(SAML2ServiceProviderTO applicationTO);
+    SAML2SP create(SAML2ServiceProviderTO applicationTO);
 
-    SAML2ServiceProvider update(SAML2ServiceProvider application, SAML2ServiceProviderTO applicationTO);
+    SAML2SP update(SAML2SP application, SAML2ServiceProviderTO applicationTO);
 
-    SAML2ServiceProviderTO getClientApplicationTO(SAML2ServiceProvider application);
+    SAML2ServiceProviderTO getClientApplicationTO(SAML2SP application);
 }
