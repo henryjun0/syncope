@@ -33,6 +33,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.syncope.common.lib.SyncopeClientException;
+import org.apache.syncope.common.lib.authentication.DefaultAccessPolicyConf;
 import org.apache.syncope.common.lib.authentication.DefaultAuthenticationPolicyConf;
 import org.apache.syncope.common.lib.policy.AccessPolicyTO;
 import org.apache.syncope.common.lib.policy.AccountPolicyTO;
@@ -55,35 +56,75 @@ import org.apache.syncope.fit.AbstractITCase;
 import org.apache.syncope.fit.core.reference.DummyPullCorrelationRule;
 import org.apache.syncope.fit.core.reference.DummyPushCorrelationRule;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 
 public class PolicyITCase extends AbstractITCase {
 
     private static AuthenticationPolicyTO buildAuthenticationPolicyTO() {
+        final String authPolicyName = "TestAuthenticationPolicy" + getUUIDString();
+
         ImplementationTO implementationTO = null;
         try {
-            implementationTO = implementationService.read(AMImplementationType.AUTH_POLICY_CONFIGURATIONS, "TestAuthenticationPolicy");
+            implementationTO = implementationService.read(
+                    AMImplementationType.AUTH_POLICY_CONFIGURATIONS, authPolicyName);
         } catch (SyncopeClientException e) {
             if (e.getType().getResponseStatus() == Response.Status.NOT_FOUND) {
                 implementationTO = new ImplementationTO();
-                implementationTO.setKey("TestAuthenticationPolicy");
+                implementationTO.setKey(authPolicyName);
                 implementationTO.setEngine(ImplementationEngine.JAVA);
                 implementationTO.setType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
 
                 DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
                 conf.setAuthenticationModules(List.of("LdapAuthentication1"));
                 implementationTO.setBody(POJOHelper.serialize(conf));
-                
+
                 Response response = implementationService.create(implementationTO);
                 implementationTO = implementationService.read(
-                    implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                        implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
                 assertNotNull(implementationTO);
             }
         }
         assertNotNull(implementationTO);
 
         AuthenticationPolicyTO policy = new AuthenticationPolicyTO();
-        policy.setDescription("Test AuthN policy");
+        policy.setDescription("Test Authentication policy");
         policy.setKey(implementationTO.getKey());
+
+        return policy;
+    }
+
+    private static AccessPolicyTO buildAccessPolicyTO() {
+        final String accessPolicyName = "TestAccessPolicy" + getUUIDString();
+
+        ImplementationTO implementationTO = null;
+        try {
+            implementationTO = implementationService.read(
+                    AMImplementationType.ACCESS_POLICY_CONFIGURATIONS, accessPolicyName);
+        } catch (SyncopeClientException e) {
+            if (e.getType().getResponseStatus() == Response.Status.NOT_FOUND) {
+                implementationTO = new ImplementationTO();
+                implementationTO.setKey(accessPolicyName);
+                implementationTO.setEngine(ImplementationEngine.JAVA);
+                implementationTO.setType(AMImplementationType.ACCESS_POLICY_CONFIGURATIONS);
+
+                DefaultAccessPolicyConf conf = new DefaultAccessPolicyConf();
+                conf.setEnabled(true);
+                conf.setName("TestAccessPolicyConf");
+                conf.getRequiredAttributes().put("cn", List.of("admin", "Admin", "TheAdmin"));
+                implementationTO.setBody(POJOHelper.serialize(conf));
+
+                Response response = implementationService.create(implementationTO);
+                implementationTO = implementationService.read(
+                        implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                assertNotNull(implementationTO);
+            }
+        }
+        assertNotNull(implementationTO);
+
+        AccessPolicyTO policy = new AccessPolicyTO();
+        policy.setDescription("Test Access policy");
+        policy.setKey(implementationTO.getKey());
+
         return policy;
     }
 
@@ -176,10 +217,25 @@ public class PolicyITCase extends AbstractITCase {
     }
 
     @Test
-    public void create() throws IOException {
-        AuthenticationPolicyTO authenticationPolicyTO = createPolicy(PolicyType.AUTHENTICATION, buildAuthenticationPolicyTO());
-        assertNotNull(authenticationPolicyTO);
+    public void getAuthenticationPolicy() {
+        AuthenticationPolicyTO policyTO =
+                policyService.read(PolicyType.AUTHENTICATION, "659b9906-4b6e-4bc0-aca0-6809dff346d4");
 
+        assertNotNull(policyTO);
+        assertTrue(policyTO.getUsedByRealms().isEmpty());
+    }
+
+    @Test
+    public void getAccessPolicy() {
+        AccessPolicyTO policyTO =
+                policyService.read(PolicyType.ACCESS, "419935c7-deb3-40b3-8a9a-683037e523a2");
+
+        assertNotNull(policyTO);
+        assertTrue(policyTO.getUsedByRealms().isEmpty());
+    }
+
+    @Test
+    public void create() throws IOException {
         PullPolicyTO pullPolicyTO = createPolicy(PolicyType.PULL, buildPullPolicyTO());
         assertNotNull(pullPolicyTO);
         assertEquals("TestPullRule", pullPolicyTO.getCorrelationRules().get(AnyTypeKind.USER.name()));
@@ -188,14 +244,19 @@ public class PolicyITCase extends AbstractITCase {
         assertNotNull(pushPolicyTO);
         assertEquals("TestPushRule", pushPolicyTO.getCorrelationRules().get(AnyTypeKind.USER.name()));
 
+        AuthenticationPolicyTO authenticationPolicyTO = createPolicy(PolicyType.AUTHENTICATION,
+                buildAuthenticationPolicyTO());
+        assertNotNull(authenticationPolicyTO);
+        assertEquals("Test Authentication policy", authenticationPolicyTO.getDescription());
 
-//        AccessPolicyTO accessPolicyTO = createPolicy(PolicyType.ACCESS, buildAccessPolicyTO());
-//        assertNotNull(authenticationPolicyTO);
+        AccessPolicyTO accessPolicyTO = createPolicy(PolicyType.ACCESS, buildAccessPolicyTO());
+        assertNotNull(accessPolicyTO);
+        assertEquals("Test Access policy", accessPolicyTO.getDescription());
     }
-
 
     @Test
     public void update() {
+        // 1. Password policy
         PasswordPolicyTO globalPolicy = policyService.read(PolicyType.PASSWORD, "ce93fcda-dc3a-4369-a7b0-a6108c261c85");
 
         PasswordPolicyTO policy = SerializationUtils.clone(globalPolicy);
@@ -222,6 +283,78 @@ public class PolicyITCase extends AbstractITCase {
         ruleConf = POJOHelper.deserialize(rule.getBody(), DefaultPasswordRuleConf.class);
         assertEquals(22, ruleConf.getMaxLength());
         assertEquals(8, ruleConf.getMinLength());
+
+        // 2. Authentication policy
+        AuthenticationPolicyTO globalAuthPolicyTO =
+                policyService.read(PolicyType.AUTHENTICATION, "659b9906-4b6e-4bc0-aca0-6809dff346d4");
+
+        AuthenticationPolicyTO newAuthPolicyTO = SerializationUtils.clone(globalAuthPolicyTO);
+        newAuthPolicyTO.setKey("NewAuthPolicyConf");
+        newAuthPolicyTO.setDescription("Another simple authentication policy");
+
+        // create a new authentication policy using the former as a template
+        newAuthPolicyTO = createPolicy(PolicyType.AUTHENTICATION, newAuthPolicyTO);
+        assertNotNull(newAuthPolicyTO);
+        assertNotEquals(globalAuthPolicyTO.getKey(), newAuthPolicyTO.getKey());
+
+        ImplementationTO authPolicyImplementationTO = implementationService.read(
+                AMImplementationType.AUTH_POLICY_CONFIGURATIONS, "MyDefaultAuthenticationPolicyConf");
+        assertNotNull(authPolicyImplementationTO);
+        assertFalse(StringUtils.isBlank(authPolicyImplementationTO.getBody()));
+
+        DefaultAuthenticationPolicyConf authPolicyConf =
+                POJOHelper.deserialize(authPolicyImplementationTO.getBody(), DefaultAuthenticationPolicyConf.class);
+        assertNotNull(authPolicyConf);
+        authPolicyConf.getAuthenticationModules().add("LdapAuthentication");
+        authPolicyImplementationTO.setBody(POJOHelper.serialize(authPolicyConf));
+
+        // update new authentication policy
+        policyService.update(PolicyType.AUTHENTICATION, newAuthPolicyTO);
+        newAuthPolicyTO = policyService.read(PolicyType.AUTHENTICATION, newAuthPolicyTO.getKey());
+        assertNotNull(newAuthPolicyTO);
+
+        authPolicyConf =
+                POJOHelper.deserialize(authPolicyImplementationTO.getBody(), DefaultAuthenticationPolicyConf.class);
+        assertNotNull(authPolicyConf);
+        assertEquals(2, authPolicyConf.getAuthenticationModules().size());
+        assertTrue(authPolicyConf.getAuthenticationModules().contains("LdapAuthentication"));
+
+        // 3. Access policy
+        AccessPolicyTO globalAccessPolicyTO =
+                policyService.read(PolicyType.ACCESS, "419935c7-deb3-40b3-8a9a-683037e523a2");
+
+        AccessPolicyTO newAccessPolicyTO = SerializationUtils.clone(globalAccessPolicyTO);
+        newAccessPolicyTO.setKey("NewAccessPolicyConf");
+        newAccessPolicyTO.setDescription("Another simple access policy");
+
+        // create a new access policy using the former as a template
+        newAccessPolicyTO = createPolicy(PolicyType.ACCESS, newAccessPolicyTO);
+        assertNotNull(newAccessPolicyTO);
+        assertNotEquals(globalAccessPolicyTO.getKey(), newAccessPolicyTO.getKey());
+
+        ImplementationTO accessPolicyImplementationTO = implementationService.read(
+                AMImplementationType.ACCESS_POLICY_CONFIGURATIONS, "MyDefaultAccessPolicyConf");
+        assertNotNull(accessPolicyImplementationTO);
+        assertFalse(StringUtils.isBlank(accessPolicyImplementationTO.getBody()));
+
+        DefaultAccessPolicyConf accessPolicyConf =
+                POJOHelper.deserialize(accessPolicyImplementationTO.getBody(), DefaultAccessPolicyConf.class);
+        assertNotNull(accessPolicyConf);
+        accessPolicyConf.getRequiredAttributes().put("ou", List.of("test"));
+        accessPolicyConf.getRequiredAttributes().put("cn", List.of("admin", "Admin"));
+        accessPolicyImplementationTO.setBody(POJOHelper.serialize(accessPolicyConf));
+
+        // update new authentication policy
+        policyService.update(PolicyType.ACCESS, newAccessPolicyTO);
+        newAccessPolicyTO = policyService.read(PolicyType.ACCESS, newAccessPolicyTO.getKey());
+        assertNotNull(newAccessPolicyTO);
+
+        accessPolicyConf =
+                POJOHelper.deserialize(accessPolicyImplementationTO.getBody(), DefaultAccessPolicyConf.class);
+        assertEquals(2, accessPolicyConf.getRequiredAttributes().size());
+        assertNotNull(accessPolicyConf.getRequiredAttributes().get("cn"));
+        assertNotNull(accessPolicyConf.getRequiredAttributes().get("ou"));
+
     }
 
     @Test
@@ -235,6 +368,34 @@ public class PolicyITCase extends AbstractITCase {
 
         try {
             policyService.read(PolicyType.PULL, policyTO.getKey());
+            fail("This should not happen");
+        } catch (SyncopeClientException e) {
+            assertNotNull(e);
+        }
+
+        AuthenticationPolicyTO authPolicy = buildAuthenticationPolicyTO();
+
+        AuthenticationPolicyTO authPolicyTO = createPolicy(PolicyType.AUTHENTICATION, authPolicy);
+        assertNotNull(authPolicyTO);
+
+        policyService.delete(PolicyType.AUTHENTICATION, authPolicyTO.getKey());
+
+        try {
+            policyService.read(PolicyType.AUTHENTICATION, authPolicyTO.getKey());
+            fail("This should not happen");
+        } catch (SyncopeClientException e) {
+            assertNotNull(e);
+        }
+
+        AccessPolicyTO accessPolicy = buildAccessPolicyTO();
+
+        AccessPolicyTO accessPolicyTO = createPolicy(PolicyType.ACCESS, accessPolicy);
+        assertNotNull(accessPolicyTO);
+
+        policyService.delete(PolicyType.ACCESS, accessPolicyTO.getKey());
+
+        try {
+            policyService.read(PolicyType.ACCESS, accessPolicyTO.getKey());
             fail("This should not happen");
         } catch (SyncopeClientException e) {
             assertNotNull(e);

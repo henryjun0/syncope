@@ -16,12 +16,10 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -29,6 +27,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "accessPolicy")
 @XmlType
 public class AccessPolicyTO extends PolicyTO {
+
     private static final long serialVersionUID = -6711411162433533300L;
 
     @XmlTransient

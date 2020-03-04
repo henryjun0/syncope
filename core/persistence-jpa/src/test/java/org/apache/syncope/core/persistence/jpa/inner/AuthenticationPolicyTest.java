@@ -49,6 +49,8 @@ public class AuthenticationPolicyTest extends AbstractTest {
     public void find() {
         AuthenticationPolicy authenticationPolicy = authenticationPolicyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
         assertNotNull(authenticationPolicy);
+        authenticationPolicy = authenticationPolicyDAO.find("659b9906-4b6e-4bc0-aca0-6809dff346d4");
+        assertNotNull(authenticationPolicy);
         authenticationPolicy = authenticationPolicyDAO.find(UUID.randomUUID().toString());
         assertNull(authenticationPolicy);
     }
@@ -57,7 +59,7 @@ public class AuthenticationPolicyTest extends AbstractTest {
     public void findAll() {
         List<AuthenticationPolicy> authenticationPolicies = authenticationPolicyDAO.findAll();
         assertNotNull(authenticationPolicies);
-        assertEquals(1, authenticationPolicies.size());
+        assertEquals(2, authenticationPolicies.size());
     }
 
     @Test
@@ -69,7 +71,7 @@ public class AuthenticationPolicyTest extends AbstractTest {
 
         DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
         conf.setAuthenticationModules(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
-        
+
         Implementation type = entityFactory.newEntity(Implementation.class);
         type.setKey("AuthPolicyConfKey");
         type.setEngine(ImplementationEngine.JAVA);

@@ -48,12 +48,12 @@ public class JPAAccessPolicy extends AbstractPolicy implements AccessPolicy {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = TABLE + "Conf",
-        joinColumns =
-        @JoinColumn(name = "authentication_policy_id"),
-        inverseJoinColumns =
-        @JoinColumn(name = "implementation_id"),
-        uniqueConstraints =
-        @UniqueConstraint(columnNames = {"authentication_policy_id", "implementation_id"}))
+            joinColumns =
+            @JoinColumn(name = "authentication_policy_id"),
+            inverseJoinColumns =
+            @JoinColumn(name = "implementation_id"),
+            uniqueConstraints =
+            @UniqueConstraint(columnNames = { "authentication_policy_id", "implementation_id" }))
     private List<JPAImplementation> configurations = new ArrayList<>();
 
     @Override
@@ -76,6 +76,6 @@ public class JPAAccessPolicy extends AbstractPolicy implements AccessPolicy {
         checkType(configuration, JPAImplementation.class);
         checkImplementationType(configuration, AMImplementationType.ACCESS_POLICY_CONFIGURATIONS);
         return configurations.contains((JPAImplementation) configuration)
-            || configurations.add((JPAImplementation) configuration);
+                || configurations.add((JPAImplementation) configuration);
     }
 }

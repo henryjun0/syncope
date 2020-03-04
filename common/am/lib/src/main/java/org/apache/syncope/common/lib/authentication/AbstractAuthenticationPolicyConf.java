@@ -16,16 +16,14 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.authentication;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-
 import java.io.Serializable;
 
 @XmlType
-@XmlSeeAlso({DefaultAuthenticationPolicyConf.class})
+@XmlSeeAlso({ DefaultAuthenticationPolicyConf.class })
 public abstract class AbstractAuthenticationPolicyConf implements Serializable, AuthenticationPolicyConf {
 
     private static final long serialVersionUID = 9185127128182430142L;

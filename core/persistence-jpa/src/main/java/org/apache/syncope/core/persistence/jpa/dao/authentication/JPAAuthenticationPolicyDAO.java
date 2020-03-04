@@ -24,9 +24,7 @@ import org.apache.syncope.core.persistence.jpa.dao.AbstractDAO;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.TypedQuery;
-
 import java.util.List;
 
 @Repository
@@ -41,7 +39,7 @@ public class JPAAuthenticationPolicyDAO extends AbstractDAO<AuthenticationPolicy
     @Override
     public List<AuthenticationPolicy> findAll() {
         TypedQuery<AuthenticationPolicy> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e", AuthenticationPolicy.class);
+                "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e", AuthenticationPolicy.class);
 
         return query.getResultList();
     }

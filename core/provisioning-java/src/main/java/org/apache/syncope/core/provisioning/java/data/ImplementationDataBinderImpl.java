@@ -21,6 +21,9 @@ package org.apache.syncope.core.provisioning.java.data;
 import java.lang.reflect.Modifier;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.syncope.common.lib.SyncopeClientException;
+import org.apache.syncope.common.lib.authentication.AccessPolicyConf;
+import org.apache.syncope.common.lib.authentication.AuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.AuthenticationPolicyConf;
 import org.apache.syncope.common.lib.policy.RuleConf;
 import org.apache.syncope.common.lib.report.ReportletConf;
 import org.apache.syncope.common.lib.to.ImplementationTO;
@@ -175,24 +178,25 @@ public class ImplementationDataBinderImpl implements ImplementationDataBinder {
 
             switch (implementation.getType()) {
                 case AMImplementationType.ACCESS_POLICY_CONFIGURATIONS:
-                    AccessPolicy accessPolicy = POJOHelper.deserialize(implementation.getBody(), AccessPolicy.class);
-                    if (accessPolicy == null) {
+                    AccessPolicyConf accessPolicyConf =
+                            POJOHelper.deserialize(implementation.getBody(), AccessPolicyConf.class);
+                    if (accessPolicyConf == null) {
                         sce.getElements().add("Could not deserialize as AccessPolicy");
                         throw sce;
                     }
                     break;
                 case AMImplementationType.AUTH_MODULE_CONFIGURATIONS:
-                    AuthenticationModule authenticationModule =
-                        POJOHelper.deserialize(implementation.getBody(), AuthenticationModule.class);
-                    if (authenticationModule == null) {
+                    AuthenticationModuleConf authenticationModuleConf =
+                            POJOHelper.deserialize(implementation.getBody(), AuthenticationModuleConf.class);
+                    if (authenticationModuleConf == null) {
                         sce.getElements().add("Could not deserialize as AuthenticationModule");
                         throw sce;
                     }
                     break;
                 case AMImplementationType.AUTH_POLICY_CONFIGURATIONS:
-                    AuthenticationPolicy authenticationPolicy =
-                        POJOHelper.deserialize(implementation.getBody(), AuthenticationPolicy.class);
-                    if (authenticationPolicy == null) {
+                    AuthenticationPolicyConf authenticationPolicyConf =
+                            POJOHelper.deserialize(implementation.getBody(), AuthenticationPolicyConf.class);
+                    if (authenticationPolicyConf == null) {
                         sce.getElements().add("Could not deserialize as AuthenticationPolicy");
                         throw sce;
                     }

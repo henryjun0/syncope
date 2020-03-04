@@ -144,6 +144,26 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     }
 
     @Override
+    public List<AuthenticationPolicy> findByAuthenticationRule(final Implementation authenticationRule) {
+        TypedQuery<AuthenticationPolicy> query = entityManager().createQuery(
+                "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
+                + "WHERE :authenticationRule MEMBER OF e.rules", AuthenticationPolicy.class);
+        query.setParameter("authenticationRule", authenticationRule);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<AccessPolicy> findByAccessRule(final Implementation accessRule) {
+        TypedQuery<AccessPolicy> query = entityManager().createQuery(
+                "SELECT e FROM " + JPAAccessPolicy.class.getSimpleName() + " e "
+                + "WHERE :accessRule MEMBER OF e.rules", AccessPolicy.class);
+        query.setParameter("accessRule", accessRule);
+
+        return query.getResultList();
+    }
+
+    @Override
     public <T extends Policy> T save(final T policy) {
         return entityManager().merge(policy);
     }
@@ -155,22 +175,26 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
                 realm.setAccountPolicy(null);
             } else if (policy instanceof PasswordPolicy) {
                 realm.setPasswordPolicy(null);
+            } else if (policy instanceof AuthenticationPolicy) {
+                realm.setAuthenticationPolicy(null);
             }
         });
 
-        if (!(policy instanceof AuthenticationPolicy) && !(policy instanceof AccessPolicy)) {
-            resourceDAO.findByPolicy(policy).forEach(resource -> {
-                if (policy instanceof AccountPolicy) {
-                    resource.setAccountPolicy(null);
-                } else if (policy instanceof PasswordPolicy) {
-                    resource.setPasswordPolicy(null);
-                } else if (policy instanceof PullPolicy) {
-                    resource.setPullPolicy(null);
-                } else if (policy instanceof PushPolicy) {
-                    resource.setPushPolicy(null);
-                }
-            });
-        }
+        resourceDAO.findByPolicy(policy).forEach(resource -> {
+            if (policy instanceof AccountPolicy) {
+                resource.setAccountPolicy(null);
+            } else if (policy instanceof PasswordPolicy) {
+                resource.setPasswordPolicy(null);
+            } else if (policy instanceof PullPolicy) {
+                resource.setPullPolicy(null);
+            } else if (policy instanceof PushPolicy) {
+                resource.setPushPolicy(null);
+            } else if (policy instanceof AuthenticationPolicy) {
+                resource.setAuthenticationPolicy(null);
+            } else if (policy instanceof AccessPolicy) {
+                resource.setAccessPolicy(null);
+            }
+        });
 
         entityManager().remove(policy);
     }
