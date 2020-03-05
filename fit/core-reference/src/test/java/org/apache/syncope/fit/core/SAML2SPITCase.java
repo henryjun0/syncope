@@ -16,21 +16,30 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.persistence.api.entity.authentication;
+package org.apache.syncope.fit.core;
 
-import java.util.List;
+import org.apache.syncope.fit.AbstractITCase;
+import org.junit.jupiter.api.Test;
 
-public interface OIDCRelyingParty extends ClientApp {
+public class SAML2SPITCase extends AbstractITCase {
 
-    void setClientId(String id);
+    @Test
+    public void create() {
 
-    String getClientId();
+    }
 
-    void setClientSecret(String secret);
+    @Test
+    public void read() {
 
-    String getClientSecret();
+    }
 
-    List<String> getRedirectUris();
+    @Test
+    public void update() {
 
-    void setRedirectUris(List<String> uris);
+    }
+
+    @Test
+    public void delete() {
+
+    }
 }

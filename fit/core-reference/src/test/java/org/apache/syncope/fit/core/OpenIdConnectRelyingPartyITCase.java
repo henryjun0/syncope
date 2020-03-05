@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.fit.core;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,32 +24,92 @@ import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
-
-import javax.ws.rs.core.Response;
-
-import java.io.IOException;
-import java.util.UUID;
+import org.apache.syncope.common.lib.policy.AccessPolicyTO;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.apache.syncope.common.lib.SyncopeClientException;
 
 public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
 
     @Test
-    public void createRelyingParty() throws IOException {
-        AuthenticationPolicyTO authPolicyTO = new AuthenticationPolicyTO();
-        authPolicyTO.setKey(UUID.randomUUID().toString());
-        authPolicyTO.setDescription("Authentication Policy");
+    public void create() {
+        createOpenIdConnectRelyingParty(buildRelyingParty());
+    }
 
-        Response response = policyService.create(PolicyType.AUTHENTICATION, authPolicyTO);
+    @Test
+    public void read() {
+        OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
+        rpTO = createOpenIdConnectRelyingParty(rpTO);
+
+        OpenIdConnectRelyingPartyTO found = openIdConnectRelyingPartyService.read(rpTO.getKey());
+        assertNotNull(found);
+        assertFalse(StringUtils.isBlank(found.getClientId()));
+        assertTrue(StringUtils.isBlank(found.getClientSecret()));
+        assertNotNull(found.getAccessPolicy());
+        assertNotNull(found.getAuthenticationPolicy());
+    }
+
+    @Test
+    public void update() {
+        OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
+        rpTO = createOpenIdConnectRelyingParty(rpTO);
+
+        AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
+        accessPolicyTO.setKey("NewAccessPolicyTest_" + getUUIDString());
+        accessPolicyTO.setDescription("New Access policy");
+        accessPolicyTO = createPolicy(PolicyType.ACCESS, accessPolicyTO);
+        assertNotNull(accessPolicyTO);
+
+        rpTO.setClientId("newClientId");
+        rpTO.setAccessPolicy(accessPolicyTO);
+
+        openIdConnectRelyingPartyService.update(rpTO);
+        OpenIdConnectRelyingPartyTO updated = openIdConnectRelyingPartyService.read(rpTO.getKey());
+
+        assertNotNull(updated);
+        assertEquals("newClientId", updated.getClientId());
+        assertNotNull(rpTO.getAccessPolicy());
+        assertEquals("New Access policy", rpTO.getAccessPolicy().getDescription());
+    }
+
+    @Test
+    public void delete() {
+        OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
+        rpTO = createOpenIdConnectRelyingParty(rpTO);
+
+        openIdConnectRelyingPartyService.delete(rpTO.getKey());
+
+        try {
+            openIdConnectRelyingPartyService.read(rpTO.getKey());
+            fail("This should not happen");
+        } catch (SyncopeClientException e) {
+            assertNotNull(e);
+        }
+    }
+
+    private OpenIdConnectRelyingPartyTO buildRelyingParty() {
+        AuthenticationPolicyTO authPolicyTO = new AuthenticationPolicyTO();
+        authPolicyTO.setKey("AuthPolicyTest_" + getUUIDString());
+        authPolicyTO.setDescription("Authentication Policy");
+        authPolicyTO = createPolicy(PolicyType.AUTHENTICATION, authPolicyTO);
+        assertNotNull(authPolicyTO);
+
+        AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
+        accessPolicyTO.setKey("AccessPolicyTest_" + getUUIDString());
+        accessPolicyTO.setDescription("Access policy");
+        accessPolicyTO = createPolicy(PolicyType.ACCESS, accessPolicyTO);
+        assertNotNull(accessPolicyTO);
 
         OpenIdConnectRelyingPartyTO rpTO = new OpenIdConnectRelyingPartyTO();
-        rpTO.setName("ExampleRP");
+        rpTO.setName("ExampleRP_" + getUUIDString());
         rpTO.setDescription("Example OIDC RP application");
-        rpTO.setClientId("clientid");
+        rpTO.setClientId("clientId_" + getUUIDString());
         rpTO.setClientSecret(StringUtils.EMPTY);
         rpTO.setAuthenticationPolicy(authPolicyTO);
+        rpTO.setAccessPolicy(accessPolicyTO);
 
-        response = openIdConnectRelyingPartyService.create(rpTO);
-        assertEquals(200, response.getStatus());
+        return rpTO;
     }
+
 }

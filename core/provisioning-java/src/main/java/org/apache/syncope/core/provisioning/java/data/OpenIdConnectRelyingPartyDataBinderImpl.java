@@ -35,6 +35,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRelyingPartyDataBinder {
+
     @Autowired
     private OpenIdConnectRelyingPartyDAO openIdConnectRelyingPartyDAO;
 
@@ -63,11 +64,11 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
         application.setRedirectUris(applicationTO.getRedirectUris());
 
         AuthenticationPolicy authenticationPolicy = policyDAO.
-            find(applicationTO.getAuthenticationPolicy().getKey());
+                find(applicationTO.getAuthenticationPolicy().getKey());
         if (authenticationPolicy == null) {
             SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidEntity);
             sce.getElements().add("Unable to locate authentication policy "
-                + applicationTO.getAuthenticationPolicy().getKey());
+                    + applicationTO.getAuthenticationPolicy().getKey());
             throw sce;
         }
         application.setAuthenticationPolicy(authenticationPolicy);

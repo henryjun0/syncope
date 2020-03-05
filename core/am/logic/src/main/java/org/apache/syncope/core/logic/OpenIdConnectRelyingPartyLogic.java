@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.core.logic;
 
 import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
@@ -36,6 +35,7 @@ import org.apache.syncope.common.lib.types.AMEntitlement;
 
 @Component
 public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLogic<OpenIdConnectRelyingPartyTO> {
+
     @Autowired
     private OpenIdConnectRelyingPartyDAO openIdConnectRelyingPartyDAO;
 
@@ -61,7 +61,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
     @Override
     public List<OpenIdConnectRelyingPartyTO> list() {
         return openIdConnectRelyingPartyDAO.findAll()
-            .stream().map(binder::getClientApplicationTO).collect(Collectors.toList());
+                .stream().map(binder::getClientApplicationTO).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('" + AMEntitlement.OIDC_RELYING_PARTY_CREATE + "')")
@@ -79,7 +79,7 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
             throw new NotFoundException(applicationTO.getKey());
         }
         return binder.getClientApplicationTO(
-            openIdConnectRelyingPartyDAO.save(binder.update(application, applicationTO)));
+                openIdConnectRelyingPartyDAO.save(binder.update(application, applicationTO)));
     }
 
     @Override
@@ -96,5 +96,5 @@ public class OpenIdConnectRelyingPartyLogic extends AbstractClientApplicationLog
         openIdConnectRelyingPartyDAO.delete(key);
         return deleted;
     }
-    
+
 }

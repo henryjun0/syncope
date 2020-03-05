@@ -70,6 +70,7 @@ import org.apache.syncope.common.lib.to.ResourceTO;
 import org.apache.syncope.common.lib.to.GroupTO;
 import org.apache.syncope.common.lib.to.MembershipTO;
 import org.apache.syncope.common.lib.to.NotificationTO;
+import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
 import org.apache.syncope.common.lib.to.ProvisioningResult;
 import org.apache.syncope.common.lib.to.ReportTO;
 import org.apache.syncope.common.lib.to.RoleTO;
@@ -564,6 +565,18 @@ public abstract class AbstractITCase {
             }
         }
         return (T) getObject(response.getLocation(), PolicyService.class, policy.getClass());
+    }
+
+    protected OpenIdConnectRelyingPartyTO createOpenIdConnectRelyingParty(final OpenIdConnectRelyingPartyTO rpTO) {
+        Response response = openIdConnectRelyingPartyService.create(rpTO);
+        if (response.getStatusInfo().getStatusCode() != Response.Status.CREATED.getStatusCode()) {
+            Exception ex = clientFactory.getExceptionMapper().fromResponse(response);
+            if (ex != null) {
+                throw (RuntimeException) ex;
+            }
+        }
+        return getObject(response.getLocation(), OpenIdConnectRelyingPartyService.class,
+                OpenIdConnectRelyingPartyTO.class);
     }
 
     protected ResourceTO createResource(final ResourceTO resourceTO) {

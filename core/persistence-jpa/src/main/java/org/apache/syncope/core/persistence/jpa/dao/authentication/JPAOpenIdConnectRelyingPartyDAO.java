@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
@@ -33,7 +32,7 @@ import java.util.List;
 
 @Repository
 public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OIDCRelyingParty>
-    implements OpenIdConnectRelyingPartyDAO {
+        implements OpenIdConnectRelyingPartyDAO {
 
     @Override
     public OIDCRelyingParty find(final String key) {
@@ -86,30 +85,30 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OIDCRelyingPart
 
     @Override
     public OIDCRelyingParty save(final OIDCRelyingParty policy) {
-        return entityManager().merge(policy);
+        return entityManager().merge(rpTO);
     }
 
     @Override
     public void delete(final String key) {
         OIDCRelyingParty policy = find(key);
-        if (policy == null) {
+        if (rpTO == null) {
             return;
         }
 
-        delete(policy);
+        delete(rpTO);
     }
 
     @Override
     public void deleteByClientId(final String clientId) {
         OIDCRelyingParty policy = findByClientId(clientId);
-        if (policy == null) {
+        if (rpTO == null) {
             return;
         }
-        delete(policy);
+        delete(rpTO);
     }
 
     @Override
     public void delete(final OIDCRelyingParty policy) {
-        entityManager().remove(policy);
+        entityManager().remove(rpTO);
     }
 }
