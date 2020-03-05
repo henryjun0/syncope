@@ -21,23 +21,23 @@ package org.apache.syncope.core.provisioning.java.data;
 import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.policy.AccessPolicyTO;
 import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
-import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
+import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.types.ClientExceptionType;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
-import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
+import org.apache.syncope.core.persistence.api.dao.authentication.OIDCRelyingPartyDAO;
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;
 import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
-import org.apache.syncope.core.provisioning.api.data.OpenIdConnectRelyingPartyDataBinder;
+import org.apache.syncope.core.provisioning.api.data.OIDCRelyingPartyDataBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRelyingPartyDataBinder {
+public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinder {
 
     @Autowired
-    private OpenIdConnectRelyingPartyDAO openIdConnectRelyingPartyDAO;
+    private OIDCRelyingPartyDAO openIdConnectRelyingPartyDAO;
 
     @Autowired
     private EntityFactory entityFactory;
@@ -46,14 +46,14 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
     private PolicyDAO policyDAO;
 
     @Override
-    public OIDCRelyingParty create(final OpenIdConnectRelyingPartyTO applicationTO) {
+    public OIDCRelyingParty create(final OIDCRelyingPartyTO applicationTO) {
         return update(entityFactory.newEntity(OIDCRelyingParty.class), applicationTO);
     }
 
     @Override
     public OIDCRelyingParty update(
         final OIDCRelyingParty toBeUpdated,
-        final OpenIdConnectRelyingPartyTO applicationTO) {
+        final OIDCRelyingPartyTO applicationTO) {
 
         OIDCRelyingParty application = openIdConnectRelyingPartyDAO.save(toBeUpdated);
 
@@ -80,8 +80,8 @@ public class OpenIdConnectRelyingPartyDataBinderImpl implements OpenIdConnectRel
     }
 
     @Override
-    public OpenIdConnectRelyingPartyTO getClientApplicationTO(final OIDCRelyingParty rp) {
-        OpenIdConnectRelyingPartyTO applicationTO = new OpenIdConnectRelyingPartyTO();
+    public OIDCRelyingPartyTO getClientApplicationTO(final OIDCRelyingParty rp) {
+        OIDCRelyingPartyTO applicationTO = new OIDCRelyingPartyTO();
 
         applicationTO.setKey(rp.getKey());
         applicationTO.setDescription(rp.getDescription());

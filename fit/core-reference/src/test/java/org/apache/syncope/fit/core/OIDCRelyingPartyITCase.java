@@ -20,7 +20,7 @@ package org.apache.syncope.fit.core;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
-import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
+import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.syncope.common.lib.SyncopeClientException;
 
-public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
+public class OIDCRelyingPartyITCase extends AbstractITCase {
 
     @Test
     public void create() {
@@ -39,10 +39,10 @@ public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
 
     @Test
     public void read() {
-        OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
+        OIDCRelyingPartyTO rpTO = buildRelyingParty();
         rpTO = createOpenIdConnectRelyingParty(rpTO);
 
-        OpenIdConnectRelyingPartyTO found = openIdConnectRelyingPartyService.read(rpTO.getKey());
+        OIDCRelyingPartyTO found = openIdConnectRelyingPartyService.read(rpTO.getKey());
         assertNotNull(found);
         assertFalse(StringUtils.isBlank(found.getClientId()));
         assertTrue(StringUtils.isBlank(found.getClientSecret()));
@@ -52,7 +52,7 @@ public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
 
     @Test
     public void update() {
-        OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
+        OIDCRelyingPartyTO rpTO = buildRelyingParty();
         rpTO = createOpenIdConnectRelyingParty(rpTO);
 
         AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
@@ -65,7 +65,7 @@ public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
         rpTO.setAccessPolicy(accessPolicyTO);
 
         openIdConnectRelyingPartyService.update(rpTO);
-        OpenIdConnectRelyingPartyTO updated = openIdConnectRelyingPartyService.read(rpTO.getKey());
+        OIDCRelyingPartyTO updated = openIdConnectRelyingPartyService.read(rpTO.getKey());
 
         assertNotNull(updated);
         assertEquals("newClientId", updated.getClientId());
@@ -75,7 +75,7 @@ public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
 
     @Test
     public void delete() {
-        OpenIdConnectRelyingPartyTO rpTO = buildRelyingParty();
+        OIDCRelyingPartyTO rpTO = buildRelyingParty();
         rpTO = createOpenIdConnectRelyingParty(rpTO);
 
         openIdConnectRelyingPartyService.delete(rpTO.getKey());
@@ -88,7 +88,7 @@ public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
         }
     }
 
-    private OpenIdConnectRelyingPartyTO buildRelyingParty() {
+    private OIDCRelyingPartyTO buildRelyingParty() {
         AuthenticationPolicyTO authPolicyTO = new AuthenticationPolicyTO();
         authPolicyTO.setKey("AuthPolicyTest_" + getUUIDString());
         authPolicyTO.setDescription("Authentication Policy");
@@ -101,7 +101,7 @@ public class OpenIdConnectRelyingPartyITCase extends AbstractITCase {
         accessPolicyTO = createPolicy(PolicyType.ACCESS, accessPolicyTO);
         assertNotNull(accessPolicyTO);
 
-        OpenIdConnectRelyingPartyTO rpTO = new OpenIdConnectRelyingPartyTO();
+        OIDCRelyingPartyTO rpTO = new OIDCRelyingPartyTO();
         rpTO.setName("ExampleRP_" + getUUIDString());
         rpTO.setDescription("Example OIDC RP application");
         rpTO.setClientId("clientId_" + getUUIDString());

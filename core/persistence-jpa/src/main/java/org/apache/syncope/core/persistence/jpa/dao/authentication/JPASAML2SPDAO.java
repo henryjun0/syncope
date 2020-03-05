@@ -18,7 +18,7 @@
  */
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
-import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
+import org.apache.syncope.core.persistence.api.dao.authentication.SAML2SPDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 import org.apache.syncope.core.persistence.jpa.dao.AbstractDAO;
 import org.apache.syncope.core.persistence.jpa.entity.authentication.JPASAML2SP;
@@ -31,8 +31,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class JPASAML2ServiceProviderDAO extends AbstractDAO<SAML2SP>
-        implements SAML2ServiceProviderDAO {
+public class JPASAML2SPDAO extends AbstractDAO<SAML2SP> implements SAML2SPDAO {
 
     @Override
     public SAML2SP find(final String key) {

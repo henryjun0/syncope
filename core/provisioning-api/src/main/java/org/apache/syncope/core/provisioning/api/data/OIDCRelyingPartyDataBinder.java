@@ -17,25 +17,15 @@
  *
  */
 
-package org.apache.syncope.core.rest.cxf.service;
+package org.apache.syncope.core.provisioning.api.data;
 
-import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
-import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
-import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
-import org.apache.syncope.core.logic.OpenIdConnectRelyingPartyLogic;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
+import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 
-@Service
-public class OpenIdConnectRelyingPartyServiceImpl
-    extends AbstractClientApplicationServiceImpl<OpenIdConnectRelyingPartyTO>
-    implements OpenIdConnectRelyingPartyService {
+public interface OIDCRelyingPartyDataBinder {
+    OIDCRelyingParty create(OIDCRelyingPartyTO applicationTO);
 
-    @Autowired
-    private OpenIdConnectRelyingPartyLogic logic;
+    OIDCRelyingParty update(OIDCRelyingParty application, OIDCRelyingPartyTO applicationTO);
 
-    @Override
-    protected AbstractClientApplicationLogic getLogic() {
-        return this.logic;
-    }
+    OIDCRelyingPartyTO getClientApplicationTO(OIDCRelyingParty application);
 }

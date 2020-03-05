@@ -70,7 +70,7 @@ import org.apache.syncope.common.lib.to.ResourceTO;
 import org.apache.syncope.common.lib.to.GroupTO;
 import org.apache.syncope.common.lib.to.MembershipTO;
 import org.apache.syncope.common.lib.to.NotificationTO;
-import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
+import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.to.ProvisioningResult;
 import org.apache.syncope.common.lib.to.ReportTO;
 import org.apache.syncope.common.lib.to.RoleTO;
@@ -92,7 +92,7 @@ import org.apache.syncope.common.rest.api.service.ConnectorService;
 import org.apache.syncope.common.rest.api.service.DynRealmService;
 import org.apache.syncope.common.rest.api.service.LoggerService;
 import org.apache.syncope.common.rest.api.service.NotificationService;
-import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
+import org.apache.syncope.common.rest.api.service.OIDCRelyingPartyService;
 import org.apache.syncope.common.rest.api.service.PolicyService;
 import org.apache.syncope.common.rest.api.service.ReportService;
 import org.apache.syncope.common.rest.api.service.ResourceService;
@@ -290,7 +290,7 @@ public abstract class AbstractITCase {
 
     protected static SCIMConfService scimConfService;
 
-    protected static OpenIdConnectRelyingPartyService openIdConnectRelyingPartyService;
+    protected static OIDCRelyingPartyService openIdConnectRelyingPartyService;
 
     protected static SAML2ServiceProviderService saml2ServiceProviderService;
 
@@ -363,7 +363,7 @@ public abstract class AbstractITCase {
         oidcClientService = adminClient.getService(OIDCClientService.class);
         oidcProviderService = adminClient.getService(OIDCProviderService.class);
         scimConfService = adminClient.getService(SCIMConfService.class);
-        openIdConnectRelyingPartyService = adminClient.getService(OpenIdConnectRelyingPartyService.class);
+        openIdConnectRelyingPartyService = adminClient.getService(OIDCRelyingPartyService.class);
         saml2ServiceProviderService = adminClient.getService(SAML2ServiceProviderService.class);
     }
 
@@ -567,7 +567,7 @@ public abstract class AbstractITCase {
         return (T) getObject(response.getLocation(), PolicyService.class, policy.getClass());
     }
 
-    protected OpenIdConnectRelyingPartyTO createOpenIdConnectRelyingParty(final OpenIdConnectRelyingPartyTO rpTO) {
+    protected OIDCRelyingPartyTO createOpenIdConnectRelyingParty(final OIDCRelyingPartyTO rpTO) {
         Response response = openIdConnectRelyingPartyService.create(rpTO);
         if (response.getStatusInfo().getStatusCode() != Response.Status.CREATED.getStatusCode()) {
             Exception ex = clientFactory.getExceptionMapper().fromResponse(response);
@@ -575,8 +575,8 @@ public abstract class AbstractITCase {
                 throw (RuntimeException) ex;
             }
         }
-        return getObject(response.getLocation(), OpenIdConnectRelyingPartyService.class,
-                OpenIdConnectRelyingPartyTO.class);
+        return getObject(response.getLocation(), OIDCRelyingPartyService.class,
+                OIDCRelyingPartyTO.class);
     }
 
     protected ResourceTO createResource(final ResourceTO resourceTO) {

@@ -36,7 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Map;
 
-public class AbstractClientApplicationTest  extends AbstractTest {
+public class AbstractClientAppTest extends AbstractTest {
     @Autowired
     protected AuthenticationPolicyDAO authenticationPolicyDAO;
 

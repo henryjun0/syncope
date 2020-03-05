@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "saml2ServiceProvider")
 @XmlType
 @Schema(allOf = { ClientApplicationTO.class })
-public class SAML2ServiceProviderTO extends ClientApplicationTO {
+public class SAML2SPTO extends ClientApplicationTO {
     private static final long serialVersionUID = -6370888503924521351L;
 
     private String entityId;
@@ -74,7 +74,7 @@ public class SAML2ServiceProviderTO extends ClientApplicationTO {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        SAML2ServiceProviderTO rhs = (SAML2ServiceProviderTO) obj;
+        SAML2SPTO rhs = (SAML2SPTO) obj;
         return new EqualsBuilder()
             .appendSuper(super.equals(obj))
             .append(this.entityId, rhs.entityId)

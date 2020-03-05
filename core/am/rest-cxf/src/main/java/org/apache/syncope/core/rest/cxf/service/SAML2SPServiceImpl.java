@@ -16,29 +16,26 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.persistence.api.dao.authentication;
 
-import org.apache.syncope.core.persistence.api.dao.DAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
+package org.apache.syncope.core.rest.cxf.service;
 
-import java.util.List;
+import org.apache.syncope.common.rest.api.service.SAML2ServiceProviderService;
+import org.apache.syncope.common.lib.to.SAML2SPTO;
+import org.apache.syncope.core.logic.AbstractClientAppLogic;
+import org.apache.syncope.core.logic.SAML2SPLogic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface OpenIdConnectRelyingPartyDAO extends DAO<OIDCRelyingParty> {
+@Service
+public class SAML2SPServiceImpl
+    extends AbstractClientAppServiceImpl<SAML2SPTO>
+    implements SAML2ServiceProviderService {
+    
+    @Autowired
+    private SAML2SPLogic logic;
 
-    OIDCRelyingParty find(String key);
-
-    OIDCRelyingParty findByName(String name);
-
-    OIDCRelyingParty findByClientId(String clientId);
-
-    List<OIDCRelyingParty> findAll();
-
-    OIDCRelyingParty save(OIDCRelyingParty application);
-
-    void delete(String key);
-
-    void deleteByClientId(String clientId);
-
-    void delete(OIDCRelyingParty application);
-
+    @Override
+    protected AbstractClientAppLogic getLogic() {
+        return this.logic;
+    }
 }

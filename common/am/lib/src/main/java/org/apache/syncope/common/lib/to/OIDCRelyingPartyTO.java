@@ -34,7 +34,7 @@ import java.util.List;
 @XmlRootElement(name = "openIdConnectRelyingParty")
 @XmlType
 @Schema(allOf = { ClientApplicationTO.class })
-public class OpenIdConnectRelyingPartyTO extends ClientApplicationTO {
+public class OIDCRelyingPartyTO extends ClientApplicationTO {
     private static final long serialVersionUID = -6370888503924521351L;
 
     private String clientId;
@@ -87,7 +87,7 @@ public class OpenIdConnectRelyingPartyTO extends ClientApplicationTO {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        OpenIdConnectRelyingPartyTO rhs = (OpenIdConnectRelyingPartyTO) obj;
+        OIDCRelyingPartyTO rhs = (OIDCRelyingPartyTO) obj;
         return new EqualsBuilder()
             .appendSuper(super.equals(obj))
             .append(this.clientId, rhs.clientId)

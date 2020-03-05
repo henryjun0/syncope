@@ -16,16 +16,29 @@
  * under the License.
  *
  */
+package org.apache.syncope.core.persistence.api.dao.authentication;
 
-package org.apache.syncope.core.provisioning.api.data;
+import org.apache.syncope.core.persistence.api.dao.DAO;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
 
-import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
-import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
+import java.util.List;
 
-public interface OpenIdConnectRelyingPartyDataBinder {
-    OIDCRelyingParty create(OpenIdConnectRelyingPartyTO applicationTO);
+public interface SAML2SPDAO extends DAO<SAML2SP> {
 
-    OIDCRelyingParty update(OIDCRelyingParty application, OpenIdConnectRelyingPartyTO applicationTO);
+    SAML2SP find(String key);
 
-    OpenIdConnectRelyingPartyTO getClientApplicationTO(OIDCRelyingParty application);
+    SAML2SP findByName(String name);
+
+    SAML2SP findByEntityId(String clientId);
+
+    List<SAML2SP> findAll();
+
+    SAML2SP save(SAML2SP application);
+
+    void delete(String key);
+
+    void deleteByEntityId(String entityId);
+
+    void delete(SAML2SP application);
+
 }

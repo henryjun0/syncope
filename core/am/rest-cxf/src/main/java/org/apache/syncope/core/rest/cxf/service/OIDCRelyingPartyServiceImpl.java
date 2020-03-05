@@ -16,30 +16,26 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.logic;
 
-import org.apache.syncope.common.lib.to.ClientApplicationTO;
+package org.apache.syncope.core.rest.cxf.service;
 
-import java.lang.reflect.Method;
-import java.util.List;
+import org.apache.syncope.common.rest.api.service.OIDCRelyingPartyService;
+import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
+import org.apache.syncope.core.logic.AbstractClientAppLogic;
+import org.apache.syncope.core.logic.OIDCRelyingPartyLogic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public abstract class AbstractClientApplicationLogic<T extends ClientApplicationTO>
-        extends AbstractTransactionalLogic<ClientApplicationTO> {
+@Service
+public class OIDCRelyingPartyServiceImpl
+    extends AbstractClientAppServiceImpl<OIDCRelyingPartyTO>
+    implements OIDCRelyingPartyService {
+
+    @Autowired
+    private OIDCRelyingPartyLogic logic;
 
     @Override
-    protected ClientApplicationTO resolveReference(final Method method, final Object... args)
-            throws UnresolvedReferenceException {
-        throw new UnresolvedReferenceException();
+    protected AbstractClientAppLogic getLogic() {
+        return this.logic;
     }
-
-    public abstract T delete(String key);
-
-    public abstract List<T> list();
-
-    public abstract T read(String key);
-
-    public abstract T create(T applicationTO);
-
-    public abstract T update(T applicationTO);
-
 }

@@ -18,36 +18,36 @@
  */
 package org.apache.syncope.client.console.rest;
 
-import org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO;
-import org.apache.syncope.common.rest.api.service.OpenIdConnectRelyingPartyService;
+import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
+import org.apache.syncope.common.rest.api.service.OIDCRelyingPartyService;
 
 import java.util.List;
 
 /**
  * Console client for invoking Rest Client Application's services.
  */
-public class OpenIdConnectRelyingPartyRestClient extends BaseRestClient {
+public class OIDCRelyingPartyRestClient extends BaseRestClient {
 
     private static final long serialVersionUID = -3161863874876938094L;
 
     public static void delete(final String key) {
-        getService(OpenIdConnectRelyingPartyService.class).delete(key);
+        getService(OIDCRelyingPartyService.class).delete(key);
     }
 
-    public static OpenIdConnectRelyingPartyTO read(final String key) {
-        return getService(OpenIdConnectRelyingPartyService.class).read(key);
+    public static OIDCRelyingPartyTO read(final String key) {
+        return getService(OIDCRelyingPartyService.class).read(key);
     }
 
-    public static void update(final OpenIdConnectRelyingPartyTO applicationTO) {
-        getService(OpenIdConnectRelyingPartyService.class).update(applicationTO);
+    public static void update(final OIDCRelyingPartyTO applicationTO) {
+        getService(OIDCRelyingPartyService.class).update(applicationTO);
     }
 
-    public static void create(final OpenIdConnectRelyingPartyTO applicationTO) {
-        getService(OpenIdConnectRelyingPartyService.class).create(applicationTO);
+    public static void create(final OIDCRelyingPartyTO applicationTO) {
+        getService(OIDCRelyingPartyService.class).create(applicationTO);
     }
 
-    public static List<OpenIdConnectRelyingPartyTO> list() {
-        return getService(OpenIdConnectRelyingPartyService.class).list();
+    public static List<OIDCRelyingPartyTO> list() {
+        return getService(OIDCRelyingPartyService.class).list();
     }
 
 }

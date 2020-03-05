@@ -32,10 +32,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType
-@XmlSeeAlso({OpenIdConnectRelyingPartyTO.class, SAML2ServiceProviderTO.class})
+@XmlSeeAlso({OIDCRelyingPartyTO.class, SAML2SPTO.class})
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@class")
 @JsonPropertyOrder(value = {"@class", "key", "name", "description", "authenticationPolicy"})
-@Schema(subTypes = {OpenIdConnectRelyingPartyTO.class, SAML2ServiceProviderTO.class}, discriminatorProperty = "@class")
+@Schema(subTypes = {OIDCRelyingPartyTO.class, SAML2SPTO.class}, discriminatorProperty = "@class")
 public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
 
     private static final long serialVersionUID = 6577639976115661357L;

@@ -18,12 +18,12 @@
  */
 package org.apache.syncope.core.logic;
 
-import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
+import org.apache.syncope.common.lib.to.SAML2SPTO;
 import org.apache.syncope.common.lib.types.IdRepoEntitlement;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
-import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
+import org.apache.syncope.core.persistence.api.dao.authentication.SAML2SPDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
-import org.apache.syncope.core.provisioning.api.data.SAML2ServiceProviderDataBinder;
+import org.apache.syncope.core.provisioning.api.data.SAML2SPDataBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -33,17 +33,17 @@ import java.util.stream.Collectors;
 import org.apache.syncope.common.lib.types.AMEntitlement;
 
 @Component
-public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SAML2ServiceProviderTO> {
+public class SAML2SPLogic extends AbstractClientAppLogic<SAML2SPTO> {
 
     @Autowired
-    private SAML2ServiceProviderDAO saml2ServiceProviderDAO;
+    private SAML2SPDAO saml2ServiceProviderDAO;
 
     @Autowired
-    private SAML2ServiceProviderDataBinder binder;
+    private SAML2SPDataBinder binder;
 
     @Override
     @PreAuthorize("hasRole('" + AMEntitlement.SAML2_SERVICE_PROVIDER_DELETE + "')")
-    public SAML2ServiceProviderTO delete(final String key) {
+    public SAML2SPTO delete(final String key) {
         SAML2SP application = saml2ServiceProviderDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
@@ -51,7 +51,7 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SA
             throw new NotFoundException(key);
         }
 
-        SAML2ServiceProviderTO deleted = binder.getClientApplicationTO(application);
+        SAML2SPTO deleted = binder.getClientApplicationTO(application);
         saml2ServiceProviderDAO.delete(key);
         return deleted;
     }
@@ -59,7 +59,7 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SA
     @Override
     @PreAuthorize("hasRole('" + AMEntitlement.SAML2_SERVICE_PROVIDER_LIST + "')")
     @Transactional(readOnly = true)
-    public List<SAML2ServiceProviderTO> list() {
+    public List<SAML2SPTO> list() {
         return saml2ServiceProviderDAO.findAll().stream()
                 .map(binder::getClientApplicationTO).collect(Collectors.toList());
     }
@@ -67,7 +67,7 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SA
     @PreAuthorize("hasRole('" + AMEntitlement.SAML2_SERVICE_PROVIDER_READ + "')")
     @Transactional(readOnly = true)
     @Override
-    public SAML2ServiceProviderTO read(final String key) {
+    public SAML2SPTO read(final String key) {
         SAML2SP application = saml2ServiceProviderDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
@@ -80,13 +80,13 @@ public class SAML2ServiceProviderLogic extends AbstractClientApplicationLogic<SA
 
     @Override
     @PreAuthorize("hasRole('" + AMEntitlement.SAML2_SERVICE_PROVIDER_CREATE + "')")
-    public SAML2ServiceProviderTO create(final SAML2ServiceProviderTO applicationTO) {
+    public SAML2SPTO create(final SAML2SPTO applicationTO) {
         return binder.getClientApplicationTO(saml2ServiceProviderDAO.save(binder.create(applicationTO)));
     }
 
     @Override
     @PreAuthorize("hasRole('" + IdRepoEntitlement.APPLICATION_UPDATE + "')")
-    public SAML2ServiceProviderTO update(final SAML2ServiceProviderTO applicationTO) {
+    public SAML2SPTO update(final SAML2SPTO applicationTO) {
         SAML2SP application = saml2ServiceProviderDAO.find(applicationTO.getKey());
         if (application == null) {
             LOG.error("Could not find application '" + applicationTO.getKey() + '\'');

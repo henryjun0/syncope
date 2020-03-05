@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * REST operations for applications.
  */
-public interface ClientApplicationService<T extends ClientApplicationTO> extends JAXRSService {
+public interface ClientAppService<T extends ClientApplicationTO> extends JAXRSService {
 
     /**
      * Returns a list of all applications.

@@ -19,8 +19,8 @@
 
 package org.apache.syncope.core.persistence.jpa.inner;
 
-import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
+import org.apache.syncope.core.persistence.api.dao.authentication.OIDCRelyingPartyDAO;
+import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.junit.jupiter.api.Test;
@@ -30,42 +30,44 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional("Master")
-public class SAML2ServiceProviderTest extends AbstractClientApplicationTest {
+public class OIDCRelyingPartyTest extends AbstractClientAppTest {
 
     @Autowired
-    private SAML2ServiceProviderDAO saml2ServiceProviderDAO;
+    private OIDCRelyingPartyDAO openIdConnectRelyingPartyDAO;
 
     @Test
     public void find() {
-        int beforeCount = saml2ServiceProviderDAO.findAll().size();
-        SAML2SP rp = entityFactory.newEntity(SAML2SP.class);
-        rp.setName("SAML2");
-        rp.setDescription("This is a sample SAML2 SP");
-        rp.setEntityId("urn:example:saml2:sp");
-        rp.setMetadataLocation("https://example.org/metadata.xml");
+        int beforeCount = openIdConnectRelyingPartyDAO.findAll().size();
+
+        OIDCRelyingParty rp = entityFactory.newEntity(OIDCRelyingParty.class);
+        rp.setName("OIDC");
+        rp.setDescription("This is a sample OIDC RP");
+        rp.setClientId("clientid");
+        rp.setClientSecret("secret");
 
         AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
         rp.setAccessPolicy(accessPolicy);
 
-        AuthenticationPolicy authnPolicy = buildAndSaveAuthenticationPolicy();
-        rp.setAuthenticationPolicy(authnPolicy);
-        
-        saml2ServiceProviderDAO.save(rp);
+        AuthenticationPolicy authPolicy = buildAndSaveAuthenticationPolicy();
+        rp.setAuthenticationPolicy(authPolicy);
+
+        openIdConnectRelyingPartyDAO.save(rp);
 
         assertNotNull(rp);
         assertNotNull(rp.getKey());
 
-        int afterCount = saml2ServiceProviderDAO.findAll().size();
+        int afterCount = openIdConnectRelyingPartyDAO.findAll().size();
         assertEquals(afterCount, beforeCount + 1);
 
-        rp = saml2ServiceProviderDAO.findByEntityId(rp.getEntityId());
+        rp = openIdConnectRelyingPartyDAO.findByClientId("clientid");
+        assertNotNull(rp);
+        assertNotNull(rp.getAuthenticationPolicy());
+
+        rp = openIdConnectRelyingPartyDAO.findByName("OIDC");
         assertNotNull(rp);
 
-        rp = saml2ServiceProviderDAO.findByName(rp.getName());
-        assertNotNull(rp);
-
-        saml2ServiceProviderDAO.deleteByEntityId(rp.getEntityId());
-        assertNull(saml2ServiceProviderDAO.findByName(rp.getName()));
+        openIdConnectRelyingPartyDAO.deleteByClientId("clientid");
+        assertNull(openIdConnectRelyingPartyDAO.findByName("OIDC"));
     }
 
 }

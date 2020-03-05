@@ -16,26 +16,30 @@
  * under the License.
  *
  */
+package org.apache.syncope.core.logic;
 
-package org.apache.syncope.core.rest.cxf.service;
+import org.apache.syncope.common.lib.to.ClientApplicationTO;
 
-import org.apache.syncope.common.rest.api.service.SAML2ServiceProviderService;
-import org.apache.syncope.common.lib.to.SAML2ServiceProviderTO;
-import org.apache.syncope.core.logic.AbstractClientApplicationLogic;
-import org.apache.syncope.core.logic.SAML2ServiceProviderLogic;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.lang.reflect.Method;
+import java.util.List;
 
-@Service
-public class SAML2ServiceProviderServiceImpl
-    extends AbstractClientApplicationServiceImpl<SAML2ServiceProviderTO>
-    implements SAML2ServiceProviderService {
-    
-    @Autowired
-    private SAML2ServiceProviderLogic logic;
+public abstract class AbstractClientAppLogic<T extends ClientApplicationTO>
+        extends AbstractTransactionalLogic<ClientApplicationTO> {
 
     @Override
-    protected AbstractClientApplicationLogic getLogic() {
-        return this.logic;
+    protected ClientApplicationTO resolveReference(final Method method, final Object... args)
+            throws UnresolvedReferenceException {
+        throw new UnresolvedReferenceException();
     }
+
+    public abstract T delete(String key);
+
+    public abstract List<T> list();
+
+    public abstract T read(String key);
+
+    public abstract T create(T applicationTO);
+
+    public abstract T update(T applicationTO);
+
 }

@@ -18,7 +18,7 @@
  */
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
-import org.apache.syncope.core.persistence.api.dao.authentication.OpenIdConnectRelyingPartyDAO;
+import org.apache.syncope.core.persistence.api.dao.authentication.OIDCRelyingPartyDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.jpa.dao.AbstractDAO;
 import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAOIDCRelyingParty;
@@ -31,8 +31,8 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OIDCRelyingParty>
-        implements OpenIdConnectRelyingPartyDAO {
+public class JPAOIDCRelyingPartyDAO extends AbstractDAO<OIDCRelyingParty>
+        implements OIDCRelyingPartyDAO {
 
     @Override
     public OIDCRelyingParty find(final String key) {
@@ -50,7 +50,7 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OIDCRelyingPart
         try {
             result = query.getSingleResult();
         } catch (NoResultException e) {
-            LOG.debug("No OpenIdConnectRelyingParty found with name {}", name, e);
+            LOG.debug("No OIDCRelyingParty found with name {}", name, e);
         }
 
         return result;
@@ -67,7 +67,7 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OIDCRelyingPart
         try {
             result = query.getSingleResult();
         } catch (NoResultException e) {
-            LOG.debug("No OpenIdConnectRelyingParty found with clientId {}", clientId, e);
+            LOG.debug("No OIDCRelyingParty found with clientId {}", clientId, e);
         }
 
         return result;
@@ -84,13 +84,13 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OIDCRelyingPart
     }
 
     @Override
-    public OIDCRelyingParty save(final OIDCRelyingParty policy) {
+    public OIDCRelyingParty save(final OIDCRelyingParty rpTO) {
         return entityManager().merge(rpTO);
     }
 
     @Override
     public void delete(final String key) {
-        OIDCRelyingParty policy = find(key);
+        OIDCRelyingParty rpTO = find(key);
         if (rpTO == null) {
             return;
         }
@@ -100,7 +100,7 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OIDCRelyingPart
 
     @Override
     public void deleteByClientId(final String clientId) {
-        OIDCRelyingParty policy = findByClientId(clientId);
+        OIDCRelyingParty rpTO = findByClientId(clientId);
         if (rpTO == null) {
             return;
         }
@@ -108,7 +108,7 @@ public class JPAOpenIdConnectRelyingPartyDAO extends AbstractDAO<OIDCRelyingPart
     }
 
     @Override
-    public void delete(final OIDCRelyingParty policy) {
+    public void delete(final OIDCRelyingParty rpTO) {
         entityManager().remove(rpTO);
     }
 }
