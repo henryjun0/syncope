@@ -16,10 +16,11 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.logic;
+package org.apache.syncope.core.logic.saml;
 
 import org.apache.syncope.common.lib.to.client.SAML2SPTO;
 import org.apache.syncope.common.lib.types.IdRepoEntitlement;
+import org.apache.syncope.core.logic.AbstractClientAppLogic;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2SPDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;

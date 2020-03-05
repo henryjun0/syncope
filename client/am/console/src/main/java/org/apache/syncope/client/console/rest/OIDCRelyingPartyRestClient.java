@@ -19,7 +19,7 @@
 package org.apache.syncope.client.console.rest;
 
 import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
-import org.apache.syncope.common.rest.api.service.OIDCRelyingPartyService;
+import org.apache.syncope.common.rest.api.service.oidc.OIDCRelyingPartyService;
 
 import java.util.List;
 

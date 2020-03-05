@@ -16,10 +16,11 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.logic;
+package org.apache.syncope.core.logic.oidc;
 
 import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.types.IdRepoEntitlement;
+import org.apache.syncope.core.logic.AbstractClientAppLogic;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
 import org.apache.syncope.core.persistence.api.dao.authentication.OIDCRelyingPartyDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;

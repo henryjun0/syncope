@@ -19,7 +19,7 @@
 package org.apache.syncope.client.console.rest;
 
 import org.apache.syncope.common.lib.to.client.SAML2SPTO;
-import org.apache.syncope.common.rest.api.service.SAML2ServiceProviderService;
+import org.apache.syncope.common.rest.api.service.saml.SAML2SPService;
 
 import java.util.List;
 
@@ -31,23 +31,23 @@ public class SAML2SPRestClient extends BaseRestClient {
     private static final long serialVersionUID = -3161863874876938094L;
 
     public static void delete(final String key) {
-        getService(SAML2ServiceProviderService.class).delete(key);
+        getService(SAML2SPService.class).delete(key);
     }
 
     public static SAML2SPTO read(final String key) {
-        return getService(SAML2ServiceProviderService.class).read(key);
+        return getService(SAML2SPService.class).read(key);
     }
 
     public static void update(final SAML2SPTO applicationTO) {
-        getService(SAML2ServiceProviderService.class).update(applicationTO);
+        getService(SAML2SPService.class).update(applicationTO);
     }
 
     public static void create(final SAML2SPTO applicationTO) {
-        getService(SAML2ServiceProviderService.class).create(applicationTO);
+        getService(SAML2SPService.class).create(applicationTO);
     }
 
     public static List<SAML2SPTO> list() {
-        return getService(SAML2ServiceProviderService.class).list();
+        return getService(SAML2SPService.class).list();
     }
 
 }

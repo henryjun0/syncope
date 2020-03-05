@@ -92,7 +92,7 @@ import org.apache.syncope.common.rest.api.service.ConnectorService;
 import org.apache.syncope.common.rest.api.service.DynRealmService;
 import org.apache.syncope.common.rest.api.service.LoggerService;
 import org.apache.syncope.common.rest.api.service.NotificationService;
-import org.apache.syncope.common.rest.api.service.OIDCRelyingPartyService;
+import org.apache.syncope.common.rest.api.service.oidc.OIDCRelyingPartyService;
 import org.apache.syncope.common.rest.api.service.PolicyService;
 import org.apache.syncope.common.rest.api.service.ReportService;
 import org.apache.syncope.common.rest.api.service.ResourceService;
@@ -108,8 +108,7 @@ import org.apache.syncope.common.rest.api.service.RemediationService;
 import org.apache.syncope.common.rest.api.service.ReportTemplateService;
 import org.apache.syncope.common.rest.api.service.RoleService;
 import org.apache.syncope.common.rest.api.service.SAML2IdPService;
-import org.apache.syncope.common.rest.api.service.SAML2SPService;
-import org.apache.syncope.common.rest.api.service.SAML2ServiceProviderService;
+import org.apache.syncope.common.rest.api.service.saml.SAML2SPService;
 import org.apache.syncope.common.rest.api.service.SCIMConfService;
 import org.apache.syncope.common.rest.api.service.SchemaService;
 import org.apache.syncope.common.rest.api.service.SecurityQuestionService;
@@ -280,7 +279,7 @@ public abstract class AbstractITCase {
 
     protected static CamelRouteService camelRouteService;
 
-    protected static SAML2SPService saml2SpService;
+    protected static org.apache.syncope.common.rest.api.service.SAML2SPService saml2SpService;
 
     protected static SAML2IdPService saml2IdPService;
 
@@ -292,7 +291,7 @@ public abstract class AbstractITCase {
 
     protected static OIDCRelyingPartyService openIdConnectRelyingPartyService;
 
-    protected static SAML2ServiceProviderService saml2ServiceProviderService;
+    protected static SAML2SPService saml2ServiceProviderService;
 
     @BeforeAll
     public static void securitySetup() {
@@ -358,13 +357,13 @@ public abstract class AbstractITCase {
         remediationService = adminClient.getService(RemediationService.class);
         gatewayRouteService = adminClient.getService(GatewayRouteService.class);
         camelRouteService = adminClient.getService(CamelRouteService.class);
-        saml2SpService = adminClient.getService(SAML2SPService.class);
+        saml2SpService = adminClient.getService(org.apache.syncope.common.rest.api.service.SAML2SPService.class);
         saml2IdPService = adminClient.getService(SAML2IdPService.class);
         oidcClientService = adminClient.getService(OIDCClientService.class);
         oidcProviderService = adminClient.getService(OIDCProviderService.class);
         scimConfService = adminClient.getService(SCIMConfService.class);
         openIdConnectRelyingPartyService = adminClient.getService(OIDCRelyingPartyService.class);
-        saml2ServiceProviderService = adminClient.getService(SAML2ServiceProviderService.class);
+        saml2ServiceProviderService = adminClient.getService(SAML2SPService.class);
     }
 
     @Autowired

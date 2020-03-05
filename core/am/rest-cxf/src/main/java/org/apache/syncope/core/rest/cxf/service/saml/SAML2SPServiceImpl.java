@@ -17,22 +17,23 @@
  *
  */
 
-package org.apache.syncope.core.rest.cxf.service;
+package org.apache.syncope.core.rest.cxf.service.saml;
 
-import org.apache.syncope.common.rest.api.service.OIDCRelyingPartyService;
-import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
+import org.apache.syncope.common.rest.api.service.saml.SAML2SPService;
+import org.apache.syncope.common.lib.to.client.SAML2SPTO;
 import org.apache.syncope.core.logic.AbstractClientAppLogic;
-import org.apache.syncope.core.logic.OIDCRelyingPartyLogic;
+import org.apache.syncope.core.logic.saml.SAML2SPLogic;
+import org.apache.syncope.core.rest.cxf.service.AbstractClientAppServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OIDCRelyingPartyServiceImpl
-    extends AbstractClientAppServiceImpl<OIDCRelyingPartyTO>
-    implements OIDCRelyingPartyService {
-
+public class SAML2SPServiceImpl
+    extends AbstractClientAppServiceImpl<SAML2SPTO>
+    implements SAML2SPService {
+    
     @Autowired
-    private OIDCRelyingPartyLogic logic;
+    private SAML2SPLogic logic;
 
     @Override
     protected AbstractClientAppLogic getLogic() {

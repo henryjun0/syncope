@@ -17,12 +17,13 @@
  *
  */
 
-package org.apache.syncope.common.rest.api.service;
+package org.apache.syncope.common.rest.api.service.oidc;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
+import org.apache.syncope.common.rest.api.service.ClientAppService;
 
 import javax.ws.rs.Path;
 
