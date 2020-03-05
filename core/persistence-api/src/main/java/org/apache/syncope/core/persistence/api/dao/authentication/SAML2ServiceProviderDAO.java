@@ -16,15 +16,29 @@
  * under the License.
  *
  */
+package org.apache.syncope.core.persistence.api.dao.authentication;
 
-package org.apache.syncope.core.persistence.api.entity.authentication;
+import org.apache.syncope.core.persistence.api.dao.DAO;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 
-public interface SAML2SP extends ClientApp {
-    String getEntityId();
+import java.util.List;
 
-    void setEntityId(String id);
+public interface SAML2ServiceProviderDAO extends DAO<SAML2ServiceProvider> {
 
-    String getMetadataLocation();
+    SAML2ServiceProvider find(String key);
 
-    void setMetadataLocation(String location);
+    SAML2ServiceProvider findByName(String name);
+
+    SAML2ServiceProvider findByEntityId(String clientId);
+
+    List<SAML2ServiceProvider> findAll();
+
+    SAML2ServiceProvider save(SAML2ServiceProvider application);
+
+    void delete(String key);
+
+    void deleteByEntityId(String entityId);
+
+    void delete(SAML2ServiceProvider application);
+
 }

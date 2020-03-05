@@ -108,7 +108,7 @@ import org.apache.syncope.common.rest.api.service.RemediationService;
 import org.apache.syncope.common.rest.api.service.ReportTemplateService;
 import org.apache.syncope.common.rest.api.service.RoleService;
 import org.apache.syncope.common.rest.api.service.SAML2IdPService;
-import org.apache.syncope.common.rest.api.service.saml.SAML2SPService;
+import org.apache.syncope.common.rest.api.service.saml.SAML2ServiceProviderService;
 import org.apache.syncope.common.rest.api.service.SCIMConfService;
 import org.apache.syncope.common.rest.api.service.SchemaService;
 import org.apache.syncope.common.rest.api.service.SecurityQuestionService;
@@ -291,7 +291,7 @@ public abstract class AbstractITCase {
 
     protected static OIDCRelyingPartyService openIdConnectRelyingPartyService;
 
-    protected static SAML2SPService saml2ServiceProviderService;
+    protected static SAML2ServiceProviderService saml2ServiceProviderService;
 
     @BeforeAll
     public static void securitySetup() {
@@ -363,7 +363,7 @@ public abstract class AbstractITCase {
         oidcProviderService = adminClient.getService(OIDCProviderService.class);
         scimConfService = adminClient.getService(SCIMConfService.class);
         openIdConnectRelyingPartyService = adminClient.getService(OIDCRelyingPartyService.class);
-        saml2ServiceProviderService = adminClient.getService(SAML2SPService.class);
+        saml2ServiceProviderService = adminClient.getService(SAML2ServiceProviderService.class);
     }
 
     @Autowired

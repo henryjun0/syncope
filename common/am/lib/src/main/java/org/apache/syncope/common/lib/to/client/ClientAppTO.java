@@ -33,10 +33,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType
-@XmlSeeAlso({OIDCRelyingPartyTO.class, SAML2SPTO.class})
+@XmlSeeAlso({OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class})
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@class")
 @JsonPropertyOrder(value = {"@class", "key", "name", "description", "authenticationPolicy"})
-@Schema(subTypes = {OIDCRelyingPartyTO.class, SAML2SPTO.class}, discriminatorProperty = "@class")
+@Schema(subTypes = {OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class}, discriminatorProperty = "@class")
 public abstract class ClientAppTO extends BaseBean implements EntityTO {
 
     private static final long serialVersionUID = 6577639976115661357L;

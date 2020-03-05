@@ -16,29 +16,21 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.persistence.api.dao.authentication;
 
-import org.apache.syncope.core.persistence.api.dao.DAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
+package org.apache.syncope.common.rest.api.service.saml;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO;
+import org.apache.syncope.common.rest.api.service.ClientAppService;
 
-public interface SAML2SPDAO extends DAO<SAML2SP> {
+import javax.ws.rs.Path;
 
-    SAML2SP find(String key);
-
-    SAML2SP findByName(String name);
-
-    SAML2SP findByEntityId(String clientId);
-
-    List<SAML2SP> findAll();
-
-    SAML2SP save(SAML2SP application);
-
-    void delete(String key);
-
-    void deleteByEntityId(String entityId);
-
-    void delete(SAML2SP application);
-
+@Tag(name = "SAML2ServiceProviders")
+@SecurityRequirements({
+    @SecurityRequirement(name = "BasicAuthentication"),
+    @SecurityRequirement(name = "Bearer")})
+@Path("saml2ServiceProviders")
+public interface SAML2ServiceProviderService extends ClientAppService<SAML2ServiceProviderTO> {
 }

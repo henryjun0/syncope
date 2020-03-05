@@ -19,8 +19,8 @@
 
 package org.apache.syncope.core.persistence.jpa.inner;
 
-import org.apache.syncope.core.persistence.api.dao.authentication.SAML2SPDAO;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
+import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.junit.jupiter.api.Test;
@@ -30,15 +30,15 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional("Master")
-public class SAML2SPTest extends AbstractClientAppTest {
+public class SAML2ServiceProviderTest extends AbstractClientAppTest {
 
     @Autowired
-    private SAML2SPDAO saml2ServiceProviderDAO;
+    private SAML2ServiceProviderDAO saml2ServiceProviderDAO;
 
     @Test
     public void find() {
         int beforeCount = saml2ServiceProviderDAO.findAll().size();
-        SAML2SP rp = entityFactory.newEntity(SAML2SP.class);
+        SAML2ServiceProvider rp = entityFactory.newEntity(SAML2ServiceProvider.class);
         rp.setName("SAML2");
         rp.setDescription("This is a sample SAML2 SP");
         rp.setEntityId("urn:example:saml2:sp");

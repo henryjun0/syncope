@@ -19,20 +19,20 @@
 
 package org.apache.syncope.core.provisioning.java.data;
 
-import org.apache.syncope.common.lib.to.client.SAML2SPTO;
+import org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO;
 import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationPolicyDAO;
-import org.apache.syncope.core.persistence.api.dao.authentication.SAML2SPDAO;
+import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;
-import org.apache.syncope.core.persistence.api.entity.authentication.SAML2SP;
+import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
-import org.apache.syncope.core.provisioning.api.data.SAML2SPDataBinder;
+import org.apache.syncope.core.provisioning.api.data.SAML2ServiceProviderDataBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SAML2SPDataBinderImpl implements SAML2SPDataBinder {
+public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderDataBinder {
     @Autowired
-    private SAML2SPDAO saml2ServiceProviderDAO;
+    private SAML2ServiceProviderDAO saml2ServiceProviderDAO;
 
     @Autowired
     private EntityFactory entityFactory;
@@ -41,14 +41,14 @@ public class SAML2SPDataBinderImpl implements SAML2SPDataBinder {
     private AuthenticationPolicyDAO authenticationPolicyDAO;
 
     @Override
-    public SAML2SP create(final SAML2SPTO applicationTO) {
-        return update(entityFactory.newEntity(SAML2SP.class), applicationTO);
+    public SAML2ServiceProvider create(final SAML2ServiceProviderTO applicationTO) {
+        return update(entityFactory.newEntity(SAML2ServiceProvider.class), applicationTO);
     }
 
     @Override
-    public SAML2SP update(final SAML2SP toBeUpdated,
-                          final SAML2SPTO applicationTO) {
-        SAML2SP application = saml2ServiceProviderDAO.save(toBeUpdated);
+    public SAML2ServiceProvider update(final SAML2ServiceProvider toBeUpdated,
+                                       final SAML2ServiceProviderTO applicationTO) {
+        SAML2ServiceProvider application = saml2ServiceProviderDAO.save(toBeUpdated);
 
         application.setDescription(applicationTO.getDescription());
         application.setName(applicationTO.getName());
@@ -63,8 +63,8 @@ public class SAML2SPDataBinderImpl implements SAML2SPDataBinder {
     }
 
     @Override
-    public SAML2SPTO getClientApplicationTO(final SAML2SP serviceProvider) {
-        SAML2SPTO applicationTO = new SAML2SPTO();
+    public SAML2ServiceProviderTO getClientApplicationTO(final SAML2ServiceProvider serviceProvider) {
+        SAML2ServiceProviderTO applicationTO = new SAML2ServiceProviderTO();
 
         applicationTO.setKey(serviceProvider.getKey());
         applicationTO.setDescription(serviceProvider.getDescription());
