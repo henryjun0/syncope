@@ -16,7 +16,7 @@
  * under the License.
  *
  */
-package org.apache.syncope.common.lib.authentication.policy.to;
+package org.apache.syncope.common.lib.to;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,15 +26,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "authenticationPolicy")
+@XmlRootElement(name = "accessPolicy")
 @XmlType
-public class AuthenticationPolicyTO extends PolicyTO {
+public class AccessPolicyTO extends PolicyTO {
 
     private static final long serialVersionUID = -6711411162433533300L;
 
     @XmlTransient
     @JsonProperty("@class")
-    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO")
+    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.to.AccessPolicyTO")
     @Override
     public String getDiscriminator() {
         return getClass().getName();

@@ -18,16 +18,18 @@
  */
 package org.apache.syncope.core.persistence.jpa.entity.policy;
 
-import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
+import org.apache.syncope.common.lib.to.AccessPolicyTO;
 import org.apache.syncope.common.lib.policy.AccountPolicyTO;
 import org.apache.syncope.common.lib.policy.PasswordPolicyTO;
 import org.apache.syncope.common.lib.policy.PolicyTO;
 import org.apache.syncope.common.lib.policy.PullPolicyTO;
 import org.apache.syncope.common.lib.policy.PushPolicyTO;
-import org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.AttrReleasePolicyTO;
+import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
@@ -60,6 +62,8 @@ public class JPAPolicyUtilsFactory implements PolicyUtilsFactory {
             type = PolicyType.AUTHENTICATION;
         } else if (policy instanceof AccessPolicy) {
             type = PolicyType.ACCESS;
+        } else if (policy instanceof AttrReleasePolicy) {
+            type = PolicyType.ATTR_RELEASE;
         } else {
             throw new IllegalArgumentException("Invalid policy: " + policy);
         }
@@ -82,6 +86,8 @@ public class JPAPolicyUtilsFactory implements PolicyUtilsFactory {
             type = PolicyType.AUTHENTICATION;
         } else if (policyClass == AccessPolicyTO.class) {
             type = PolicyType.ACCESS;
+        } else if (policyClass == AttrReleasePolicyTO.class) {
+            type = PolicyType.ATTR_RELEASE;
         } else {
             throw new IllegalArgumentException("Invalid PolicyTO class: " + policyClass.getName());
         }
