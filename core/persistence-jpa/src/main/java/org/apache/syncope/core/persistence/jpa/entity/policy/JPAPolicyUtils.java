@@ -21,6 +21,7 @@ package org.apache.syncope.core.persistence.jpa.entity.policy;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
@@ -55,6 +56,9 @@ public class JPAPolicyUtils implements PolicyUtils {
                 
             case AUTHENTICATION:
                 return AuthenticationPolicy.class;
+
+            case ATTR_RELEASE:
+                return AttrReleasePolicy.class;
 
             case ACCESS:
                 return AccessPolicy.class;

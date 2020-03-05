@@ -25,8 +25,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.syncope.common.lib.BaseBean;
-import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
-import org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.AccessPolicyTO;
+import org.apache.syncope.common.lib.to.AttrReleasePolicyTO;
+import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.EntityTO;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -35,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlSeeAlso({OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class})
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@class")
-@JsonPropertyOrder(value = {"@class", "key", "name", "description", "authenticationPolicy"})
+@JsonPropertyOrder(value = {"@class", "key", "name", "description",
 @Schema(subTypes = {OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class}, discriminatorProperty = "@class")
 public abstract class ClientAppTO extends BaseBean implements EntityTO {
 
@@ -50,6 +51,16 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
     private AuthenticationPolicyTO authenticationPolicy;
 
     private AccessPolicyTO accessPolicy;
+
+    private AttrReleasePolicyTO attrReleasePolicy;
+
+    public AttrReleasePolicyTO getAttrReleasePolicy() {
+        return attrReleasePolicy;
+    }
+
+    public void setAttrReleasePolicy(final AttrReleasePolicyTO attrReleasePolicy) {
+        this.attrReleasePolicy = attrReleasePolicy;
+    }
 
     public AccessPolicyTO getAccessPolicy() {
         return accessPolicy;
@@ -105,6 +116,7 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
             .append(description)
             .append(authenticationPolicy)
             .append(accessPolicy)
+            .append(attrReleasePolicy)
             .toHashCode();
     }
 
@@ -127,6 +139,7 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
             .append(this.description, rhs.description)
             .append(this.authenticationPolicy, rhs.authenticationPolicy)
             .append(this.accessPolicy, rhs.accessPolicy)
+            .append(this.attrReleasePolicy, rhs.attrReleasePolicy)
             .isEquals();
     }
 }

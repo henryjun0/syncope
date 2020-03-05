@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
@@ -44,6 +45,8 @@ public interface PolicyDAO extends DAO<Policy> {
     List<AuthenticationPolicy> findByAuthenticationPolicy(Implementation policy);
 
     List<AccessPolicy> findByAccessPolicy(Implementation policy);
+
+    List<AttrReleasePolicy> findByAttrReleasePolicy(Implementation policy);
 
     List<PushPolicy> findByPushCorrelationRule(Implementation correlationRule);
 

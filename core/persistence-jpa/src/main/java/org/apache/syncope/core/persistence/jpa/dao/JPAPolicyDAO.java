@@ -26,6 +26,7 @@ import org.apache.syncope.core.persistence.api.dao.RealmDAO;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
@@ -35,6 +36,7 @@ import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.AbstractPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAttrReleasePolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPullCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPasswordPolicy;
@@ -68,6 +70,8 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
                 : AuthenticationPolicy.class.isAssignableFrom(reference)
                 ? JPAAuthenticationPolicy.class
                 : AccessPolicy.class.isAssignableFrom(reference)
+                ? JPAAttrReleasePolicy.class
+                : AttrReleasePolicy.class.isAssignableFrom(reference)
                 ? JPAAccessPolicy.class
                 : null;
     }
@@ -121,6 +125,15 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
             "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
                 + "WHERE :accessPolicy MEMBER OF e.rules", AccessPolicy.class);
         query.setParameter("accessPolicy", policy);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<AttrReleasePolicy> findByAttrReleasePolicy(final Implementation policy) {
+        TypedQuery<AttrReleasePolicy> query = entityManager().createQuery(
+            "SELECT e FROM " + JPAAttrReleasePolicy.class.getSimpleName() + " e "
+                + "WHERE :attrReleasePolicy MEMBER OF e.rules", AttrReleasePolicy.class);
+        query.setParameter("attrReleasePolicy", policy);
         return query.getResultList();
     }
 
@@ -193,8 +206,6 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
                 realm.setAccountPolicy(null);
             } else if (policy instanceof PasswordPolicy) {
                 realm.setPasswordPolicy(null);
-            } else if (policy instanceof AuthenticationPolicy) {
-                realm.setAuthenticationPolicy(null);
             }
         });
 

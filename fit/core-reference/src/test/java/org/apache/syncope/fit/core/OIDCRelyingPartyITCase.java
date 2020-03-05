@@ -19,12 +19,12 @@
 package org.apache.syncope.fit.core;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
-import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
+import org.apache.syncope.common.lib.to.AccessPolicyTO;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -30,14 +30,21 @@ public final class AMImplementationType {
 
     public static final String ACCESS_POLICY_CONFIGURATIONS = "ACCESS_POLICY_CONFIGURATIONS";
 
+    public static final String ATTR_RELEASE_POLICY_CONFIGURATIONS = "ATTR_RELEASE_CONFIGURATIONS";
+
     private AMImplementationType() {
         // private constructor for static utility class
     }
 
     private static final Map<String, String> VALUES = Map.ofEntries(
-        Pair.of(AUTH_MODULE_CONFIGURATIONS, "org.apache.syncope.common.lib.authentication.policy.AuthenticationPolicyConf"),
-        Pair.of(AUTH_POLICY_CONFIGURATIONS, "org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf"),
-        Pair.of(ACCESS_POLICY_CONFIGURATIONS, "org.apache.syncope.core.persistence.api.dao.AccessPolicyConf"));
+        Pair.of(AUTH_MODULE_CONFIGURATIONS,
+            "org.apache.syncope.common.lib.authentication.policy.AuthenticationPolicyConf"),
+        Pair.of(AUTH_POLICY_CONFIGURATIONS,
+            "org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf"),
+        Pair.of(ATTR_RELEASE_POLICY_CONFIGURATIONS,
+            "org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf"),
+        Pair.of(ACCESS_POLICY_CONFIGURATIONS,
+            "org.apache.syncope.common.lib.attrs.AttrReleasePolicyConf"));
 
     public static Map<String, String> values() {
         return VALUES;
