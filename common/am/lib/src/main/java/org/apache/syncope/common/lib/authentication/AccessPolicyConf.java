@@ -35,7 +35,7 @@ public interface AccessPolicyConf extends Serializable {
 
     boolean isEnabled();
 
-    boolean isSingleSignOnEnabled();
+    boolean isSsoEnabled();
 
     Map<String, List<String>> getRequiredAttributes();
 }

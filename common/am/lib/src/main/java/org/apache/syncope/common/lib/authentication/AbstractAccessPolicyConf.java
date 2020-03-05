@@ -62,7 +62,7 @@ public abstract class AbstractAccessPolicyConf implements Serializable, AccessPo
     }
 
     @Override
-    public boolean isSingleSignOnEnabled() {
+    public boolean isSsoEnabled() {
         return singleSignOnEnabled;
     }
 
