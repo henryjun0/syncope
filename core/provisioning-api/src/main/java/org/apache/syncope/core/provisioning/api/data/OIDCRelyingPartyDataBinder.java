@@ -19,7 +19,7 @@
 
 package org.apache.syncope.core.provisioning.api.data;
 
-import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
+import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
 import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 
 public interface OIDCRelyingPartyDataBinder {

@@ -19,7 +19,7 @@
 package org.apache.syncope.core.rest.cxf.service;
 
 import org.apache.syncope.common.rest.api.service.ClientAppService;
-import org.apache.syncope.common.lib.to.ClientApplicationTO;
+import org.apache.syncope.common.lib.to.client.ClientAppTO;
 import org.apache.syncope.common.rest.api.RESTHeaders;
 import org.apache.syncope.core.logic.AbstractClientAppLogic;
 
@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 
-public abstract class AbstractClientAppServiceImpl<T extends ClientApplicationTO> extends AbstractServiceImpl
+public abstract class AbstractClientAppServiceImpl<T extends ClientAppTO> extends AbstractServiceImpl
         implements ClientAppService<T> {
 
     protected abstract AbstractClientAppLogic<T> getLogic();

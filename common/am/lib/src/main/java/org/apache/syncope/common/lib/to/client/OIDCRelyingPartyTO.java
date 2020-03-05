@@ -17,7 +17,7 @@
  *
  */
 
-package org.apache.syncope.common.lib.to;
+package org.apache.syncope.common.lib.to.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,8 +33,8 @@ import java.util.List;
 
 @XmlRootElement(name = "openIdConnectRelyingParty")
 @XmlType
-@Schema(allOf = { ClientApplicationTO.class })
-public class OIDCRelyingPartyTO extends ClientApplicationTO {
+@Schema(allOf = { ClientAppTO.class })
+public class OIDCRelyingPartyTO extends ClientAppTO {
     private static final long serialVersionUID = -6370888503924521351L;
 
     private String clientId;

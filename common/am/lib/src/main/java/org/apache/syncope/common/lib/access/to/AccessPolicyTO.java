@@ -16,34 +16,27 @@
  * under the License.
  *
  */
-package org.apache.syncope.common.lib.authentication;
+package org.apache.syncope.common.lib.access.to;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.syncope.common.lib.policy.PolicyTO;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
 
+@XmlRootElement(name = "accessPolicy")
 @XmlType
-@XmlSeeAlso({ DefaultAuthenticationPolicyConf.class })
-public abstract class AbstractAuthenticationPolicyConf implements Serializable, AuthenticationPolicyConf {
+public class AccessPolicyTO extends PolicyTO {
 
-    private static final long serialVersionUID = 9185127128182430142L;
+    private static final long serialVersionUID = -6711411162433533300L;
 
-    private String name;
-
-    public AbstractAuthenticationPolicyConf() {
-        setName(getClass().getName());
-    }
-
-    public AbstractAuthenticationPolicyConf(final String name) {
-        setName(name);
-    }
-
+    @XmlTransient
+    @JsonProperty("@class")
+    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.access.to.AccessPolicyTO")
     @Override
-    public final String getName() {
-        return name;
-    }
-
-    public final void setName(final String name) {
-        this.name = name;
+    public String getDiscriminator() {
+        return getClass().getName();
     }
 }

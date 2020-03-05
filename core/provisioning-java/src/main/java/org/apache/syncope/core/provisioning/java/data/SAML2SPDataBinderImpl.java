@@ -19,7 +19,7 @@
 
 package org.apache.syncope.core.provisioning.java.data;
 
-import org.apache.syncope.common.lib.to.SAML2SPTO;
+import org.apache.syncope.common.lib.to.client.SAML2SPTO;
 import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationPolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2SPDAO;
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;

@@ -35,8 +35,8 @@ public final class AMImplementationType {
     }
 
     private static final Map<String, String> VALUES = Map.ofEntries(
-        Pair.of(AUTH_MODULE_CONFIGURATIONS, "org.apache.syncope.common.lib.authentication.AuthenticationPolicyConf"),
-        Pair.of(AUTH_POLICY_CONFIGURATIONS, "org.apache.syncope.common.lib.authentication.AuthenticationModuleConf"),
+        Pair.of(AUTH_MODULE_CONFIGURATIONS, "org.apache.syncope.common.lib.authentication.policy.AuthenticationPolicyConf"),
+        Pair.of(AUTH_POLICY_CONFIGURATIONS, "org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf"),
         Pair.of(ACCESS_POLICY_CONFIGURATIONS, "org.apache.syncope.core.persistence.api.dao.AccessPolicyConf"));
 
     public static Map<String, String> values() {

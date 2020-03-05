@@ -18,7 +18,7 @@
  */
 package org.apache.syncope.client.console.rest;
 
-import org.apache.syncope.common.lib.to.SAML2SPTO;
+import org.apache.syncope.common.lib.to.client.SAML2SPTO;
 import org.apache.syncope.common.rest.api.service.SAML2ServiceProviderService;
 
 import java.util.List;

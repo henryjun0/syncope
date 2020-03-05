@@ -18,7 +18,7 @@
  */
 package org.apache.syncope.core.logic;
 
-import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
+import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.types.IdRepoEntitlement;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
 import org.apache.syncope.core.persistence.api.dao.authentication.OIDCRelyingPartyDAO;

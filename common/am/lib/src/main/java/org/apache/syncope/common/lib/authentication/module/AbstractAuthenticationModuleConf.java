@@ -16,25 +16,43 @@
  * under the License.
  *
  */
-package org.apache.syncope.common.lib.policy;
+package org.apache.syncope.common.lib.authentication.module;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "accessPolicy")
+import java.io.Serializable;
+
 @XmlType
-public class AccessPolicyTO extends PolicyTO {
+@XmlSeeAlso({JaasAuthenticationModuleConf.class, StaticAuthenticationModuleConf.class,
+    LdapAuthenticationModuleConf.class})
+public abstract class AbstractAuthenticationModuleConf implements Serializable, AuthenticationModuleConf {
 
-    private static final long serialVersionUID = -6711411162433533300L;
+    private static final long serialVersionUID = 4153200197344709778L;
 
-    @XmlTransient
-    @JsonProperty("@class")
-    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.policy.AccessPolicyTO")
+    private String name;
+
+    private int order;
+
+    public AbstractAuthenticationModuleConf() {
+        setName(getClass().getName());
+    }
+
     @Override
-    public String getDiscriminator() {
-        return getClass().getName();
+    public final String getName() {
+        return name;
+    }
+
+    public final void setName(final String name) {
+        this.name = name;
+    }
+
+    @Override
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(final int order) {
+        this.order = order;
     }
 }

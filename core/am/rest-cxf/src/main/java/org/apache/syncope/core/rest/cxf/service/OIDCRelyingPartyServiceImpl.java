@@ -20,7 +20,7 @@
 package org.apache.syncope.core.rest.cxf.service;
 
 import org.apache.syncope.common.rest.api.service.OIDCRelyingPartyService;
-import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
+import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
 import org.apache.syncope.core.logic.AbstractClientAppLogic;
 import org.apache.syncope.core.logic.OIDCRelyingPartyLogic;
 import org.springframework.beans.factory.annotation.Autowired;

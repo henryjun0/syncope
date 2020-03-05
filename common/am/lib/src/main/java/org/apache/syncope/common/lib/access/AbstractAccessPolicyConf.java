@@ -16,25 +16,30 @@
  * under the License.
  *
  */
-package org.apache.syncope.common.lib.authentication;
+package org.apache.syncope.common.lib.access;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-
 import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @XmlType
-@XmlSeeAlso({JaasAuthenticationModuleConf.class, StaticAuthenticationModuleConf.class,
-    LdapAuthenticationModuleConf.class})
-public abstract class AbstractAuthenticationModuleConf implements Serializable, AuthenticationModuleConf {
+@XmlSeeAlso({ DefaultAccessPolicyConf.class })
+public abstract class AbstractAccessPolicyConf implements Serializable, AccessPolicyConf {
 
-    private static final long serialVersionUID = 4153200197344709778L;
+    private static final long serialVersionUID = 1153200197344709778L;
 
     private String name;
 
-    private int order;
+    private boolean enabled = true;
 
-    public AbstractAuthenticationModuleConf() {
+    private boolean singleSignOnEnabled = true;
+
+    private Map<String, List<String>> requiredAttributes = new LinkedHashMap<>();
+
+    public AbstractAccessPolicyConf() {
         setName(getClass().getName());
     }
 
@@ -48,11 +53,29 @@ public abstract class AbstractAuthenticationModuleConf implements Serializable, 
     }
 
     @Override
-    public int getOrder() {
-        return order;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setOrder(final int order) {
-        this.order = order;
+    public void setEnabled(final boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public boolean isSsoEnabled() {
+        return singleSignOnEnabled;
+    }
+
+    public void setSingleSignOnEnabled(final boolean singleSignOnEnabled) {
+        this.singleSignOnEnabled = singleSignOnEnabled;
+    }
+
+    @Override
+    public Map<String, List<String>> getRequiredAttributes() {
+        return requiredAttributes;
+    }
+
+    public void setRequiredAttributes(final Map<String, List<String>> requiredAttributes) {
+        this.requiredAttributes = requiredAttributes;
     }
 }

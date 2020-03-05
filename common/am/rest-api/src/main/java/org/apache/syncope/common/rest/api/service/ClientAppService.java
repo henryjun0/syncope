@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.apache.syncope.common.lib.to.ClientApplicationTO;
+import org.apache.syncope.common.lib.to.client.ClientAppTO;
 import org.apache.syncope.common.rest.api.RESTHeaders;
 
 import javax.validation.constraints.NotNull;
@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * REST operations for applications.
  */
-public interface ClientAppService<T extends ClientApplicationTO> extends JAXRSService {
+public interface ClientAppService<T extends ClientAppTO> extends JAXRSService {
 
     /**
      * Returns a list of all applications.

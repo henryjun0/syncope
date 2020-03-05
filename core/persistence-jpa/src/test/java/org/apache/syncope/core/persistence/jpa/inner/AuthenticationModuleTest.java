@@ -18,11 +18,11 @@
  */
 package org.apache.syncope.core.persistence.jpa.inner;
 
-import org.apache.syncope.common.lib.authentication.AuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.GoogleMfaAuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.JaasAuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.LdapAuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.StaticAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.module.GoogleMfaAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.module.JaasAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.module.LdapAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.module.StaticAuthenticationModuleConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
 import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;

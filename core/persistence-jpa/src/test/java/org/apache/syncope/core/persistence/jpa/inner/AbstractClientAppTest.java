@@ -19,8 +19,8 @@
 
 package org.apache.syncope.core.persistence.jpa.inner;
 
-import org.apache.syncope.common.lib.authentication.DefaultAccessPolicyConf;
-import org.apache.syncope.common.lib.authentication.DefaultAuthenticationPolicyConf;
+import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
 import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;

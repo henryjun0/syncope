@@ -19,11 +19,11 @@
 package org.apache.syncope.core.provisioning.java.data;
 
 import java.util.stream.Collectors;
-import org.apache.syncope.common.lib.policy.AccessPolicyTO;
+import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
 import org.apache.syncope.core.provisioning.api.data.PolicyDataBinder;
 import org.apache.syncope.common.lib.policy.PolicyTO;
 import org.apache.syncope.common.lib.policy.AccountPolicyTO;
-import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.policy.PasswordPolicyTO;
 import org.apache.syncope.common.lib.policy.PullPolicyTO;
 import org.apache.syncope.common.lib.policy.PushPolicyTO;

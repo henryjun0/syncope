@@ -16,26 +16,25 @@
  * under the License.
  *
  */
-package org.apache.syncope.common.lib.authentication;
+package org.apache.syncope.common.lib.authentication.module;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public interface AccessPolicyConf extends Serializable {
+public interface AuthenticationModuleConf extends Serializable {
 
     /**
-     * Give name of related access policy.
+     * Give name of related authentication module instance.
      *
-     * @return name of this access policy
+     * @return name of this authentication module instance
      */
     String getName();
 
-    boolean isEnabled();
-
-    boolean isSsoEnabled();
-
-    Map<String, List<String>> getRequiredAttributes();
+    /**
+     * Execution order of this authentication module in the policy chain.
+     *
+     * @return numeric order
+     */
+    int getOrder();
 }

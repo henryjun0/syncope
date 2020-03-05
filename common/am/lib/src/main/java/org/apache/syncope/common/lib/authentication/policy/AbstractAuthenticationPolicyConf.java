@@ -16,30 +16,34 @@
  * under the License.
  *
  */
-package org.apache.syncope.core.logic;
+package org.apache.syncope.common.lib.authentication.policy;
 
-import org.apache.syncope.common.lib.to.client.ClientAppTO;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
-import java.lang.reflect.Method;
-import java.util.List;
+@XmlType
+@XmlSeeAlso({ DefaultAuthenticationPolicyConf.class })
+public abstract class AbstractAuthenticationPolicyConf implements Serializable, AuthenticationPolicyConf {
 
-public abstract class AbstractClientAppLogic<T extends ClientAppTO>
-        extends AbstractTransactionalLogic<ClientAppTO> {
+    private static final long serialVersionUID = 9185127128182430142L;
 
-    @Override
-    protected ClientAppTO resolveReference(final Method method, final Object... args)
-            throws UnresolvedReferenceException {
-        throw new UnresolvedReferenceException();
+    private String name;
+
+    public AbstractAuthenticationPolicyConf() {
+        setName(getClass().getName());
     }
 
-    public abstract T delete(String key);
+    public AbstractAuthenticationPolicyConf(final String name) {
+        setName(name);
+    }
 
-    public abstract List<T> list();
+    @Override
+    public final String getName() {
+        return name;
+    }
 
-    public abstract T read(String key);
-
-    public abstract T create(T applicationTO);
-
-    public abstract T update(T applicationTO);
-
+    public final void setName(final String name) {
+        this.name = name;
+    }
 }

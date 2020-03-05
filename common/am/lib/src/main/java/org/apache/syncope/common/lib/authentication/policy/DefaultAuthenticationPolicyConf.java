@@ -16,32 +16,28 @@
  * under the License.
  *
  */
-
-package org.apache.syncope.common.lib.authentication;
+package org.apache.syncope.common.lib.authentication.policy;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-@XmlRootElement(name = "staticAuthenticationModuleConf")
+@XmlRootElement(name = "DefaultAuthenticationPolicyConf")
 @XmlType
-public class StaticAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
-    private static final long serialVersionUID = -7775771400318503131L;
+public class DefaultAuthenticationPolicyConf extends AbstractAuthenticationPolicyConf
+        implements AuthenticationPolicyConf {
 
-    private Map<String, String> users = new HashMap<>();
+    private static final long serialVersionUID = -2969836600059025380L;
 
-    public StaticAuthenticationModuleConf(final Map<String, String> users) {
-        setName(getClass().getSimpleName());
-        setUsers(users);
+    private List<String> authenticationModules = new ArrayList<>();
+
+    public List<String> getAuthenticationModules() {
+        return authenticationModules;
     }
 
-    public Map<String, String> getUsers() {
-        return users;
-    }
-
-    public void setUsers(final Map<String, String> users) {
-        this.users = users;
+    public void setAuthenticationModules(final List<String> authenticationModules) {
+        this.authenticationModules = authenticationModules;
     }
 }

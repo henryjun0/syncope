@@ -19,9 +19,9 @@
 package org.apache.syncope.core.provisioning.java.data;
 
 import org.apache.syncope.common.lib.SyncopeClientException;
-import org.apache.syncope.common.lib.policy.AccessPolicyTO;
-import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
-import org.apache.syncope.common.lib.to.OIDCRelyingPartyTO;
+import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
+import org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.types.ClientExceptionType;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.OIDCRelyingPartyDAO;

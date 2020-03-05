@@ -17,7 +17,7 @@
  *
  */
 
-package org.apache.syncope.common.lib.to;
+package org.apache.syncope.common.lib.to.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "saml2ServiceProvider")
 @XmlType
-@Schema(allOf = { ClientApplicationTO.class })
-public class SAML2SPTO extends ClientApplicationTO {
+@Schema(allOf = { ClientAppTO.class })
+public class SAML2SPTO extends ClientAppTO {
     private static final long serialVersionUID = -6370888503924521351L;
 
     private String entityId;

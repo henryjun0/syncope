@@ -17,7 +17,7 @@
  *
  */
 
-package org.apache.syncope.common.lib.to;
+package org.apache.syncope.common.lib.to.client;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +25,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.syncope.common.lib.BaseBean;
-import org.apache.syncope.common.lib.policy.AccessPolicyTO;
-import org.apache.syncope.common.lib.policy.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
+import org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.EntityTO;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
@@ -36,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@class")
 @JsonPropertyOrder(value = {"@class", "key", "name", "description", "authenticationPolicy"})
 @Schema(subTypes = {OIDCRelyingPartyTO.class, SAML2SPTO.class}, discriminatorProperty = "@class")
-public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
+public abstract class ClientAppTO extends BaseBean implements EntityTO {
 
     private static final long serialVersionUID = 6577639976115661357L;
 
@@ -118,7 +119,7 @@ public abstract class ClientApplicationTO extends BaseBean implements EntityTO {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        ClientApplicationTO rhs = (ClientApplicationTO) obj;
+        ClientAppTO rhs = (ClientAppTO) obj;
         return new EqualsBuilder()
             .appendSuper(super.equals(obj))
             .append(this.key, rhs.key)

@@ -17,7 +17,7 @@
  *
  */
 
-package org.apache.syncope.common.lib.authentication;
+package org.apache.syncope.common.lib.authentication.module;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
