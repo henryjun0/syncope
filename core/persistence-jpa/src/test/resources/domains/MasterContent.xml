@@ -55,7 +55,7 @@ under the License.
   
   <!-- access policies -->
   <Implementation id="MyDefaultAccessPolicyConf" type="ACCESS_POLICY_CONFIGURATIONS" engine="JAVA"
-                  body='{"@class":"org.apache.syncope.common.lib.authentication.DefaultAccessPolicyConf","name":"MyDefaultAccessPolicyConf","enabled":true,"singleSignOnEnabled":true}'/>
+                  body='{"@class":"org.apache.syncope.common.lib.access.DefaultAccessPolicyConf","name":"MyDefaultAccessPolicyConf","enabled":true,"singleSignOnEnabled":true}'/>
   <AccessPolicy id="419935c7-deb3-40b3-8a9a-683037e523a2" name="MyDefaultAccessPolicyConf"
                 description="an access policy" />
 

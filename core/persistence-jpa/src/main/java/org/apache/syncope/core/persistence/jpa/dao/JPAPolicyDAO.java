@@ -20,6 +20,7 @@ package org.apache.syncope.core.persistence.jpa.dao;
 
 import java.util.List;
 import javax.persistence.TypedQuery;
+import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
 import org.apache.syncope.core.persistence.api.dao.ExternalResourceDAO;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.RealmDAO;
@@ -109,7 +110,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     @Override
     public List<AuthenticationPolicy> findByAuthenticationPolicy(final Implementation policy) {
         TypedQuery<AuthenticationPolicy> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
+                "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
                 + "WHERE :authenticationPolicy MEMBER OF e.rules", AuthenticationPolicy.class);
         query.setParameter("authenticationPolicy", policy);
         return query.getResultList();
@@ -118,7 +119,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     @Override
     public List<AccessPolicy> findByAccessPolicy(final Implementation policy) {
         TypedQuery<AccessPolicy> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
+                "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
                 + "WHERE :accessPolicy MEMBER OF e.rules", AccessPolicy.class);
         query.setParameter("accessPolicy", policy);
         return query.getResultList();
@@ -188,31 +189,31 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
 
     @Override
     public <T extends Policy> void delete(final T policy) {
-        realmDAO.findByPolicy(policy).forEach(realm -> {
-            if (policy instanceof AccountPolicy) {
-                realm.setAccountPolicy(null);
-            } else if (policy instanceof PasswordPolicy) {
-                realm.setPasswordPolicy(null);
-            } else if (policy instanceof AuthenticationPolicy) {
-                realm.setAuthenticationPolicy(null);
-            }
-        });
+        if (!(policy instanceof AccessPolicyTO)) {
+            realmDAO.findByPolicy(policy).forEach(realm -> {
+                if (policy instanceof AccountPolicy) {
+                    realm.setAccountPolicy(null);
+                } else if (policy instanceof PasswordPolicy) {
+                    realm.setPasswordPolicy(null);
+                } else if (policy instanceof AuthenticationPolicy) {
+                    realm.setAuthenticationPolicy(null);
+                }
+            });
+        }
 
-        resourceDAO.findByPolicy(policy).forEach(resource -> {
-            if (policy instanceof AccountPolicy) {
-                resource.setAccountPolicy(null);
-            } else if (policy instanceof PasswordPolicy) {
-                resource.setPasswordPolicy(null);
-            } else if (policy instanceof PullPolicy) {
-                resource.setPullPolicy(null);
-            } else if (policy instanceof PushPolicy) {
-                resource.setPushPolicy(null);
-            } else if (policy instanceof AuthenticationPolicy) {
-                resource.setAuthenticationPolicy(null);
-            } else if (policy instanceof AccessPolicy) {
-                resource.setAccessPolicy(null);
-            }
-        });
+        if (!(policy instanceof AuthenticationPolicy) && !(policy instanceof AccessPolicyTO)) {
+            resourceDAO.findByPolicy(policy).forEach(resource -> {
+                if (policy instanceof AccountPolicy) {
+                    resource.setAccountPolicy(null);
+                } else if (policy instanceof PasswordPolicy) {
+                    resource.setPasswordPolicy(null);
+                } else if (policy instanceof PullPolicy) {
+                    resource.setPullPolicy(null);
+                } else if (policy instanceof PushPolicy) {
+                    resource.setPushPolicy(null);
+                }
+            });
+        }
 
         entityManager().remove(policy);
     }

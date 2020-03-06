@@ -16,15 +16,13 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.to.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -32,6 +30,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @Schema(allOf = { ClientAppTO.class })
 public class SAML2ServiceProviderTO extends ClientAppTO {
+
     private static final long serialVersionUID = -6370888503924521351L;
 
     private String entityId;
@@ -62,7 +61,6 @@ public class SAML2ServiceProviderTO extends ClientAppTO {
         this.metadataLocation = metadataLocation;
     }
 
-
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {
@@ -76,19 +74,18 @@ public class SAML2ServiceProviderTO extends ClientAppTO {
         }
         SAML2ServiceProviderTO rhs = (SAML2ServiceProviderTO) obj;
         return new EqualsBuilder()
-            .appendSuper(super.equals(obj))
-            .append(this.entityId, rhs.entityId)
-            .append(this.metadataLocation, rhs.metadataLocation)
-            .isEquals();
+                .appendSuper(super.equals(obj))
+                .append(this.entityId, rhs.entityId)
+                .append(this.metadataLocation, rhs.metadataLocation)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-            .appendSuper(super.hashCode())
-            .append(entityId)
-            .append(metadataLocation)
-            .toHashCode();
+                .appendSuper(super.hashCode())
+                .append(entityId)
+                .append(metadataLocation)
+                .toHashCode();
     }
 }
-

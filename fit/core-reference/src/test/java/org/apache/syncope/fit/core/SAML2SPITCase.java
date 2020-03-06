@@ -18,6 +18,12 @@
  */
 package org.apache.syncope.fit.core;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
+import org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO;
+import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
 
@@ -42,4 +48,29 @@ public class SAML2SPITCase extends AbstractITCase {
     public void delete() {
 
     }
+
+    private SAML2ServiceProviderTO buildSAML2SP() {
+        AuthenticationPolicyTO authPolicyTO = new AuthenticationPolicyTO();
+        authPolicyTO.setKey("AuthPolicyTest_" + getUUIDString());
+        authPolicyTO.setDescription("Authentication Policy");
+        authPolicyTO = createPolicy(PolicyType.AUTHENTICATION, authPolicyTO);
+        assertNotNull(authPolicyTO);
+
+        AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
+        accessPolicyTO.setKey("AccessPolicyTest_" + getUUIDString());
+        accessPolicyTO.setDescription("Access policy");
+        accessPolicyTO = createPolicy(PolicyType.ACCESS, accessPolicyTO);
+        assertNotNull(accessPolicyTO);
+
+        SAML2ServiceProviderTO saml2spto = new SAML2ServiceProviderTO();
+        saml2spto.setName("ExampleSAML2SP_" + getUUIDString());
+        saml2spto.setDescription("Example SAML 2.0 service provider");
+        saml2spto.setEntityId("SAML2SPEntityId_" + getUUIDString());
+        saml2spto.setMetadataLocation("file:./test");
+        saml2spto.setAuthenticationPolicy(authPolicyTO);
+        saml2spto.setAccessPolicy(accessPolicyTO);
+
+        return saml2spto;
+    }
+
 }

@@ -291,11 +291,15 @@ public class PolicyDataBinderImpl implements PolicyDataBinder {
             policyTO.setKey(policy.getKey());
             policyTO.setDescription(policy.getDescription());
 
-            for (ExternalResource resource : resourceDAO.findByPolicy(policy)) {
-                policyTO.getUsedByResources().add(resource.getKey());
+            if (!(policy instanceof AuthenticationPolicy) && !(policy instanceof AccessPolicyTO)) {
+                for (ExternalResource resource : resourceDAO.findByPolicy(policy)) {
+                    policyTO.getUsedByResources().add(resource.getKey());
+                }
             }
-            for (Realm realm : realmDAO.findByPolicy(policy)) {
-                policyTO.getUsedByRealms().add(realm.getFullPath());
+            if (!(policy instanceof AccessPolicyTO)) {
+                for (Realm realm : realmDAO.findByPolicy(policy)) {
+                    policyTO.getUsedByRealms().add(realm.getFullPath());
+                }
             }
         }
 
