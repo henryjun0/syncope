@@ -6,7 +6,8 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -14,33 +15,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package org.apache.syncope.common.lib.attrs;
+@XmlSchema(namespace = SyncopeConstants.NS)
+@XmlJavaTypeAdapters({ @XmlJavaTypeAdapter(type = Date.class, value = DateAdapter.class), })
+package org.apache.syncope.common.lib.to;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
+import org.apache.syncope.common.lib.SyncopeConstants;
+import org.apache.syncope.common.lib.jaxb.DateAdapter;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlSchema;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
 
-@XmlType
-@XmlSeeAlso({AllowedAttrReleasePolicyConf.class})
-public abstract class AbstractAttrReleasePolicyConf implements Serializable, AttrReleasePolicyConf {
-
-    private static final long serialVersionUID = 1153200197344709778L;
-
-    private String name;
-
-    public AbstractAttrReleasePolicyConf() {
-        setName(getClass().getName());
-    }
-
-    @Override
-    public final String getName() {
-        return name;
-    }
-
-    public final void setName(final String name) {
-        this.name = name;
-    }
-}
+import java.util.Date;

@@ -59,6 +59,16 @@ under the License.
   <AccessPolicy id="419935c7-deb3-40b3-8a9a-683037e523a2" name="MyDefaultAccessPolicyConf"
                 description="an access policy" />
 
+  <!-- Attr Release Policies -->
+  <Implementation id="AllowedAttrReleasePolicyConf" type="ATTR_RELEASE_CONFIGURATIONS" engine="JAVA"
+                  body='{"@class":"org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf","name":"AllowedAttrReleasePolicy","allowedAttributes":["cn","givenName","uid"]}'/>
+  <AttrReleasePolicy id="319935c7-deb3-40b3-8a9a-683037e523a2" name="AllowedAttrReleasePolicy"
+                description="allowed attribute release policy policy" />
+
+  <Implementation id="DenyAttrReleasePolicyConf" type="ATTR_RELEASE_CONFIGURATIONS" engine="JAVA"
+                  body='{"@class":"org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf","name":"DenyAttrReleasePolicyConf"}'/>
+  <AttrReleasePolicy id="219935c7-deb3-40b3-8a9a-683037e523a2" name="DenyAttrReleasePolicy" description="deny attribute release policy policy" />
+
   <RelationshipType id="inclusion" description="Models the act that an object is included in another"/>
   <RelationshipType id="neighborhood" description="Models the act that an object is near another"/>
   

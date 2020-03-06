@@ -20,14 +20,14 @@ package org.apache.syncope.fit.core;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
-import org.apache.syncope.common.lib.authentication.policy.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.AccessPolicyTO;
+import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
 
-public class SAML2SPITCase extends AbstractITCase {
+public class SAML2ServiceProviderITCase extends AbstractITCase {
 
     @Test
     public void create() {

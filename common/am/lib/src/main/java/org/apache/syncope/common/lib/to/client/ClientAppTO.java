@@ -30,13 +30,16 @@ import org.apache.syncope.common.lib.to.AttrReleasePolicyTO;
 import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.EntityTO;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+@XmlRootElement(name = "clientApp")
 @XmlType
 @XmlSeeAlso({OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class})
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@class")
-@JsonPropertyOrder(value = {"@class", "key", "name", "description", "authenticationPolicy", "accessPolicy"})
+@JsonPropertyOrder(value = {"@class", "key", "name", "description",
+    "authenticationPolicy", "accessPolicy", "attReleasePolicy"})
 @Schema(subTypes = {OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class}, discriminatorProperty = "@class")
 public abstract class ClientAppTO extends BaseBean implements EntityTO {
 

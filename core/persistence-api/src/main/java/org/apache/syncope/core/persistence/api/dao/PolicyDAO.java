@@ -52,10 +52,6 @@ public interface PolicyDAO extends DAO<Policy> {
 
     List<AccountPolicy> findByResource(ExternalResource resource);
 
-    List<AuthenticationPolicy> findByAuthenticationRule(Implementation authenticationRule);
-
-    List<AccessPolicy> findByAccessRule(Implementation accessRule);
-
     List<Policy> findAll();
 
     <T extends Policy> T save(T policy);

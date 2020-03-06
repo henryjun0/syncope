@@ -26,9 +26,11 @@ import org.apache.syncope.core.persistence.api.entity.AnyType;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.Realm;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAttrReleasePolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPasswordPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.resource.JPAExternalResource;
 import org.apache.syncope.core.persistence.jpa.validation.entity.RealmCheck;
@@ -83,6 +85,9 @@ public class JPARealm extends AbstractGeneratedKeyEntity implements Realm {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private JPAAccessPolicy accessPolicy;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private JPAAttrReleasePolicy attrReleasePolicy;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = TABLE + "Action",
@@ -206,6 +211,17 @@ public class JPARealm extends AbstractGeneratedKeyEntity implements Realm {
     @Override
     public List<? extends AnyTemplateRealm> getTemplates() {
         return templates;
+    }
+
+    @Override
+    public void setAttrReleasePolicy(final AttrReleasePolicy policy) {
+        checkType(policy, JPAAttrReleasePolicy.class);
+        this.attrReleasePolicy = (JPAAttrReleasePolicy) policy;
+    }
+
+    @Override
+    public AttrReleasePolicy getAttrReleasePolicy() {
+        return this.attrReleasePolicy;
     }
 
     @Override

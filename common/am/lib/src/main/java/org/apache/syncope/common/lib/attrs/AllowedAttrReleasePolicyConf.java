@@ -29,6 +29,10 @@ import java.util.List;
 public class AllowedAttrReleasePolicyConf extends AbstractAttrReleasePolicyConf implements AttrReleasePolicyConf {
     private static final long serialVersionUID = -1969836661359025380L;
 
+    /**
+     * Specify the list of allowed attribute to release.
+     * Use the special {@code *} to release everything.
+     */
     private List<String> allowedAttributes = new ArrayList<>();
 
     public List<String> getAllowedAttributes() {

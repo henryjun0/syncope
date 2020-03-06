@@ -19,9 +19,11 @@
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.authentication.ClientApp;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.AbstractGeneratedKeyEntity;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAttrReleasePolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
 
@@ -46,6 +48,9 @@ public class AbstractClientApp extends AbstractGeneratedKeyEntity implements Cli
 
     @ManyToOne(fetch = FetchType.EAGER)
     private JPAAccessPolicy accessPolicy;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private JPAAttrReleasePolicy attrReleasePolicy;
 
     @Override
     public String getName() {
@@ -87,4 +92,14 @@ public class AbstractClientApp extends AbstractGeneratedKeyEntity implements Cli
         this.accessPolicy = (JPAAccessPolicy) accessPolicy;
     }
 
+    @Override
+    public AttrReleasePolicy getAttrReleasePolicy() {
+        return this.attrReleasePolicy;
+    }
+
+    @Override
+    public void setAttrReleasePolicy(final AttrReleasePolicy policy) {
+        checkType(policy, JPAAccessPolicy.class);
+        this.attrReleasePolicy = (JPAAttrReleasePolicy) policy;
+    }
 }

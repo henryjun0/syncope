@@ -18,9 +18,6 @@
  */
 package org.apache.syncope.core.persistence.jpa.dao;
 
-import java.util.List;
-import javax.persistence.TypedQuery;
-import org.apache.syncope.common.lib.access.to.AccessPolicyTO;
 import org.apache.syncope.core.persistence.api.dao.ExternalResourceDAO;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.RealmDAO;
@@ -29,24 +26,28 @@ import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
-import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
+import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
 import org.apache.syncope.core.persistence.jpa.entity.policy.AbstractPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAttrReleasePolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPullCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPasswordPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPullCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPullPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPushCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPushPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.TypedQuery;
+
+import java.util.List;
 
 @Repository
 public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
@@ -61,20 +62,20 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
 
     private static <T extends Policy> Class<? extends AbstractPolicy> getEntityReference(final Class<T> reference) {
         return AccountPolicy.class.isAssignableFrom(reference)
-                ? JPAAccountPolicy.class
-                : PasswordPolicy.class.isAssignableFrom(reference)
-                ? JPAPasswordPolicy.class
-                : PullPolicy.class.isAssignableFrom(reference)
-                ? JPAPullPolicy.class
-                : PushPolicy.class.isAssignableFrom(reference)
-                ? JPAPushPolicy.class
-                : AuthenticationPolicy.class.isAssignableFrom(reference)
-                ? JPAAuthenticationPolicy.class
-                : AccessPolicy.class.isAssignableFrom(reference)
-                ? JPAAttrReleasePolicy.class
-                : AttrReleasePolicy.class.isAssignableFrom(reference)
-                ? JPAAccessPolicy.class
-                : null;
+            ? JPAAccountPolicy.class
+            : PasswordPolicy.class.isAssignableFrom(reference)
+            ? JPAPasswordPolicy.class
+            : PullPolicy.class.isAssignableFrom(reference)
+            ? JPAPullPolicy.class
+            : PushPolicy.class.isAssignableFrom(reference)
+            ? JPAPushPolicy.class
+            : AuthenticationPolicy.class.isAssignableFrom(reference)
+            ? JPAAuthenticationPolicy.class
+            : AccessPolicy.class.isAssignableFrom(reference)
+            ? JPAAttrReleasePolicy.class
+            : AttrReleasePolicy.class.isAssignableFrom(reference)
+            ? JPAAccessPolicy.class
+            : null;
     }
 
     @SuppressWarnings("unchecked")
@@ -86,7 +87,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     @Override
     public <T extends Policy> List<T> find(final Class<T> reference) {
         TypedQuery<T> query = entityManager().createQuery(
-                "SELECT e FROM " + getEntityReference(reference).getSimpleName() + " e", reference);
+            "SELECT e FROM " + getEntityReference(reference).getSimpleName() + " e", reference);
 
         return query.getResultList();
     }
@@ -94,7 +95,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     @Override
     public List<AccountPolicy> findByAccountRule(final Implementation accountRule) {
         TypedQuery<AccountPolicy> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAccountPolicy.class.getSimpleName() + " e "
+            "SELECT e FROM " + JPAAccountPolicy.class.getSimpleName() + " e "
                 + "WHERE :accountRule MEMBER OF e.rules", AccountPolicy.class);
         query.setParameter("accountRule", accountRule);
 
@@ -104,7 +105,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     @Override
     public List<PasswordPolicy> findByPasswordRule(final Implementation passwordRule) {
         TypedQuery<PasswordPolicy> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAPasswordPolicy.class.getSimpleName() + " e "
+            "SELECT e FROM " + JPAPasswordPolicy.class.getSimpleName() + " e "
                 + "WHERE :passwordRule MEMBER OF e.rules", PasswordPolicy.class);
         query.setParameter("passwordRule", passwordRule);
 
@@ -112,9 +113,19 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     }
 
     @Override
+    public List<PullPolicy> findByPullCorrelationRule(final Implementation correlationRule) {
+        TypedQuery<PullPolicy> query = entityManager().createQuery(
+            "SELECT DISTINCT e.pullPolicy FROM " + JPAPullCorrelationRuleEntity.class.getSimpleName() + " e "
+                + "WHERE e.implementation=:correlationRule", PullPolicy.class);
+        query.setParameter("correlationRule", correlationRule);
+
+        return query.getResultList();
+    }
+
+    @Override
     public List<AuthenticationPolicy> findByAuthenticationPolicy(final Implementation policy) {
         TypedQuery<AuthenticationPolicy> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
+            "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
                 + "WHERE :authenticationPolicy MEMBER OF e.rules", AuthenticationPolicy.class);
         query.setParameter("authenticationPolicy", policy);
         return query.getResultList();
@@ -123,7 +134,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     @Override
     public List<AccessPolicy> findByAccessPolicy(final Implementation policy) {
         TypedQuery<AccessPolicy> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
+            "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
                 + "WHERE :accessPolicy MEMBER OF e.rules", AccessPolicy.class);
         query.setParameter("accessPolicy", policy);
         return query.getResultList();
@@ -139,19 +150,9 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     }
 
     @Override
-    public List<PullPolicy> findByPullCorrelationRule(final Implementation correlationRule) {
-        TypedQuery<PullPolicy> query = entityManager().createQuery(
-                "SELECT DISTINCT e.pullPolicy FROM " + JPAPullCorrelationRuleEntity.class.getSimpleName() + " e "
-                + "WHERE e.implementation=:correlationRule", PullPolicy.class);
-        query.setParameter("correlationRule", correlationRule);
-
-        return query.getResultList();
-    }
-
-    @Override
     public List<PushPolicy> findByPushCorrelationRule(final Implementation correlationRule) {
         TypedQuery<PushPolicy> query = entityManager().createQuery(
-                "SELECT DISTINCT e.pushPolicy FROM " + JPAPushCorrelationRuleEntity.class.getSimpleName() + " e "
+            "SELECT DISTINCT e.pushPolicy FROM " + JPAPushCorrelationRuleEntity.class.getSimpleName() + " e "
                 + "WHERE e.implementation=:correlationRule", PushPolicy.class);
         query.setParameter("correlationRule", correlationRule);
 
@@ -161,7 +162,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     @Override
     public List<AccountPolicy> findByResource(final ExternalResource resource) {
         TypedQuery<AccountPolicy> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAccountPolicy.class.getSimpleName() + " e "
+            "SELECT e FROM " + JPAAccountPolicy.class.getSimpleName() + " e "
                 + "WHERE :resource MEMBER OF e.resources", AccountPolicy.class);
         query.setParameter("resource", resource);
 
@@ -171,27 +172,7 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
     @Override
     public List<Policy> findAll() {
         TypedQuery<Policy> query = entityManager().createQuery(
-                "SELECT e FROM " + AbstractPolicy.class.getSimpleName() + " e", Policy.class);
-        return query.getResultList();
-    }
-
-    @Override
-    public List<AuthenticationPolicy> findByAuthenticationRule(final Implementation authenticationRule) {
-        TypedQuery<AuthenticationPolicy> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAuthenticationPolicy.class.getSimpleName() + " e "
-                + "WHERE :authenticationRule MEMBER OF e.rules", AuthenticationPolicy.class);
-        query.setParameter("authenticationRule", authenticationRule);
-
-        return query.getResultList();
-    }
-
-    @Override
-    public List<AccessPolicy> findByAccessRule(final Implementation accessRule) {
-        TypedQuery<AccessPolicy> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAccessPolicy.class.getSimpleName() + " e "
-                + "WHERE :accessRule MEMBER OF e.rules", AccessPolicy.class);
-        query.setParameter("accessRule", accessRule);
-
+            "SELECT e FROM " + AbstractPolicy.class.getSimpleName() + " e", Policy.class);
         return query.getResultList();
     }
 
@@ -202,19 +183,24 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
 
     @Override
     public <T extends Policy> void delete(final T policy) {
-        if (!(policy instanceof AccessPolicyTO)) {
-            realmDAO.findByPolicy(policy).forEach(realm -> {
-                if (policy instanceof AccountPolicy) {
-                    realm.setAccountPolicy(null);
-                } else if (policy instanceof PasswordPolicy) {
-                    realm.setPasswordPolicy(null);
-                } else if (policy instanceof AuthenticationPolicy) {
-                    realm.setAuthenticationPolicy(null);
-                }
-            });
-        }
 
-        if (!(policy instanceof AuthenticationPolicy) && !(policy instanceof AccessPolicyTO)) {
+        realmDAO.findByPolicy(policy).forEach(realm -> {
+            if (policy instanceof AccountPolicy) {
+                realm.setAccountPolicy(null);
+            } else if (policy instanceof PasswordPolicy) {
+                realm.setPasswordPolicy(null);
+            } else if (policy instanceof AuthenticationPolicy) {
+                realm.setAuthenticationPolicy(null);
+            } else if (policy instanceof AccessPolicy) {
+                realm.setAccessPolicy(null);
+            } else if (policy instanceof AttrReleasePolicy) {
+                realm.setAttrReleasePolicy(null);
+            }
+        });
+        
+        if (!(policy instanceof AuthenticationPolicy)
+            && !(policy instanceof AttrReleasePolicy)
+            && !(policy instanceof AccessPolicy)) {
             resourceDAO.findByPolicy(policy).forEach(resource -> {
                 if (policy instanceof AccountPolicy) {
                     resource.setAccountPolicy(null);

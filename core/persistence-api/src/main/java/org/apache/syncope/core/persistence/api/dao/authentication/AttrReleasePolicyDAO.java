@@ -16,31 +16,23 @@
  * under the License.
  *
  */
-package org.apache.syncope.common.lib.attrs;
+package org.apache.syncope.core.persistence.api.dao.authentication;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
+import org.apache.syncope.core.persistence.api.dao.DAO;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 
-import java.io.Serializable;
+import java.util.List;
 
-@XmlType
-@XmlSeeAlso({AllowedAttrReleasePolicyConf.class})
-public abstract class AbstractAttrReleasePolicyConf implements Serializable, AttrReleasePolicyConf {
+public interface AttrReleasePolicyDAO extends DAO<AttrReleasePolicy> {
 
-    private static final long serialVersionUID = 1153200197344709778L;
+    AttrReleasePolicy find(String key);
 
-    private String name;
+    List<AttrReleasePolicy> findAll();
 
-    public AbstractAttrReleasePolicyConf() {
-        setName(getClass().getName());
-    }
+    AttrReleasePolicy save(AttrReleasePolicy authenticationModule);
 
-    @Override
-    public final String getName() {
-        return name;
-    }
+    void delete(String key);
 
-    public final void setName(final String name) {
-        this.name = name;
-    }
+    void delete(AttrReleasePolicy authenticationModule);
+
 }
