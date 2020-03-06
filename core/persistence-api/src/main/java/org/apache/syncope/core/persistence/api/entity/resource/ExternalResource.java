@@ -29,8 +29,6 @@ import org.apache.syncope.core.persistence.api.entity.AnyType;
 import org.apache.syncope.core.persistence.api.entity.ConnInstance;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.ProvidedKeyEntity;
-import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
@@ -65,14 +63,6 @@ public interface ExternalResource extends ProvidedKeyEntity {
     void setPullPolicy(PullPolicy pullPolicy);
 
     PushPolicy getPushPolicy();
-
-    void setAuthenticationPolicy(AuthenticationPolicy authenticationPolicy);
-
-    AuthenticationPolicy getAuthenticationPolicy();
-    
-    void setAccessPolicy(AccessPolicy accessPolicy);
-
-    AccessPolicy getAccessPolicy();
 
     Implementation getProvisionSorter();
 

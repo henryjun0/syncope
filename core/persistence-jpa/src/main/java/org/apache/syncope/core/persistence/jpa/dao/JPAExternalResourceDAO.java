@@ -38,9 +38,7 @@ import org.apache.syncope.core.persistence.api.dao.VirSchemaDAO;
 import org.apache.syncope.core.persistence.api.entity.AnyTypeClass;
 import org.apache.syncope.core.persistence.api.entity.Entity;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
 import org.apache.syncope.core.persistence.api.entity.resource.MappingItem;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
@@ -162,10 +160,6 @@ public class JPAExternalResourceDAO extends AbstractDAO<ExternalResource> implem
             query.append("pullPolicy");
         } else if (PushPolicy.class.isAssignableFrom(policyClass)) {
             query.append("pushPolicy");
-        } else if (AuthenticationPolicy.class.isAssignableFrom(policyClass)) {
-            query.append("authenticationPolicy");
-        } else if (AccessPolicy.class.isAssignableFrom(policyClass)) {
-            query.append("accessPolicy");
         }
 
         return query;

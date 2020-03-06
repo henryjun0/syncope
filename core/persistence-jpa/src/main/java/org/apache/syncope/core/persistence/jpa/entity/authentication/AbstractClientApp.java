@@ -41,7 +41,6 @@ public class AbstractClientApp extends AbstractGeneratedKeyEntity implements Cli
     @Column
     private String description;
 
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private JPAAuthenticationPolicy authenticationPolicy;
 

@@ -27,7 +27,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.syncope.common.keymaster.client.api.ConfParamOps;
 import org.apache.syncope.common.lib.SyncopeClientCompositeException;
 import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.to.AnyTypeClassTO;
@@ -61,8 +60,6 @@ import org.apache.syncope.core.persistence.api.entity.Entity;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.PlainSchema;
 import org.apache.syncope.core.persistence.api.entity.VirSchema;
-import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.Item;
@@ -97,9 +94,6 @@ public class ResourceDataBinderImpl implements ResourceDataBinder {
 
     @Autowired
     private AnyTypeClassDAO anyTypeClassDAO;
-
-    @Autowired
-    private ConfParamOps confParamOps;
 
     @Autowired
     private ImplementationDAO implementationDAO;
@@ -359,12 +353,6 @@ public class ResourceDataBinderImpl implements ResourceDataBinder {
 
         resource.setPushPolicy(resourceTO.getPushPolicy() == null
                 ? null : (PushPolicy) policyDAO.find(resourceTO.getPushPolicy()));
-
-        resource.setAuthenticationPolicy(resourceTO.getAuthenticationPolicy() == null
-                ? null : (AuthenticationPolicy) policyDAO.find(resourceTO.getAuthenticationPolicy()));
-
-        resource.setAccessPolicy(resourceTO.getAccessPolicy() == null
-                ? null : (AccessPolicy) policyDAO.find(resourceTO.getAccessPolicy()));
 
         if (resourceTO.getProvisionSorter() == null) {
             resource.setProvisionSorter(null);
@@ -694,12 +682,6 @@ public class ResourceDataBinderImpl implements ResourceDataBinder {
 
         resourceTO.setPushPolicy(resource.getPushPolicy() == null
                 ? null : resource.getPushPolicy().getKey());
-
-        resourceTO.setAuthenticationPolicy(resource.getAuthenticationPolicy() == null
-                ? null : resource.getAuthenticationPolicy().getKey());
-
-        resourceTO.setAccessPolicy(resource.getAccessPolicy() == null
-                ? null : resource.getAccessPolicy().getKey());
 
         resourceTO.setProvisionSorter(resource.getProvisionSorter() == null
                 ? null : resource.getProvisionSorter().getKey());

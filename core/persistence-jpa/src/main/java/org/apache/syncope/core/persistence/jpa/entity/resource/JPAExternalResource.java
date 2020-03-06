@@ -53,8 +53,6 @@ import org.apache.syncope.core.persistence.jpa.validation.entity.ExternalResourc
 import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.apache.syncope.core.persistence.api.entity.AnyType;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.ExternalResource;
 import org.apache.syncope.core.persistence.api.entity.resource.Provision;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
@@ -66,8 +64,6 @@ import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
 import org.apache.syncope.core.persistence.api.entity.resource.OrgUnit;
 import org.apache.syncope.core.persistence.jpa.entity.AbstractProvidedKeyEntity;
 import org.apache.syncope.core.persistence.jpa.entity.JPAImplementation;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPushPolicy;
 import org.identityconnectors.framework.common.objects.ObjectClass;
 
@@ -139,12 +135,6 @@ public class JPAExternalResource extends AbstractProvidedKeyEntity implements Ex
 
     @ManyToOne(fetch = FetchType.EAGER)
     private JPAPushPolicy pushPolicy;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private JPAAuthenticationPolicy authenticationPolicy;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private JPAAccessPolicy accessPolicy;
 
     @ManyToOne
     private JPAImplementation provisionSorter;
@@ -340,28 +330,6 @@ public class JPAExternalResource extends AbstractProvidedKeyEntity implements Ex
     public void setPushPolicy(final PushPolicy pushPolicy) {
         checkType(pushPolicy, JPAPushPolicy.class);
         this.pushPolicy = (JPAPushPolicy) pushPolicy;
-    }
-
-    @Override
-    public AuthenticationPolicy getAuthenticationPolicy() {
-        return authenticationPolicy;
-    }
-
-    @Override
-    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
-        checkType(authenticationPolicy, JPAAuthenticationPolicy.class);
-        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
-    }
-
-    @Override
-    public AccessPolicy getAccessPolicy() {
-        return accessPolicy;
-    }
-
-    @Override
-    public void setAccessPolicy(final AccessPolicy accessPolicy) {
-        checkType(accessPolicy, JPAAccessPolicy.class);
-        this.accessPolicy = (JPAAccessPolicy) accessPolicy;
     }
 
     @Override
