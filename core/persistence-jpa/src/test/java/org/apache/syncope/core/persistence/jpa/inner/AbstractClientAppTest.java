@@ -55,7 +55,7 @@ public class AbstractClientAppTest extends AbstractTest {
         conf.setEnabled(true);
         conf.setName("Example Access Policy for an application");
         conf.setRequiredAttributes(Map.of("attribute1", List.of("value1", "value2")));
-        conf.setSingleSignOnEnabled(false);
+        conf.setSsoEnabled(false);
 
         Implementation type = entityFactory.newEntity(Implementation.class);
         type.setKey("AccessPolicyConfKey");

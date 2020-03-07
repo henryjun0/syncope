@@ -35,7 +35,7 @@ public abstract class AbstractAccessPolicyConf implements Serializable, AccessPo
 
     private boolean enabled = true;
 
-    private boolean singleSignOnEnabled = true;
+    private boolean ssoEnabled = true;
 
     private Map<String, List<String>> requiredAttributes = new LinkedHashMap<>();
 
@@ -63,11 +63,11 @@ public abstract class AbstractAccessPolicyConf implements Serializable, AccessPo
 
     @Override
     public boolean isSsoEnabled() {
-        return singleSignOnEnabled;
+        return this.ssoEnabled;
     }
 
-    public void setSingleSignOnEnabled(final boolean singleSignOnEnabled) {
-        this.singleSignOnEnabled = singleSignOnEnabled;
+    public void setSsoEnabled(final boolean ssoEnabled) {
+        this.ssoEnabled = ssoEnabled;
     }
 
     @Override
