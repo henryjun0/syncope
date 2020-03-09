@@ -18,8 +18,13 @@
  */
 package org.apache.syncope.fit.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.to.AccessPolicyTO;
 import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO;
@@ -31,22 +36,58 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
 
     @Test
     public void create() {
-
+        createSAML2SP(buildSAML2SP());
     }
 
     @Test
     public void read() {
+        SAML2ServiceProviderTO samlSpTO = buildSAML2SP();
+        samlSpTO = createSAML2SP(samlSpTO);
 
+        SAML2ServiceProviderTO found = saml2ServiceProviderService.read(samlSpTO.getKey());
+        assertNotNull(found);
+        assertFalse(StringUtils.isBlank(found.getEntityId()));
+        assertFalse(StringUtils.isBlank(found.getMetadataLocation()));
+        assertNotNull(found.getAccessPolicy());
+        assertNotNull(found.getAuthenticationPolicy());
     }
 
     @Test
     public void update() {
+        SAML2ServiceProviderTO samlSpTO = buildSAML2SP();
+        samlSpTO = createSAML2SP(samlSpTO);
 
+        AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
+        accessPolicyTO.setKey("NewAccessPolicyTest_" + getUUIDString());
+        accessPolicyTO.setDescription("New Access policy");
+        accessPolicyTO = createPolicy(PolicyType.ACCESS, accessPolicyTO);
+        assertNotNull(accessPolicyTO);
+
+        samlSpTO.setEntityId("newEntityId");
+        samlSpTO.setAccessPolicy(accessPolicyTO);
+
+        saml2ServiceProviderService.update(samlSpTO);
+        SAML2ServiceProviderTO updated = saml2ServiceProviderService.read(samlSpTO.getKey());
+
+        assertNotNull(updated);
+        assertEquals("newEntityId", updated.getEntityId());
+        assertNotNull(updated.getAccessPolicy());
+        assertEquals("New Access policy", updated.getAccessPolicy().getDescription());
     }
 
     @Test
     public void delete() {
+        SAML2ServiceProviderTO samlSpTO = buildSAML2SP();
+        samlSpTO = createSAML2SP(samlSpTO);
 
+        saml2ServiceProviderService.delete(samlSpTO.getKey());
+
+        try {
+            saml2ServiceProviderService.read(samlSpTO.getKey());
+            fail("This should not happen");
+        } catch (SyncopeClientException e) {
+            assertNotNull(e);
+        }
     }
 
     private SAML2ServiceProviderTO buildSAML2SP() {

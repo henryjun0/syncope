@@ -75,6 +75,7 @@ import org.apache.syncope.common.lib.to.ProvisioningResult;
 import org.apache.syncope.common.lib.to.ReportTO;
 import org.apache.syncope.common.lib.to.RoleTO;
 import org.apache.syncope.common.lib.to.UserTO;
+import org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO;
 import org.apache.syncope.common.lib.types.AnyTypeKind;
 import org.apache.syncope.common.lib.types.PatchOperation;
 import org.apache.syncope.common.lib.types.PolicyType;
@@ -289,7 +290,7 @@ public abstract class AbstractITCase {
 
     protected static SCIMConfService scimConfService;
 
-    protected static OIDCRelyingPartyService openIdConnectRelyingPartyService;
+    protected static OIDCRelyingPartyService oidcRelyingPartyService;
 
     protected static SAML2ServiceProviderService saml2ServiceProviderService;
 
@@ -362,7 +363,7 @@ public abstract class AbstractITCase {
         oidcClientService = adminClient.getService(OIDCClientService.class);
         oidcProviderService = adminClient.getService(OIDCProviderService.class);
         scimConfService = adminClient.getService(SCIMConfService.class);
-        openIdConnectRelyingPartyService = adminClient.getService(OIDCRelyingPartyService.class);
+        oidcRelyingPartyService = adminClient.getService(OIDCRelyingPartyService.class);
         saml2ServiceProviderService = adminClient.getService(SAML2ServiceProviderService.class);
     }
 
@@ -566,16 +567,26 @@ public abstract class AbstractITCase {
         return (T) getObject(response.getLocation(), PolicyService.class, policy.getClass());
     }
 
-    protected OIDCRelyingPartyTO createOpenIdConnectRelyingParty(final OIDCRelyingPartyTO rpTO) {
-        Response response = openIdConnectRelyingPartyService.create(rpTO);
+    protected OIDCRelyingPartyTO createOIDCRelyingParty(final OIDCRelyingPartyTO rpTO) {
+        Response response = oidcRelyingPartyService.create(rpTO);
         if (response.getStatusInfo().getStatusCode() != Response.Status.CREATED.getStatusCode()) {
             Exception ex = clientFactory.getExceptionMapper().fromResponse(response);
             if (ex != null) {
                 throw (RuntimeException) ex;
             }
         }
-        return getObject(response.getLocation(), OIDCRelyingPartyService.class,
-                OIDCRelyingPartyTO.class);
+        return getObject(response.getLocation(), OIDCRelyingPartyService.class, OIDCRelyingPartyTO.class);
+    }
+
+    protected SAML2ServiceProviderTO createSAML2SP(final SAML2ServiceProviderTO saml2spTO) {
+        Response response = saml2ServiceProviderService.create(saml2spTO);
+        if (response.getStatusInfo().getStatusCode() != Response.Status.CREATED.getStatusCode()) {
+            Exception ex = clientFactory.getExceptionMapper().fromResponse(response);
+            if (ex != null) {
+                throw (RuntimeException) ex;
+            }
+        }
+        return getObject(response.getLocation(), SAML2ServiceProviderService.class, SAML2ServiceProviderTO.class);
     }
 
     protected ResourceTO createResource(final ResourceTO resourceTO) {

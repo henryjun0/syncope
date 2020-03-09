@@ -38,15 +38,15 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
 
     @Test
     public void create() {
-        createOpenIdConnectRelyingParty(buildRelyingParty());
+        createOIDCRelyingParty(buildRelyingParty());
     }
 
     @Test
     public void read() {
         OIDCRelyingPartyTO rpTO = buildRelyingParty();
-        rpTO = createOpenIdConnectRelyingParty(rpTO);
+        rpTO = createOIDCRelyingParty(rpTO);
 
-        OIDCRelyingPartyTO found = openIdConnectRelyingPartyService.read(rpTO.getKey());
+        OIDCRelyingPartyTO found = oidcRelyingPartyService.read(rpTO.getKey());
         assertNotNull(found);
         assertFalse(StringUtils.isBlank(found.getClientId()));
         assertTrue(StringUtils.isBlank(found.getClientSecret()));
@@ -57,7 +57,7 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
     @Test
     public void update() {
         OIDCRelyingPartyTO rpTO = buildRelyingParty();
-        rpTO = createOpenIdConnectRelyingParty(rpTO);
+        rpTO = createOIDCRelyingParty(rpTO);
 
         AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
         accessPolicyTO.setKey("NewAccessPolicyTest_" + getUUIDString());
@@ -68,24 +68,24 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         rpTO.setClientId("newClientId");
         rpTO.setAccessPolicy(accessPolicyTO);
 
-        openIdConnectRelyingPartyService.update(rpTO);
-        OIDCRelyingPartyTO updated = openIdConnectRelyingPartyService.read(rpTO.getKey());
+        oidcRelyingPartyService.update(rpTO);
+        OIDCRelyingPartyTO updated = oidcRelyingPartyService.read(rpTO.getKey());
 
         assertNotNull(updated);
         assertEquals("newClientId", updated.getClientId());
-        assertNotNull(rpTO.getAccessPolicy());
-        assertEquals("New Access policy", rpTO.getAccessPolicy().getDescription());
+        assertNotNull(updated.getAccessPolicy());
+        assertEquals("New Access policy", updated.getAccessPolicy().getDescription());
     }
 
     @Test
     public void delete() {
         OIDCRelyingPartyTO rpTO = buildRelyingParty();
-        rpTO = createOpenIdConnectRelyingParty(rpTO);
+        rpTO = createOIDCRelyingParty(rpTO);
 
-        openIdConnectRelyingPartyService.delete(rpTO.getKey());
+        oidcRelyingPartyService.delete(rpTO.getKey());
 
         try {
-            openIdConnectRelyingPartyService.read(rpTO.getKey());
+            oidcRelyingPartyService.read(rpTO.getKey());
             fail("This should not happen");
         } catch (SyncopeClientException e) {
             assertNotNull(e);

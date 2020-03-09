@@ -52,8 +52,8 @@ public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinde
 
     @Override
     public OIDCRelyingParty update(
-        final OIDCRelyingParty toBeUpdated,
-        final OIDCRelyingPartyTO applicationTO) {
+            final OIDCRelyingParty toBeUpdated,
+            final OIDCRelyingPartyTO applicationTO) {
 
         OIDCRelyingParty application = openIdConnectRelyingPartyDAO.save(toBeUpdated);
 
@@ -101,6 +101,7 @@ public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinde
             accessPolicyTO.setKey(rp.getAccessPolicy().getKey());
             applicationTO.setAccessPolicy(accessPolicyTO);
         }
+
         return applicationTO;
     }
 }
