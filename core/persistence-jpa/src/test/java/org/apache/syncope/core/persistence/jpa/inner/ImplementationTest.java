@@ -45,7 +45,7 @@ public class ImplementationTest extends AbstractTest {
         List<Implementation> implementations = implementationDAO.findAll();
         assertFalse(implementations.isEmpty());
 
-        assertEquals(20, implementations.size());
+        assertEquals(22, implementations.size());
 
         implementations = implementationDAO.findByType(IdMImplementationType.PULL_ACTIONS);
         assertEquals(1, implementations.size());
