@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
+import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
 import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
 import org.apache.syncope.common.lib.policy.AccountPolicyTO;
 import org.apache.syncope.common.lib.policy.DefaultAccountRuleConf;
@@ -30,6 +31,7 @@ import org.apache.syncope.common.lib.policy.PasswordPolicyTO;
 import org.apache.syncope.common.lib.policy.PullPolicyTO;
 import org.apache.syncope.common.lib.policy.PushPolicyTO;
 import org.apache.syncope.common.lib.to.AccessPolicyTO;
+import org.apache.syncope.common.lib.to.AttrReleasePolicyTO;
 import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.ImplementationTO;
 import org.apache.syncope.common.lib.types.AMImplementationType;
@@ -53,13 +55,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class PolicyITCase extends AbstractITCase {
 
     private static AuthenticationPolicyTO buildAuthenticationPolicyTO() {
         final String authPolicyName = "TestAuthenticationPolicy" + getUUIDString();
-
         ImplementationTO implementationTO = null;
         try {
             implementationTO = implementationService.read(
@@ -85,6 +91,38 @@ public class PolicyITCase extends AbstractITCase {
 
         AuthenticationPolicyTO policy = new AuthenticationPolicyTO();
         policy.setDescription("Test Authentication policy");
+        policy.setKey(implementationTO.getKey());
+
+        return policy;
+    }
+
+    private static AttrReleasePolicyTO buildAttributeReleasePolicyTO(final String policyName) {
+        ImplementationTO implementationTO = null;
+        try {
+            implementationTO = implementationService.read(
+                AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS, policyName);
+        } catch (SyncopeClientException e) {
+            if (e.getType().getResponseStatus() == Response.Status.NOT_FOUND) {
+                implementationTO = new ImplementationTO();
+                implementationTO.setKey(policyName);
+                implementationTO.setEngine(ImplementationEngine.JAVA);
+                implementationTO.setType(AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS);
+
+                AllowedAttrReleasePolicyConf conf = new AllowedAttrReleasePolicyConf();
+                conf.setName("MyDefaultAttrReleasePolicyConf");
+                conf.setAllowedAttributes(List.of("cn", "givenName"));
+                implementationTO.setBody(POJOHelper.serialize(conf));
+
+                Response response = implementationService.create(implementationTO);
+                implementationTO = implementationService.read(
+                    implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                assertNotNull(implementationTO);
+            }
+        }
+        assertNotNull(implementationTO);
+
+        AttrReleasePolicyTO policy = new AttrReleasePolicyTO();
+        policy.setDescription("Test Attribute Release policy");
         policy.setKey(implementationTO.getKey());
 
         return policy;
@@ -252,8 +290,7 @@ public class PolicyITCase extends AbstractITCase {
     }
 
     @Test
-    public void update() {
-//         1. Password policy
+    public void updatePasswordPolicy() {
         PasswordPolicyTO globalPolicy = policyService.read(PolicyType.PASSWORD, "ce93fcda-dc3a-4369-a7b0-a6108c261c85");
 
         PasswordPolicyTO policy = SerializationUtils.clone(globalPolicy);
@@ -280,9 +317,10 @@ public class PolicyITCase extends AbstractITCase {
         ruleConf = POJOHelper.deserialize(rule.getBody(), DefaultPasswordRuleConf.class);
         assertEquals(22, ruleConf.getMaxLength());
         assertEquals(8, ruleConf.getMinLength());
+    }
 
-        // 2. Authentication policy
-
+    @Test
+    public void updateAuthenticationPolicy() {
         AuthenticationPolicyTO newAuthPolicyTO = buildAuthenticationPolicyTO();
         assertNotNull(newAuthPolicyTO);
         newAuthPolicyTO = createPolicy(PolicyType.AUTHENTICATION, newAuthPolicyTO);
@@ -307,8 +345,10 @@ public class PolicyITCase extends AbstractITCase {
         assertNotNull(authPolicyConf);
         assertEquals(2, authPolicyConf.getAuthenticationModules().size());
         assertTrue(authPolicyConf.getAuthenticationModules().contains("LdapAuthentication"));
+    }
 
-        // 3. Access policy
+    @Test
+    public void updateAccessPolicy() {
         AccessPolicyTO globalAccessPolicyTO =
             policyService.read(PolicyType.ACCESS, "419935c7-deb3-40b3-8a9a-683037e523a2");
         assertNotNull(globalAccessPolicyTO);
@@ -338,6 +378,41 @@ public class PolicyITCase extends AbstractITCase {
         assertEquals(2, accessPolicyConf.getRequiredAttributes().size());
         assertNotNull(accessPolicyConf.getRequiredAttributes().get("cn"));
         assertNotNull(accessPolicyConf.getRequiredAttributes().get("ou"));
+
+    }
+
+    @Test
+    public void updateAttrReleasePolicy() {
+        AttrReleasePolicyTO policyTO =
+            policyService.read(PolicyType.ATTR_RELEASE, "319935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNotNull(policyTO);
+
+        final String policyName = "TestAttrReleasePolicy" + getUUIDString();
+        AttrReleasePolicyTO newPolicyTO = buildAttributeReleasePolicyTO(policyName);
+        newPolicyTO = createPolicy(PolicyType.ATTR_RELEASE, newPolicyTO);
+        assertNotNull(newPolicyTO);
+
+        ImplementationTO implementationTO = implementationService.read(
+            AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS, policyName);
+        assertNotNull(implementationTO);
+        assertFalse(StringUtils.isBlank(implementationTO.getBody()));
+
+        AllowedAttrReleasePolicyConf policyConf =
+            POJOHelper.deserialize(implementationTO.getBody(), AllowedAttrReleasePolicyConf.class);
+        assertNotNull(policyConf);
+        policyConf.setAllowedAttributes(List.of("cn", "givenName", "postalCode"));
+        implementationTO.setBody(POJOHelper.serialize(policyConf));
+
+        // update new policy
+        policyService.update(PolicyType.ATTR_RELEASE, newPolicyTO);
+        newPolicyTO = policyService.read(PolicyType.ATTR_RELEASE, newPolicyTO.getKey());
+        assertNotNull(newPolicyTO);
+
+        policyConf = POJOHelper.deserialize(implementationTO.getBody(), AllowedAttrReleasePolicyConf.class);
+        assertEquals(3, policyConf.getAllowedAttributes().size());
+        assertTrue(policyConf.getAllowedAttributes().contains("cn"));
+        assertTrue(policyConf.getAllowedAttributes().contains("postalCode"));
+        assertTrue(policyConf.getAllowedAttributes().contains("givenName"));
 
     }
 

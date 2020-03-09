@@ -22,6 +22,7 @@ import java.lang.reflect.Modifier;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.access.AccessPolicyConf;
+import org.apache.syncope.common.lib.attrs.AttrReleasePolicyConf;
 import org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf;
 import org.apache.syncope.common.lib.authentication.policy.AuthenticationPolicyConf;
 import org.apache.syncope.common.lib.policy.RuleConf;
@@ -40,6 +41,7 @@ import org.apache.syncope.core.persistence.api.entity.EntityFactory;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.provisioning.api.LogicActions;
 import org.apache.syncope.core.provisioning.api.data.ImplementationDataBinder;
@@ -168,6 +170,9 @@ public class ImplementationDataBinderImpl implements ImplementationDataBinder {
                     base = AuthenticationPolicy.class;
                     break;
 
+                case AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS:
+                    base = AttrReleasePolicy.class;
+                    break;
                 default:
             }
 
@@ -182,6 +187,14 @@ public class ImplementationDataBinderImpl implements ImplementationDataBinder {
                             POJOHelper.deserialize(implementation.getBody(), AccessPolicyConf.class);
                     if (accessPolicyConf == null) {
                         sce.getElements().add("Could not deserialize as AccessPolicy");
+                        throw sce;
+                    }
+                    break;
+                case AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS:
+                    AttrReleasePolicyConf policyConf =
+                        POJOHelper.deserialize(implementation.getBody(), AttrReleasePolicyConf.class);
+                    if (policyConf == null) {
+                        sce.getElements().add("Could not deserialize as AttrReleasePolicy");
                         throw sce;
                     }
                     break;

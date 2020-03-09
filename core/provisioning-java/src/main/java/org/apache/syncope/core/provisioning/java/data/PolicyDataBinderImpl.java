@@ -217,6 +217,15 @@ public class PolicyDataBinderImpl implements PolicyDataBinder {
             AccessPolicyTO accessPolicyTO = AccessPolicyTO.class.cast(policyTO);
 
             accessPolicy.setName(accessPolicyTO.getKey());
+        } else if (policyTO instanceof AttrReleasePolicyTO) {
+            if (result == null) {
+                result = (T) entityFactory.newEntity(AttrReleasePolicy.class);
+            }
+
+            AttrReleasePolicy attrReleasePolicy = AttrReleasePolicy.class.cast(result);
+            AttrReleasePolicyTO attrReleasePolicyTO = AttrReleasePolicyTO.class.cast(policyTO);
+
+            attrReleasePolicy.setName(attrReleasePolicyTO.getKey());
         }
 
         if (result != null) {
