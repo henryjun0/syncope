@@ -63,7 +63,7 @@ under the License.
   <Implementation id="AllowedAttrReleasePolicyConf" type="ATTR_RELEASE_CONFIGURATIONS" engine="JAVA"
                   body='{"@class":"org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf","name":"AllowedAttrReleasePolicy","allowedAttributes":["cn","givenName","uid"]}'/>
   <AttrReleasePolicy id="319935c7-deb3-40b3-8a9a-683037e523a2" name="AllowedAttrReleasePolicy"
-                description="allowed attribute release policy policy" />
+                     description="allowed attribute release policy policy" />
 
   <Implementation id="DenyAttrReleasePolicyConf" type="ATTR_RELEASE_CONFIGURATIONS" engine="JAVA"
                   body='{"@class":"org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf","name":"DenyAttrReleasePolicyConf"}'/>

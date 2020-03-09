@@ -69,7 +69,7 @@ public class PolicyITCase extends AbstractITCase {
         ImplementationTO implementationTO = null;
         try {
             implementationTO = implementationService.read(
-                AMImplementationType.AUTH_POLICY_CONFIGURATIONS, authPolicyName);
+                    AMImplementationType.AUTH_POLICY_CONFIGURATIONS, authPolicyName);
         } catch (SyncopeClientException e) {
             if (e.getType().getResponseStatus() == Response.Status.NOT_FOUND) {
                 implementationTO = new ImplementationTO();
@@ -83,7 +83,7 @@ public class PolicyITCase extends AbstractITCase {
 
                 Response response = implementationService.create(implementationTO);
                 implementationTO = implementationService.read(
-                    implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                        implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
                 assertNotNull(implementationTO);
             }
         }
@@ -100,7 +100,7 @@ public class PolicyITCase extends AbstractITCase {
         ImplementationTO implementationTO = null;
         try {
             implementationTO = implementationService.read(
-                AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS, policyName);
+                    AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS, policyName);
         } catch (SyncopeClientException e) {
             if (e.getType().getResponseStatus() == Response.Status.NOT_FOUND) {
                 implementationTO = new ImplementationTO();
@@ -115,7 +115,7 @@ public class PolicyITCase extends AbstractITCase {
 
                 Response response = implementationService.create(implementationTO);
                 implementationTO = implementationService.read(
-                    implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                        implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
                 assertNotNull(implementationTO);
             }
         }
@@ -134,7 +134,7 @@ public class PolicyITCase extends AbstractITCase {
         ImplementationTO implementationTO = null;
         try {
             implementationTO = implementationService.read(
-                AMImplementationType.ACCESS_POLICY_CONFIGURATIONS, accessPolicyName);
+                    AMImplementationType.ACCESS_POLICY_CONFIGURATIONS, accessPolicyName);
         } catch (SyncopeClientException e) {
             if (e.getType().getResponseStatus() == Response.Status.NOT_FOUND) {
                 implementationTO = new ImplementationTO();
@@ -150,7 +150,7 @@ public class PolicyITCase extends AbstractITCase {
 
                 Response response = implementationService.create(implementationTO);
                 implementationTO = implementationService.read(
-                    implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                        implementationTO.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
                 assertNotNull(implementationTO);
             }
         }
@@ -174,10 +174,10 @@ public class PolicyITCase extends AbstractITCase {
                 corrRule.setEngine(ImplementationEngine.GROOVY);
                 corrRule.setType(IdMImplementationType.PULL_CORRELATION_RULE);
                 corrRule.setBody(IOUtils.toString(
-                    getClass().getResourceAsStream("/TestPullRule.groovy"), StandardCharsets.UTF_8));
+                        getClass().getResourceAsStream("/TestPullRule.groovy"), StandardCharsets.UTF_8));
                 Response response = implementationService.create(corrRule);
                 corrRule = implementationService.read(
-                    corrRule.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                        corrRule.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
                 assertNotNull(corrRule);
             }
         }
@@ -201,10 +201,10 @@ public class PolicyITCase extends AbstractITCase {
                 corrRule.setEngine(ImplementationEngine.GROOVY);
                 corrRule.setType(IdMImplementationType.PUSH_CORRELATION_RULE);
                 corrRule.setBody(IOUtils.toString(
-                    getClass().getResourceAsStream("/TestPushRule.groovy"), StandardCharsets.UTF_8));
+                        getClass().getResourceAsStream("/TestPushRule.groovy"), StandardCharsets.UTF_8));
                 Response response = implementationService.create(corrRule);
                 corrRule = implementationService.read(
-                    corrRule.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
+                        corrRule.getType(), response.getHeaderString(RESTHeaders.RESOURCE_KEY));
                 assertNotNull(corrRule);
             }
         }
@@ -254,7 +254,7 @@ public class PolicyITCase extends AbstractITCase {
     @Test
     public void getAuthenticationPolicy() {
         AuthenticationPolicyTO policyTO =
-            policyService.read(PolicyType.AUTHENTICATION, "659b9906-4b6e-4bc0-aca0-6809dff346d4");
+                policyService.read(PolicyType.AUTHENTICATION, "659b9906-4b6e-4bc0-aca0-6809dff346d4");
 
         assertNotNull(policyTO);
         assertTrue(policyTO.getUsedByRealms().isEmpty());
@@ -263,7 +263,16 @@ public class PolicyITCase extends AbstractITCase {
     @Test
     public void getAccessPolicy() {
         AccessPolicyTO policyTO =
-            policyService.read(PolicyType.ACCESS, "419935c7-deb3-40b3-8a9a-683037e523a2");
+                policyService.read(PolicyType.ACCESS, "419935c7-deb3-40b3-8a9a-683037e523a2");
+
+        assertNotNull(policyTO);
+        assertTrue(policyTO.getUsedByRealms().isEmpty());
+    }
+
+    @Test
+    public void getAttributeReleasePolicy() {
+        AttrReleasePolicyTO policyTO =
+                policyService.read(PolicyType.ATTR_RELEASE, "319935c7-deb3-40b3-8a9a-683037e523a2");
 
         assertNotNull(policyTO);
         assertTrue(policyTO.getUsedByRealms().isEmpty());
@@ -280,7 +289,7 @@ public class PolicyITCase extends AbstractITCase {
         assertEquals("TestPushRule", pushPolicyTO.getCorrelationRules().get(AnyTypeKind.USER.name()));
 
         AuthenticationPolicyTO authenticationPolicyTO = createPolicy(PolicyType.AUTHENTICATION,
-            buildAuthenticationPolicyTO());
+                buildAuthenticationPolicyTO());
         assertNotNull(authenticationPolicyTO);
         assertEquals("Test Authentication policy", authenticationPolicyTO.getDescription());
 
@@ -302,7 +311,7 @@ public class PolicyITCase extends AbstractITCase {
         assertNotEquals("ce93fcda-dc3a-4369-a7b0-a6108c261c85", policy.getKey());
 
         ImplementationTO rule = implementationService.read(
-            IdRepoImplementationType.PASSWORD_RULE, policy.getRules().get(0));
+                IdRepoImplementationType.PASSWORD_RULE, policy.getRules().get(0));
         assertNotNull(rule);
 
         DefaultPasswordRuleConf ruleConf = POJOHelper.deserialize(rule.getBody(), DefaultPasswordRuleConf.class);
@@ -326,12 +335,12 @@ public class PolicyITCase extends AbstractITCase {
         newAuthPolicyTO = createPolicy(PolicyType.AUTHENTICATION, newAuthPolicyTO);
 
         ImplementationTO authPolicyImplementationTO = implementationService.read(
-            AMImplementationType.AUTH_POLICY_CONFIGURATIONS, "MyDefaultAuthenticationPolicyConf");
+                AMImplementationType.AUTH_POLICY_CONFIGURATIONS, "MyDefaultAuthenticationPolicyConf");
         assertNotNull(authPolicyImplementationTO);
         assertFalse(StringUtils.isBlank(authPolicyImplementationTO.getBody()));
 
         DefaultAuthenticationPolicyConf authPolicyConf =
-            POJOHelper.deserialize(authPolicyImplementationTO.getBody(), DefaultAuthenticationPolicyConf.class);
+                POJOHelper.deserialize(authPolicyImplementationTO.getBody(), DefaultAuthenticationPolicyConf.class);
         assertNotNull(authPolicyConf);
         authPolicyConf.getAuthenticationModules().add("LdapAuthentication");
         authPolicyImplementationTO.setBody(POJOHelper.serialize(authPolicyConf));
@@ -341,7 +350,8 @@ public class PolicyITCase extends AbstractITCase {
         newAuthPolicyTO = policyService.read(PolicyType.AUTHENTICATION, newAuthPolicyTO.getKey());
         assertNotNull(newAuthPolicyTO);
 
-        authPolicyConf = POJOHelper.deserialize(authPolicyImplementationTO.getBody(), DefaultAuthenticationPolicyConf.class);
+        authPolicyConf = POJOHelper.deserialize(authPolicyImplementationTO.getBody(),
+                DefaultAuthenticationPolicyConf.class);
         assertNotNull(authPolicyConf);
         assertEquals(2, authPolicyConf.getAuthenticationModules().size());
         assertTrue(authPolicyConf.getAuthenticationModules().contains("LdapAuthentication"));
@@ -350,7 +360,7 @@ public class PolicyITCase extends AbstractITCase {
     @Test
     public void updateAccessPolicy() {
         AccessPolicyTO globalAccessPolicyTO =
-            policyService.read(PolicyType.ACCESS, "419935c7-deb3-40b3-8a9a-683037e523a2");
+                policyService.read(PolicyType.ACCESS, "419935c7-deb3-40b3-8a9a-683037e523a2");
         assertNotNull(globalAccessPolicyTO);
 
         AccessPolicyTO newAccessPolicyTO = buildAccessPolicyTO();
@@ -358,12 +368,12 @@ public class PolicyITCase extends AbstractITCase {
         assertNotNull(newAccessPolicyTO);
 
         ImplementationTO accessPolicyImplementationTO = implementationService.read(
-            AMImplementationType.ACCESS_POLICY_CONFIGURATIONS, "MyDefaultAccessPolicyConf");
+                AMImplementationType.ACCESS_POLICY_CONFIGURATIONS, "MyDefaultAccessPolicyConf");
         assertNotNull(accessPolicyImplementationTO);
         assertFalse(StringUtils.isBlank(accessPolicyImplementationTO.getBody()));
 
         DefaultAccessPolicyConf accessPolicyConf =
-            POJOHelper.deserialize(accessPolicyImplementationTO.getBody(), DefaultAccessPolicyConf.class);
+                POJOHelper.deserialize(accessPolicyImplementationTO.getBody(), DefaultAccessPolicyConf.class);
         assertNotNull(accessPolicyConf);
         accessPolicyConf.getRequiredAttributes().put("ou", List.of("test"));
         accessPolicyConf.getRequiredAttributes().put("cn", List.of("admin", "Admin"));
@@ -384,7 +394,7 @@ public class PolicyITCase extends AbstractITCase {
     @Test
     public void updateAttrReleasePolicy() {
         AttrReleasePolicyTO policyTO =
-            policyService.read(PolicyType.ATTR_RELEASE, "319935c7-deb3-40b3-8a9a-683037e523a2");
+                policyService.read(PolicyType.ATTR_RELEASE, "319935c7-deb3-40b3-8a9a-683037e523a2");
         assertNotNull(policyTO);
 
         final String policyName = "TestAttrReleasePolicy" + getUUIDString();
@@ -393,12 +403,12 @@ public class PolicyITCase extends AbstractITCase {
         assertNotNull(newPolicyTO);
 
         ImplementationTO implementationTO = implementationService.read(
-            AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS, policyName);
+                AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS, policyName);
         assertNotNull(implementationTO);
         assertFalse(StringUtils.isBlank(implementationTO.getBody()));
 
         AllowedAttrReleasePolicyConf policyConf =
-            POJOHelper.deserialize(implementationTO.getBody(), AllowedAttrReleasePolicyConf.class);
+                POJOHelper.deserialize(implementationTO.getBody(), AllowedAttrReleasePolicyConf.class);
         assertNotNull(policyConf);
         policyConf.setAllowedAttributes(List.of("cn", "givenName", "postalCode"));
         implementationTO.setBody(POJOHelper.serialize(policyConf));
@@ -464,7 +474,7 @@ public class PolicyITCase extends AbstractITCase {
     @Test
     public void getPullCorrelationRuleJavaClasses() {
         Set<String> classes = syncopeService.platform().
-            getJavaImplInfo(IdMImplementationType.PULL_CORRELATION_RULE).get().getClasses();
+                getJavaImplInfo(IdMImplementationType.PULL_CORRELATION_RULE).get().getClasses();
         assertEquals(1, classes.size());
         assertEquals(DummyPullCorrelationRule.class.getName(), classes.iterator().next());
     }
@@ -472,7 +482,7 @@ public class PolicyITCase extends AbstractITCase {
     @Test
     public void getPushCorrelationRuleJavaClasses() {
         Set<String> classes = syncopeService.platform().
-            getJavaImplInfo(IdMImplementationType.PUSH_CORRELATION_RULE).get().getClasses();
+                getJavaImplInfo(IdMImplementationType.PUSH_CORRELATION_RULE).get().getClasses();
         assertEquals(1, classes.size());
         assertEquals(DummyPushCorrelationRule.class.getName(), classes.iterator().next());
     }

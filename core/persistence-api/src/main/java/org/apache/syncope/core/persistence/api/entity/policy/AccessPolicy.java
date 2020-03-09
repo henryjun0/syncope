@@ -19,7 +19,6 @@
 package org.apache.syncope.core.persistence.api.entity.policy;
 
 import org.apache.syncope.core.persistence.api.entity.Implementation;
-
 import java.util.List;
 
 public interface AccessPolicy extends Policy {

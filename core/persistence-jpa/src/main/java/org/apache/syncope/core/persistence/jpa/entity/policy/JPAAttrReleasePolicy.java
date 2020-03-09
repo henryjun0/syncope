@@ -48,12 +48,12 @@ public class JPAAttrReleasePolicy extends AbstractPolicy implements AttrReleaseP
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = TABLE + "Conf",
-        joinColumns =
-        @JoinColumn(name = "attr_release_policy_id"),
-        inverseJoinColumns =
-        @JoinColumn(name = "implementation_id"),
-        uniqueConstraints =
-        @UniqueConstraint(columnNames = {"attr_release_policy_id", "implementation_id"}))
+            joinColumns =
+            @JoinColumn(name = "attr_release_policy_id"),
+            inverseJoinColumns =
+            @JoinColumn(name = "implementation_id"),
+            uniqueConstraints =
+            @UniqueConstraint(columnNames = { "attr_release_policy_id", "implementation_id" }))
     private List<JPAImplementation> configurations = new ArrayList<>();
 
     @Override
@@ -76,6 +76,6 @@ public class JPAAttrReleasePolicy extends AbstractPolicy implements AttrReleaseP
         checkType(configuration, JPAImplementation.class);
         checkImplementationType(configuration, AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS);
         return configurations.contains((JPAImplementation) configuration)
-            || configurations.add((JPAImplementation) configuration);
+                || configurations.add((JPAImplementation) configuration);
     }
 }

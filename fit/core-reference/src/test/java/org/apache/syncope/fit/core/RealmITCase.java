@@ -99,11 +99,17 @@ public class RealmITCase extends AbstractITCase {
         // 2. update setting policies
         actual.setAccountPolicy("06e2ed52-6966-44aa-a177-a0ca7434201f");
         actual.setPasswordPolicy("986d1236-3ac5-4a19-810c-5ab21d79cba1");
+        actual.setAuthenticationPolicy("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        actual.setAccessPolicy("419935c7-deb3-40b3-8a9a-683037e523a2");
+        actual.setAttrReleasePolicy("319935c7-deb3-40b3-8a9a-683037e523a2");
         realmService.update(actual);
 
         actual = getRealm(actual.getFullPath()).get();
         assertNotNull(actual.getAccountPolicy());
         assertNotNull(actual.getPasswordPolicy());
+        assertNotNull(actual.getAuthenticationPolicy());
+        assertNotNull(actual.getAccessPolicy());
+        assertNotNull(actual.getAttrReleasePolicy());
 
         // 3. update changing parent
         actual.setParent(getRealm("/odd").get().getKey());

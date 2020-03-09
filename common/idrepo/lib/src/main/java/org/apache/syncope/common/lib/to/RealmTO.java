@@ -54,6 +54,12 @@ public class RealmTO extends BaseBean implements NamedEntityTO, TemplatableTO {
 
     private String passwordPolicy;
 
+    private String authenticationPolicy;
+
+    private String accessPolicy;
+
+    private String attrReleasePolicy;
+
     private final List<String> actions = new ArrayList<>();
 
     @XmlJavaTypeAdapter(XmlGenericMapAdapter.class)
@@ -114,6 +120,30 @@ public class RealmTO extends BaseBean implements NamedEntityTO, TemplatableTO {
         this.passwordPolicy = passwordPolicy;
     }
 
+    public String getAuthenticationPolicy() {
+        return authenticationPolicy;
+    }
+
+    public void setAuthenticationPolicy(final String authenticationPolicy) {
+        this.authenticationPolicy = authenticationPolicy;
+    }
+
+    public String getAccessPolicy() {
+        return accessPolicy;
+    }
+
+    public void setAccessPolicy(final String accessPolicy) {
+        this.accessPolicy = accessPolicy;
+    }
+
+    public String getAttrReleasePolicy() {
+        return attrReleasePolicy;
+    }
+
+    public void setAttrReleasePolicy(final String attrReleasePolicy) {
+        this.attrReleasePolicy = attrReleasePolicy;
+    }
+
     @XmlElementWrapper(name = "actions")
     @XmlElement(name = "action")
     @JsonProperty("actions")
@@ -153,6 +183,9 @@ public class RealmTO extends BaseBean implements NamedEntityTO, TemplatableTO {
                 append(fullPath, other.fullPath).
                 append(accountPolicy, other.accountPolicy).
                 append(passwordPolicy, other.passwordPolicy).
+                append(authenticationPolicy, other.authenticationPolicy).
+                append(accessPolicy, other.accessPolicy).
+                append(attrReleasePolicy, other.attrReleasePolicy).
                 append(actions, other.actions).
                 append(templates, other.templates).
                 append(resources, other.resources).
@@ -168,6 +201,9 @@ public class RealmTO extends BaseBean implements NamedEntityTO, TemplatableTO {
                 append(fullPath).
                 append(accountPolicy).
                 append(passwordPolicy).
+                append(authenticationPolicy).
+                append(accessPolicy).
+                append(attrReleasePolicy).
                 append(actions).
                 append(templates).
                 append(resources).
