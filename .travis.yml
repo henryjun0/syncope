@@ -16,8 +16,8 @@
 language: java
 jdk:
   - openjdk11
-  - openjdk13
-  - openjdk14
+  # - openjdk13
+  # - openjdk14
 cache:
   bundler: false
   cargo: false
