@@ -22,7 +22,7 @@ cache:
   bundler: false
   cargo: false
   directories:
-    - $HOME/.m2
+    - '$HOME/.m2/repository'
 git:
   depth: 2
 env:
