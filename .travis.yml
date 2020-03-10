@@ -22,7 +22,7 @@ cache:
   bundler: false
   cargo: false
   directories:
-    - '$HOME/.m2/repository'
+    - '$HOME/.m2'
 git:
   depth: 2
 env:
@@ -41,7 +41,7 @@ jobs:
   include:
     - stage: build
       name: "Build"
-      script: mvn -T 1C --quiet -P skipTests,all
+      script: mvn --show-version -T 1C --quiet -P skipTests,all
       #######################################################
     - stage: validate
       name: "Checkstyle, Legal Files, Modernizer and Release Audit Tool (RAT) Analysis"
@@ -57,7 +57,7 @@ jobs:
        - JAVAEE_CONTAINER=Tomcat
        - DBMS=H2
        - jaxrsContentType=application/json
-      script: travis_wait 55 mvn -f fit/core-reference/pom.xml verify -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true
+      script: mvn --show-version -f fit/core-reference/pom.xml verify -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true
       after_failure:
        - cat fit/core-reference/target/log/*
        - cat fit/core-reference/target/failsafe-reports/org.apache.syncope.fit.*-output.txt
