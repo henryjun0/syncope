@@ -64,7 +64,7 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
         assertNotNull(accessPolicyTO);
 
         samlSpTO.setEntityId("newEntityId");
-        samlSpTO.setAccessPolicy(accessPolicyTO);
+        samlSpTO.setAccessPolicy(accessPolicyTO.getKey());
 
         saml2ServiceProviderService.update(samlSpTO);
         SAML2ServiceProviderTO updated = saml2ServiceProviderService.read(samlSpTO.getKey());
@@ -72,7 +72,6 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
         assertNotNull(updated);
         assertEquals("newEntityId", updated.getEntityId());
         assertNotNull(updated.getAccessPolicy());
-        assertEquals("New Access policy", updated.getAccessPolicy().getDescription());
     }
 
     @Test
@@ -108,8 +107,8 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
         saml2spto.setDescription("Example SAML 2.0 service provider");
         saml2spto.setEntityId("SAML2SPEntityId_" + getUUIDString());
         saml2spto.setMetadataLocation("file:./test");
-        saml2spto.setAuthenticationPolicy(authPolicyTO);
-        saml2spto.setAccessPolicy(accessPolicyTO);
+        saml2spto.setAuthenticationPolicy(authPolicyTO.getKey());
+        saml2spto.setAccessPolicy(accessPolicyTO.getKey());
 
         return saml2spto;
     }

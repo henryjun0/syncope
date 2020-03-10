@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.to.client;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -25,9 +24,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.syncope.common.lib.BaseBean;
-import org.apache.syncope.common.lib.to.AccessPolicyTO;
-import org.apache.syncope.common.lib.to.AttrReleasePolicyTO;
-import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.EntityTO;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,11 +32,11 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "clientApp")
 @XmlType
-@XmlSeeAlso({OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class})
+@XmlSeeAlso({ OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class })
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@class")
-@JsonPropertyOrder(value = {"@class", "key", "name", "description",
-    "authenticationPolicy", "accessPolicy", "attReleasePolicy"})
-@Schema(subTypes = {OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class}, discriminatorProperty = "@class")
+@JsonPropertyOrder(value = { "@class", "key", "name", "description",
+    "authenticationPolicy", "accessPolicy", "attReleasePolicy" })
+@Schema(subTypes = { OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class }, discriminatorProperty = "@class")
 public abstract class ClientAppTO extends BaseBean implements EntityTO {
 
     private static final long serialVersionUID = 6577639976115661357L;
@@ -51,33 +47,33 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
 
     private String description;
 
-    private AuthenticationPolicyTO authenticationPolicy;
+    private String authenticationPolicy;
 
-    private AccessPolicyTO accessPolicy;
+    private String accessPolicy;
 
-    private AttrReleasePolicyTO attrReleasePolicy;
+    private String attrReleasePolicy;
 
-    public AttrReleasePolicyTO getAttrReleasePolicy() {
+    public String getAttrReleasePolicy() {
         return attrReleasePolicy;
     }
 
-    public void setAttrReleasePolicy(final AttrReleasePolicyTO attrReleasePolicy) {
+    public void setAttrReleasePolicy(final String attrReleasePolicy) {
         this.attrReleasePolicy = attrReleasePolicy;
     }
 
-    public AccessPolicyTO getAccessPolicy() {
+    public String getAccessPolicy() {
         return accessPolicy;
     }
 
-    public void setAccessPolicy(final AccessPolicyTO accessPolicy) {
+    public void setAccessPolicy(final String accessPolicy) {
         this.accessPolicy = accessPolicy;
     }
 
-    public AuthenticationPolicyTO getAuthenticationPolicy() {
+    public String getAuthenticationPolicy() {
         return authenticationPolicy;
     }
 
-    public void setAuthenticationPolicy(final AuthenticationPolicyTO authenticationPolicy) {
+    public void setAuthenticationPolicy(final String authenticationPolicy) {
         this.authenticationPolicy = authenticationPolicy;
     }
 
@@ -113,14 +109,14 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-            .appendSuper(super.hashCode())
-            .append(key)
-            .append(name)
-            .append(description)
-            .append(authenticationPolicy)
-            .append(accessPolicy)
-            .append(attrReleasePolicy)
-            .toHashCode();
+                .appendSuper(super.hashCode())
+                .append(key)
+                .append(name)
+                .append(description)
+                .append(authenticationPolicy)
+                .append(accessPolicy)
+                .append(attrReleasePolicy)
+                .toHashCode();
     }
 
     @Override
@@ -136,13 +132,13 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
         }
         ClientAppTO rhs = (ClientAppTO) obj;
         return new EqualsBuilder()
-            .appendSuper(super.equals(obj))
-            .append(this.key, rhs.key)
-            .append(this.name, rhs.name)
-            .append(this.description, rhs.description)
-            .append(this.authenticationPolicy, rhs.authenticationPolicy)
-            .append(this.accessPolicy, rhs.accessPolicy)
-            .append(this.attrReleasePolicy, rhs.attrReleasePolicy)
-            .isEquals();
+                .appendSuper(super.equals(obj))
+                .append(this.key, rhs.key)
+                .append(this.name, rhs.name)
+                .append(this.description, rhs.description)
+                .append(this.authenticationPolicy, rhs.authenticationPolicy)
+                .append(this.accessPolicy, rhs.accessPolicy)
+                .append(this.attrReleasePolicy, rhs.attrReleasePolicy)
+                .isEquals();
     }
 }

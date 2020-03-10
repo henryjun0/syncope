@@ -19,8 +19,6 @@
 package org.apache.syncope.core.provisioning.java.data;
 
 import org.apache.syncope.common.lib.SyncopeClientException;
-import org.apache.syncope.common.lib.to.AccessPolicyTO;
-import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.types.ClientExceptionType;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
@@ -28,7 +26,9 @@ import org.apache.syncope.core.persistence.api.dao.authentication.OIDCRelyingPar
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;
 import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.Policy;
 import org.apache.syncope.core.provisioning.api.data.OIDCRelyingPartyDataBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -63,18 +63,47 @@ public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinde
         application.setClientId(applicationTO.getClientId());
         application.setRedirectUris(applicationTO.getRedirectUris());
 
-        AuthenticationPolicy authenticationPolicy = policyDAO.
-                find(applicationTO.getAuthenticationPolicy().getKey());
-        if (authenticationPolicy == null) {
-            SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidEntity);
-            sce.getElements().add("Unable to locate authentication policy "
-                    + applicationTO.getAuthenticationPolicy().getKey());
-            throw sce;
+        if (applicationTO.getAuthenticationPolicy() == null) {
+            application.setAuthenticationPolicy(null);
+        } else {
+            Policy policy = policyDAO.find(applicationTO.getAuthenticationPolicy());
+            if (policy instanceof AuthenticationPolicy) {
+                application.setAuthenticationPolicy((AuthenticationPolicy) policy);
+            } else {
+                SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidPolicy);
+                sce.getElements().add("Expected " + AuthenticationPolicy.class.getSimpleName()
+                        + ", found " + policy.getClass().getSimpleName());
+                throw sce;
+            }
         }
-        application.setAuthenticationPolicy(authenticationPolicy);
 
-        AccessPolicy accessPolicy = policyDAO.find(applicationTO.getAccessPolicy().getKey());
-        application.setAccessPolicy(accessPolicy);
+        if (applicationTO.getAccessPolicy() == null) {
+            application.setAccessPolicy(null);
+        } else {
+            Policy policy = policyDAO.find(applicationTO.getAccessPolicy());
+            if (policy instanceof AccessPolicy) {
+                application.setAccessPolicy((AccessPolicy) policy);
+            } else {
+                SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidPolicy);
+                sce.getElements().add("Expected " + AccessPolicy.class.getSimpleName()
+                        + ", found " + policy.getClass().getSimpleName());
+                throw sce;
+            }
+        }
+
+        if (applicationTO.getAttrReleasePolicy() == null) {
+            application.setAttrReleasePolicy(null);
+        } else {
+            Policy policy = policyDAO.find(applicationTO.getAttrReleasePolicy());
+            if (policy instanceof AttrReleasePolicy) {
+                application.setAttrReleasePolicy((AttrReleasePolicy) policy);
+            } else {
+                SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidPolicy);
+                sce.getElements().add("Expected " + AttrReleasePolicy.class.getSimpleName()
+                        + ", found " + policy.getClass().getSimpleName());
+                throw sce;
+            }
+        }
 
         return application;
     }
@@ -90,17 +119,12 @@ public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinde
         applicationTO.setRedirectUris(rp.getRedirectUris());
         applicationTO.setName(rp.getName());
 
-        AuthenticationPolicyTO authenticationPolicyTO = new AuthenticationPolicyTO();
-        authenticationPolicyTO.setDescription(rp.getAuthenticationPolicy().getDescription());
-        authenticationPolicyTO.setKey(rp.getAuthenticationPolicy().getKey());
-        applicationTO.setAuthenticationPolicy(authenticationPolicyTO);
-
-        if (rp.getAccessPolicy() != null) {
-            AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
-            accessPolicyTO.setDescription(rp.getAccessPolicy().getDescription());
-            accessPolicyTO.setKey(rp.getAccessPolicy().getKey());
-            applicationTO.setAccessPolicy(accessPolicyTO);
-        }
+        applicationTO.setAuthenticationPolicy(rp.getAuthenticationPolicy() == null
+                ? null : rp.getAuthenticationPolicy().getKey());
+        applicationTO.setAccessPolicy(rp.getAccessPolicy() == null
+                ? null : rp.getAccessPolicy().getKey());
+        applicationTO.setAttrReleasePolicy(rp.getAttrReleasePolicy() == null
+                ? null : rp.getAttrReleasePolicy().getKey());
 
         return applicationTO;
     }
