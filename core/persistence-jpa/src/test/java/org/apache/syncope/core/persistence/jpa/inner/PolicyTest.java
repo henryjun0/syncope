@@ -18,6 +18,15 @@
  */
 package org.apache.syncope.core.persistence.jpa.inner;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Map;
+import java.util.List;
+import java.util.UUID;
 import org.apache.syncope.common.lib.policy.DefaultPasswordRuleConf;
 import org.apache.syncope.common.lib.policy.DefaultPullCorrelationRuleConf;
 import org.apache.syncope.common.lib.policy.DefaultPushCorrelationRuleConf;
@@ -37,20 +46,17 @@ import org.apache.syncope.core.persistence.api.entity.policy.PullCorrelationRule
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PushCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
+import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
+import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
+import org.apache.syncope.common.lib.types.AMImplementationType;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
 import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional("Master")
 public class PolicyTest extends AbstractTest {
@@ -79,7 +85,7 @@ public class PolicyTest extends AbstractTest {
         PullCorrelationRuleEntity pullCR = pullPolicy.getCorrelationRule(anyTypeDAO.findUser()).orElse(null);
         assertNotNull(pullCR);
         DefaultPullCorrelationRuleConf pullCRConf =
-            POJOHelper.deserialize(pullCR.getImplementation().getBody(), DefaultPullCorrelationRuleConf.class);
+                POJOHelper.deserialize(pullCR.getImplementation().getBody(), DefaultPullCorrelationRuleConf.class);
         assertNotNull(pullCRConf);
         assertEquals(2, pullCRConf.getSchemas().size());
         assertTrue(pullCRConf.getSchemas().contains("username"));
@@ -91,20 +97,51 @@ public class PolicyTest extends AbstractTest {
         PushCorrelationRuleEntity pushCR = pushPolicy.getCorrelationRule(anyTypeDAO.findUser()).orElse(null);
         assertNotNull(pushCR);
         DefaultPushCorrelationRuleConf pushCRConf =
-            POJOHelper.deserialize(pushCR.getImplementation().getBody(), DefaultPushCorrelationRuleConf.class);
+                POJOHelper.deserialize(pushCR.getImplementation().getBody(), DefaultPushCorrelationRuleConf.class);
         assertNotNull(pushCRConf);
         assertEquals(1, pushCRConf.getSchemas().size());
         assertTrue(pushCRConf.getSchemas().contains("surname"));
 
+        AccessPolicy accessPolicy = policyDAO.find("617735c7-deb3-40b3-8a9a-683037e523a2");
+        assertNull(accessPolicy);
+        accessPolicy = policyDAO.find("419935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNotNull(accessPolicy);
+        accessPolicy = policyDAO.find(UUID.randomUUID().toString());
+        assertNull(accessPolicy);
+
         AuthenticationPolicy authenticationPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
         assertNotNull(authenticationPolicy);
+        authenticationPolicy = policyDAO.find("659b9906-4b6e-4bc0-aca0-6809dff346d4");
+        assertNotNull(authenticationPolicy);
+        authenticationPolicy = policyDAO.find(UUID.randomUUID().toString());
+        assertNull(authenticationPolicy);
+
+        AttrReleasePolicy attrReleasePolicy = policyDAO.find("019935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNull(attrReleasePolicy);
+        attrReleasePolicy = policyDAO.find("319935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNotNull(attrReleasePolicy);
+        attrReleasePolicy = policyDAO.find(UUID.randomUUID().toString());
+        assertNull(attrReleasePolicy);
+
     }
 
     @Test
     public void findByType() {
-        List<PullPolicy> policies = policyDAO.find(PullPolicy.class);
-        assertNotNull(policies);
-        assertFalse(policies.isEmpty());
+        List<PullPolicy> pullPolicies = policyDAO.find(PullPolicy.class);
+        assertNotNull(pullPolicies);
+        assertFalse(pullPolicies.isEmpty());
+
+        List<AccessPolicy> accessPolicies = policyDAO.find(AccessPolicy.class);
+        assertNotNull(accessPolicies);
+        assertEquals(1, accessPolicies.size());
+
+        List<AuthenticationPolicy> authenticationPolicies = policyDAO.find(AuthenticationPolicy.class);
+        assertNotNull(authenticationPolicies);
+        assertEquals(2, authenticationPolicies.size());
+
+        List<AttrReleasePolicy> attrReleasePolicies = policyDAO.find(AttrReleasePolicy.class);
+        assertNotNull(attrReleasePolicies);
+        assertEquals(2, attrReleasePolicies.size());
     }
 
     @Test
@@ -146,14 +183,83 @@ public class PolicyTest extends AbstractTest {
 
         assertNotNull(policy);
         assertEquals(pullURuleName,
-            policy.getCorrelationRule(anyTypeDAO.findUser()).get().getImplementation().getKey());
+                policy.getCorrelationRule(anyTypeDAO.findUser()).get().getImplementation().getKey());
         assertEquals(pullGRuleName,
-            policy.getCorrelationRule(anyTypeDAO.findGroup()).get().getImplementation().getKey());
+                policy.getCorrelationRule(anyTypeDAO.findGroup()).get().getImplementation().getKey());
 
+        int beforeCount = policyDAO.findAll().size();
+        AccessPolicy accessPolicy = entityFactory.newEntity(AccessPolicy.class);
+        accessPolicy.setName("AttrReleasePolicyAllowEverything");
+        accessPolicy.setDescription("This is a sample attr release policy that releases everything");
+
+        DefaultAccessPolicyConf conf = new DefaultAccessPolicyConf();
+        conf.setRequiredAttributes(Map.of("cn", List.of("syncope")));
+        conf.setName("AttrReleasePolicyAllowEverything");
+
+        Implementation type = entityFactory.newEntity(Implementation.class);
+        type.setKey("AttrReleasePolicyAllowEverything");
+        type.setEngine(ImplementationEngine.JAVA);
+        type.setType(AMImplementationType.ACCESS_POLICY_CONFIGURATIONS);
+        type.setBody(POJOHelper.serialize(conf));
+        type = implementationDAO.save(type);
+
+        accessPolicy.addConfiguration(type);
+        accessPolicy = policyDAO.save(accessPolicy);
+
+        assertNotNull(accessPolicy);
+        assertNotNull(accessPolicy.getKey());
+
+        int afterCount = policyDAO.findAll().size();
+        assertEquals(afterCount, beforeCount + 1);
+
+        beforeCount = policyDAO.findAll().size();
         AuthenticationPolicy authenticationPolicy = entityFactory.newEntity(AuthenticationPolicy.class);
-        authenticationPolicy.setDescription("Syncope Account Policy");
+        authenticationPolicy.setName("AuthenticationPolicyTest");
+        authenticationPolicy.setDescription("This is a sample authentication policy");
+
+        DefaultAuthenticationPolicyConf authPolicyConf = new DefaultAuthenticationPolicyConf();
+        authPolicyConf.setAuthenticationModules(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
+
+        Implementation authPolicyType = entityFactory.newEntity(Implementation.class);
+        authPolicyType.setKey("AuthPolicyConfKey");
+        authPolicyType.setEngine(ImplementationEngine.JAVA);
+        authPolicyType.setType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
+        authPolicyType.setBody(POJOHelper.serialize(authPolicyConf));
+        authPolicyType = implementationDAO.save(authPolicyType);
+
+        authenticationPolicy.addConfiguration(authPolicyType);
         authenticationPolicy = policyDAO.save(authenticationPolicy);
+
         assertNotNull(authenticationPolicy);
+        assertNotNull(authenticationPolicy.getKey());
+
+        afterCount = policyDAO.findAll().size();
+        assertEquals(afterCount, beforeCount + 1);
+
+        beforeCount = policyDAO.findAll().size();
+        AttrReleasePolicy attrReleasepolicy = entityFactory.newEntity(AttrReleasePolicy.class);
+        attrReleasepolicy.setName("AttrReleasePolicyAllowEverything");
+        attrReleasepolicy.setDescription("This is a sample attr release policy that releases everything");
+
+        AllowedAttrReleasePolicyConf attrReleasePolicyConf = new AllowedAttrReleasePolicyConf();
+        attrReleasePolicyConf.setAllowedAttributes(List.of("*"));
+        attrReleasePolicyConf.setName("AttrReleasePolicyAllowEverything");
+
+        Implementation attrReleasePolicyType = entityFactory.newEntity(Implementation.class);
+        attrReleasePolicyType.setKey("AttrReleasePolicyAllowEverything");
+        attrReleasePolicyType.setEngine(ImplementationEngine.JAVA);
+        attrReleasePolicyType.setType(AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS);
+        attrReleasePolicyType.setBody(POJOHelper.serialize(attrReleasePolicyConf));
+        attrReleasePolicyType = implementationDAO.save(attrReleasePolicyType);
+
+        attrReleasepolicy.addConfiguration(attrReleasePolicyType);
+        attrReleasepolicy = policyDAO.save(attrReleasepolicy);
+
+        assertNotNull(attrReleasepolicy);
+        assertNotNull(attrReleasepolicy.getKey());
+
+        afterCount = policyDAO.findAll().size();
+        assertEquals(afterCount, beforeCount + 1);
 
     }
 
@@ -196,5 +302,23 @@ public class PolicyTest extends AbstractTest {
 
         Policy actual = policyDAO.find("66691e96-285f-4464-bc19-e68384ea4c85");
         assertNull(actual);
+
+        AccessPolicy accessPolicy = policyDAO.find("419935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNotNull(accessPolicy);
+        policyDAO.delete(accessPolicy);
+        accessPolicy = policyDAO.find("419935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNull(accessPolicy);
+
+        AuthenticationPolicy authenticationPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        assertNotNull(authenticationPolicy);
+        policyDAO.delete(authenticationPolicy);
+        authenticationPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        assertNull(authenticationPolicy);
+
+        AttrReleasePolicy attrReleasepolicy = policyDAO.find("319935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNotNull(attrReleasepolicy);
+        policyDAO.delete(attrReleasepolicy);
+        attrReleasepolicy = policyDAO.find("319935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNull(attrReleasepolicy);
     }
 }

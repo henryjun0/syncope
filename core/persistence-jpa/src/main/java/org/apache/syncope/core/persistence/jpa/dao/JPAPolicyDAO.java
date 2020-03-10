@@ -72,9 +72,9 @@ public class JPAPolicyDAO extends AbstractDAO<Policy> implements PolicyDAO {
             : AuthenticationPolicy.class.isAssignableFrom(reference)
             ? JPAAuthenticationPolicy.class
             : AccessPolicy.class.isAssignableFrom(reference)
-            ? JPAAttrReleasePolicy.class
-            : AttrReleasePolicy.class.isAssignableFrom(reference)
             ? JPAAccessPolicy.class
+            : AttrReleasePolicy.class.isAssignableFrom(reference)
+            ? JPAAttrReleasePolicy.class
             : null;
     }
 

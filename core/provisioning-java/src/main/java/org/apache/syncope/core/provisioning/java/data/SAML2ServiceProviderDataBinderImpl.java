@@ -19,17 +19,16 @@
 package org.apache.syncope.core.provisioning.java.data;
 
 import org.apache.syncope.common.lib.SyncopeClientException;
-import org.apache.syncope.common.lib.to.AccessPolicyTO;
-import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO;
 import org.apache.syncope.common.lib.types.ClientExceptionType;
-import org.apache.syncope.core.persistence.api.dao.authentication.AccessPolicyDAO;
-import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationPolicyDAO;
+import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
 import org.apache.syncope.core.persistence.api.entity.EntityFactory;
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.Policy;
 import org.apache.syncope.core.provisioning.api.data.SAML2ServiceProviderDataBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,10 +43,7 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
     private EntityFactory entityFactory;
 
     @Autowired
-    private AuthenticationPolicyDAO authenticationPolicyDAO;
-
-    @Autowired
-    private AccessPolicyDAO accessPolicyDAO;
+    private PolicyDAO policyDAO;
 
     @Override
     public SAML2ServiceProvider create(final SAML2ServiceProviderTO applicationTO) {
@@ -66,19 +62,47 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
         application.setEntityId(applicationTO.getEntityId());
         application.setMetadataLocation(applicationTO.getMetadataLocation());
 
-        AuthenticationPolicy authenticationPolicy = authenticationPolicyDAO.
-                find(applicationTO.getAuthenticationPolicy().getKey());
-        if (authenticationPolicy == null) {
-            SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidEntity);
-            sce.getElements().add("Unable to locate authentication policy "
-                    + applicationTO.getAuthenticationPolicy().getKey());
-            throw sce;
+        if (applicationTO.getAuthenticationPolicy() == null) {
+            application.setAuthenticationPolicy(null);
+        } else {
+            Policy policy = policyDAO.find(applicationTO.getAuthenticationPolicy());
+            if (policy instanceof AuthenticationPolicy) {
+                application.setAuthenticationPolicy((AuthenticationPolicy) policy);
+            } else {
+                SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidPolicy);
+                sce.getElements().add("Expected " + AuthenticationPolicy.class.getSimpleName()
+                        + ", found " + policy.getClass().getSimpleName());
+                throw sce;
+            }
         }
-        application.setAuthenticationPolicy(authenticationPolicy);
 
-        AccessPolicy accessPolicy = accessPolicyDAO.find(applicationTO.getAccessPolicy().getKey());
-        application.setAccessPolicy(accessPolicy);
+        if (applicationTO.getAccessPolicy() == null) {
+            application.setAccessPolicy(null);
+        } else {
+            Policy policy = policyDAO.find(applicationTO.getAccessPolicy());
+            if (policy instanceof AccessPolicy) {
+                application.setAccessPolicy((AccessPolicy) policy);
+            } else {
+                SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidPolicy);
+                sce.getElements().add("Expected " + AccessPolicy.class.getSimpleName()
+                        + ", found " + policy.getClass().getSimpleName());
+                throw sce;
+            }
+        }
 
+        if (applicationTO.getAttrReleasePolicy() == null) {
+            application.setAttrReleasePolicy(null);
+        } else {
+            Policy policy = policyDAO.find(applicationTO.getAttrReleasePolicy());
+            if (policy instanceof AttrReleasePolicy) {
+                application.setAttrReleasePolicy((AttrReleasePolicy) policy);
+            } else {
+                SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidPolicy);
+                sce.getElements().add("Expected " + AttrReleasePolicy.class.getSimpleName()
+                        + ", found " + policy.getClass().getSimpleName());
+                throw sce;
+            }
+        }
         return application;
     }
 
@@ -92,17 +116,12 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
         applicationTO.setMetadataLocation(sp.getMetadataLocation());
         applicationTO.setName(sp.getName());
 
-        AuthenticationPolicyTO authenticationPolicyTO = new AuthenticationPolicyTO();
-        authenticationPolicyTO.setDescription(sp.getAuthenticationPolicy().getDescription());
-        authenticationPolicyTO.setKey(sp.getAuthenticationPolicy().getKey());
-        applicationTO.setAuthenticationPolicy(authenticationPolicyTO);
-
-        if (sp.getAccessPolicy() != null) {
-            AccessPolicyTO accessPolicyTO = new AccessPolicyTO();
-            accessPolicyTO.setDescription(sp.getAccessPolicy().getDescription());
-            accessPolicyTO.setKey(sp.getAccessPolicy().getKey());
-            applicationTO.setAccessPolicy(accessPolicyTO);
-        }
+        applicationTO.setAuthenticationPolicy(sp.getAuthenticationPolicy() == null
+                ? null : sp.getAuthenticationPolicy().getKey());
+        applicationTO.setAccessPolicy(sp.getAccessPolicy() == null
+                ? null : sp.getAccessPolicy().getKey());
+        applicationTO.setAttrReleasePolicy(sp.getAttrReleasePolicy() == null
+                ? null : sp.getAttrReleasePolicy().getKey());
 
         return applicationTO;
     }

@@ -66,7 +66,7 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         assertNotNull(accessPolicyTO);
 
         rpTO.setClientId("newClientId");
-        rpTO.setAccessPolicy(accessPolicyTO);
+        rpTO.setAccessPolicy(accessPolicyTO.getKey());
 
         oidcRelyingPartyService.update(rpTO);
         OIDCRelyingPartyTO updated = oidcRelyingPartyService.read(rpTO.getKey());
@@ -74,7 +74,6 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         assertNotNull(updated);
         assertEquals("newClientId", updated.getClientId());
         assertNotNull(updated.getAccessPolicy());
-        assertEquals("New Access policy", updated.getAccessPolicy().getDescription());
     }
 
     @Test
@@ -110,8 +109,8 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         rpTO.setDescription("Example OIDC RP application");
         rpTO.setClientId("clientId_" + getUUIDString());
         rpTO.setClientSecret(StringUtils.EMPTY);
-        rpTO.setAuthenticationPolicy(authPolicyTO);
-        rpTO.setAccessPolicy(accessPolicyTO);
+        rpTO.setAuthenticationPolicy(authPolicyTO.getKey());
+        rpTO.setAccessPolicy(accessPolicyTO.getKey());
 
         return rpTO;
     }

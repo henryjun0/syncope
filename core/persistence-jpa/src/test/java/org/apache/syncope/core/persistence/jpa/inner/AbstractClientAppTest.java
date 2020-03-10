@@ -16,32 +16,27 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.core.persistence.jpa.inner;
 
+import java.util.List;
+import java.util.Map;
 import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
 import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
 import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
-import org.apache.syncope.core.persistence.api.dao.authentication.AccessPolicyDAO;
-import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationPolicyDAO;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
+import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
 import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Map;
-
 public class AbstractClientAppTest extends AbstractTest {
-    @Autowired
-    protected AuthenticationPolicyDAO authenticationPolicyDAO;
 
     @Autowired
-    protected AccessPolicyDAO accessPolicyDAO;
+    protected PolicyDAO policyDAO;
 
     @Autowired
     protected ImplementationDAO implementationDAO;
@@ -65,7 +60,7 @@ public class AbstractClientAppTest extends AbstractTest {
         type = implementationDAO.save(type);
 
         accessPolicy.addConfiguration(type);
-        return accessPolicyDAO.save(accessPolicy);
+        return policyDAO.save(accessPolicy);
 
     }
 
@@ -85,7 +80,7 @@ public class AbstractClientAppTest extends AbstractTest {
         type = implementationDAO.save(type);
 
         authenticationPolicy.addConfiguration(type);
-        return authenticationPolicyDAO.save(authenticationPolicy);
+        return policyDAO.save(authenticationPolicy);
     }
 
 }
