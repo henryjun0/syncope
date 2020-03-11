@@ -44,7 +44,7 @@ jobs:
   include:
     - stage: build
       name: "Build"
-      script: mvn help:evaluate -Dexpression=settings.localRepository | grep -v '\[INFO\]' && mvn -T 1C -P skipTests,all
+      script: mvn -T 1C -P skipTests,all
       #######################################################
     - stage: validate
       name: "Checkstyle, Legal Files, Modernizer and Release Audit Tool (RAT) Analysis"
@@ -56,7 +56,7 @@ jobs:
       ######################################################
     - stage: fit
       name: "Full Integration Tests: Apache Tomcat / H2 / JSON Content-Type"
-      script: mvn help:evaluate -Dexpression=settings.localRepository | grep -v '\[INFO\]' && mvn -f fit/core-reference/pom.xml verify -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true
+      script: mvn -f fit/core-reference/pom.xml verify -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true
       after_failure:
        - cat fit/core-reference/target/log/*
        - cat fit/core-reference/target/failsafe-reports/org.apache.syncope.fit.*-output.txt
