@@ -30,12 +30,23 @@ public abstract class AbstractAuthenticationPolicyConf implements Serializable, 
 
     private String name;
 
+    private AuthenticationPolicyCriteriaConf criteria;
+
     public AbstractAuthenticationPolicyConf() {
         setName(getClass().getName());
     }
 
     public AbstractAuthenticationPolicyConf(final String name) {
         setName(name);
+    }
+
+    @Override
+    public AuthenticationPolicyCriteriaConf getCriteria() {
+        return criteria;
+    }
+
+    public void setCriteria(final AuthenticationPolicyCriteriaConf criteria) {
+        this.criteria = criteria;
     }
 
     @Override

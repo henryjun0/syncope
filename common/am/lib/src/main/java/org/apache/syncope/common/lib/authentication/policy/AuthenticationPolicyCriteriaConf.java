@@ -22,21 +22,22 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 
+/**
+ * Determine the criteria by which the authentication policy
+ * should conduct itself. Typically, this translates to how
+ * the policy should execute the modules to establish a success
+ * criteria. Examples would include "all modules should validate the user"
+ * or "any module can validate the user" before the policy can consider it
+ * a success.
+ */
+@FunctionalInterface
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public interface AuthenticationPolicyConf extends Serializable {
+public interface AuthenticationPolicyCriteriaConf extends Serializable {
 
     /**
-     * Give name of related authentication policy instance.
+     * Describe the name of the authentication policy criteria.
      *
      * @return name of this authentication policy instance
      */
     String getName();
-
-    /**
-     * Gets the policy criteria linked to this policy
-     * to establish criteria for success.
-     *
-     * @return the criteria
-     */
-    AuthenticationPolicyCriteriaConf getCriteria();
 }

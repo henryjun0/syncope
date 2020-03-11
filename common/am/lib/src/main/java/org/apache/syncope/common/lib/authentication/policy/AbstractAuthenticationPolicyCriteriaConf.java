@@ -18,25 +18,35 @@
  */
 package org.apache.syncope.common.lib.authentication.policy;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
 
 import java.io.Serializable;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public interface AuthenticationPolicyConf extends Serializable {
+@XmlType
+@XmlSeeAlso({DefaultAuthenticationPolicyCriteriaConf.class})
+public abstract class AbstractAuthenticationPolicyCriteriaConf
+    implements AuthenticationPolicyCriteriaConf, Serializable {
 
-    /**
-     * Give name of related authentication policy instance.
-     *
-     * @return name of this authentication policy instance
-     */
-    String getName();
+    private static final long serialVersionUID = -6882164291962510245L;
 
-    /**
-     * Gets the policy criteria linked to this policy
-     * to establish criteria for success.
-     *
-     * @return the criteria
-     */
-    AuthenticationPolicyCriteriaConf getCriteria();
+    private String name;
+
+    public AbstractAuthenticationPolicyCriteriaConf() {
+        setName(getClass().getName());
+    }
+
+    public AbstractAuthenticationPolicyCriteriaConf(final String name) {
+        setName(name);
+    }
+
+    @Override
+    public final String getName() {
+        return name;
+    }
+
+    public final void setName(final String name) {
+        this.name = name;
+    }
+
 }

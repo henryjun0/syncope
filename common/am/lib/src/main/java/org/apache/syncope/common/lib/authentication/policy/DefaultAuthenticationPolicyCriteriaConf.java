@@ -18,25 +18,21 @@
  */
 package org.apache.syncope.common.lib.authentication.policy;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-import java.io.Serializable;
+@XmlRootElement(name = "AnyAuthenticationPolicyCriteriaConf")
+@XmlType
+public class DefaultAuthenticationPolicyCriteriaConf extends AbstractAuthenticationPolicyCriteriaConf {
+    private static final long serialVersionUID = 3928807032588105869L;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public interface AuthenticationPolicyConf extends Serializable {
+    private boolean all;
 
-    /**
-     * Give name of related authentication policy instance.
-     *
-     * @return name of this authentication policy instance
-     */
-    String getName();
+    public boolean isAll() {
+        return all;
+    }
 
-    /**
-     * Gets the policy criteria linked to this policy
-     * to establish criteria for success.
-     *
-     * @return the criteria
-     */
-    AuthenticationPolicyCriteriaConf getCriteria();
+    public void setAll(final boolean all) {
+        this.all = all;
+    }
 }

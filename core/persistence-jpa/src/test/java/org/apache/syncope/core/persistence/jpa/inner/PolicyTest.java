@@ -18,18 +18,14 @@
  */
 package org.apache.syncope.core.persistence.jpa.inner;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Map;
-import java.util.List;
-import java.util.UUID;
+import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
+import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyCriteriaConf;
 import org.apache.syncope.common.lib.policy.DefaultPasswordRuleConf;
 import org.apache.syncope.common.lib.policy.DefaultPullCorrelationRuleConf;
 import org.apache.syncope.common.lib.policy.DefaultPushCorrelationRuleConf;
+import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ConflictResolutionAction;
 import org.apache.syncope.common.lib.types.IdMImplementationType;
 import org.apache.syncope.common.lib.types.IdRepoImplementationType;
@@ -39,6 +35,8 @@ import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.api.dao.PullCorrelationRule;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
+import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
@@ -46,17 +44,17 @@ import org.apache.syncope.core.persistence.api.entity.policy.PullCorrelationRule
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PushCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
-import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
-import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
-import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
-import org.apache.syncope.common.lib.types.AMImplementationType;
-import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
 import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional("Master")
 public class PolicyTest extends AbstractTest {
@@ -85,7 +83,7 @@ public class PolicyTest extends AbstractTest {
         PullCorrelationRuleEntity pullCR = pullPolicy.getCorrelationRule(anyTypeDAO.findUser()).orElse(null);
         assertNotNull(pullCR);
         DefaultPullCorrelationRuleConf pullCRConf =
-                POJOHelper.deserialize(pullCR.getImplementation().getBody(), DefaultPullCorrelationRuleConf.class);
+            POJOHelper.deserialize(pullCR.getImplementation().getBody(), DefaultPullCorrelationRuleConf.class);
         assertNotNull(pullCRConf);
         assertEquals(2, pullCRConf.getSchemas().size());
         assertTrue(pullCRConf.getSchemas().contains("username"));
@@ -97,7 +95,7 @@ public class PolicyTest extends AbstractTest {
         PushCorrelationRuleEntity pushCR = pushPolicy.getCorrelationRule(anyTypeDAO.findUser()).orElse(null);
         assertNotNull(pushCR);
         DefaultPushCorrelationRuleConf pushCRConf =
-                POJOHelper.deserialize(pushCR.getImplementation().getBody(), DefaultPushCorrelationRuleConf.class);
+            POJOHelper.deserialize(pushCR.getImplementation().getBody(), DefaultPushCorrelationRuleConf.class);
         assertNotNull(pushCRConf);
         assertEquals(1, pushCRConf.getSchemas().size());
         assertTrue(pushCRConf.getSchemas().contains("surname"));
@@ -183,9 +181,9 @@ public class PolicyTest extends AbstractTest {
 
         assertNotNull(policy);
         assertEquals(pullURuleName,
-                policy.getCorrelationRule(anyTypeDAO.findUser()).get().getImplementation().getKey());
+            policy.getCorrelationRule(anyTypeDAO.findUser()).get().getImplementation().getKey());
         assertEquals(pullGRuleName,
-                policy.getCorrelationRule(anyTypeDAO.findGroup()).get().getImplementation().getKey());
+            policy.getCorrelationRule(anyTypeDAO.findGroup()).get().getImplementation().getKey());
 
         int beforeCount = policyDAO.findAll().size();
         AccessPolicy accessPolicy = entityFactory.newEntity(AccessPolicy.class);
@@ -219,7 +217,10 @@ public class PolicyTest extends AbstractTest {
 
         DefaultAuthenticationPolicyConf authPolicyConf = new DefaultAuthenticationPolicyConf();
         authPolicyConf.setAuthenticationModules(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
-
+        DefaultAuthenticationPolicyCriteriaConf criteria = new DefaultAuthenticationPolicyCriteriaConf();
+        criteria.setName("DefaultConf");
+        criteria.setAll(true);
+        authPolicyConf.setCriteria(criteria);
         Implementation authPolicyType = entityFactory.newEntity(Implementation.class);
         authPolicyType.setKey("AuthPolicyConfKey");
         authPolicyType.setEngine(ImplementationEngine.JAVA);
