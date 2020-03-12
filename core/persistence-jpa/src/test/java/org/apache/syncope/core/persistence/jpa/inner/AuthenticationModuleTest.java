@@ -21,7 +21,7 @@ package org.apache.syncope.core.persistence.jpa.inner;
 import org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf;
 import org.apache.syncope.common.lib.authentication.module.GoogleMfaAuthenticationModuleConf;
 import org.apache.syncope.common.lib.authentication.module.JaasAuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.module.LdapAuthenticationModuleConf;
+import org.apache.syncope.common.lib.authentication.module.LDAPAuthenticationModuleConf;
 import org.apache.syncope.common.lib.authentication.module.StaticAuthenticationModuleConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
@@ -120,7 +120,7 @@ public class AuthenticationModuleTest extends AbstractTest {
 
     @Test
     public void saveWithLdapModule() {
-        LdapAuthenticationModuleConf conf = new LdapAuthenticationModuleConf();
+        LDAPAuthenticationModuleConf conf = new LDAPAuthenticationModuleConf();
         conf.setAttributes(List.of("cn", "uid"));
         conf.setBaseDn("dc=example,dc=org");
         conf.setSearchFilter("cn={user}");

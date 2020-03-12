@@ -88,7 +88,6 @@ public class OIDCAuthenticationModuleConf extends AbstractAuthenticationModuleCo
      */
     private String responseType;
 
-
     public String getId() {
         return id;
     }

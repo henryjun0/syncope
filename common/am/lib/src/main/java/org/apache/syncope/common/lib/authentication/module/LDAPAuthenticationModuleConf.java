@@ -27,7 +27,7 @@ import java.util.List;
 
 @XmlRootElement(name = "ldapAuthenticationModuleConf")
 @XmlType
-public class LdapAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+public class LDAPAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
     private static final long serialVersionUID = -471527731042579422L;
 
     protected String searchFilter;
