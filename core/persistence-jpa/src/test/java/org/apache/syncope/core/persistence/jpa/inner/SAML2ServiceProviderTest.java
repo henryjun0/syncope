@@ -6,7 +6,8 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -14,9 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-
 package org.apache.syncope.core.persistence.jpa.inner;
 
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
@@ -51,7 +50,7 @@ public class SAML2ServiceProviderTest extends AbstractClientAppTest {
 
         AuthenticationPolicy authnPolicy = buildAndSaveAuthenticationPolicy();
         rp.setAuthenticationPolicy(authnPolicy);
-        
+
         saml2ServiceProviderDAO.save(rp);
 
         assertNotNull(rp);

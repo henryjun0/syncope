@@ -6,7 +6,8 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -14,7 +15,6 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 package org.apache.syncope.common.lib.access;
 
@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.apache.syncope.common.lib.jaxb.XmlGenericMapAdapter;
 
 @XmlType
 @XmlSeeAlso({ DefaultAccessPolicyConf.class })
@@ -40,6 +42,7 @@ public abstract class AbstractAccessPolicyConf implements Serializable, AccessPo
 
     private boolean ssoEnabled = true;
 
+    @XmlJavaTypeAdapter(XmlGenericMapAdapter.class)
     private final Map<String, List<String>> requiredAttributes = new LinkedHashMap<>();
 
     public AbstractAccessPolicyConf() {

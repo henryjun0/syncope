@@ -6,7 +6,8 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -14,7 +15,6 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
@@ -42,7 +42,7 @@ public class JPAAuthenticationModuleDAO extends AbstractDAO<AuthenticationModule
     @Override
     public List<AuthenticationModule> findAll() {
         TypedQuery<AuthenticationModule> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e", AuthenticationModule.class);
+                "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e", AuthenticationModule.class);
 
         return query.getResultList();
     }
@@ -51,7 +51,7 @@ public class JPAAuthenticationModuleDAO extends AbstractDAO<AuthenticationModule
     @Override
     public List<AuthenticationModule> findByConfiguration(final Implementation configuration) {
         TypedQuery<AuthenticationModule> query = entityManager().createQuery(
-            "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e "
+                "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e "
                 + "WHERE :configuration MEMBER OF e.configurations", AuthenticationModule.class);
         query.setParameter("configuration", configuration);
         return query.getResultList();
