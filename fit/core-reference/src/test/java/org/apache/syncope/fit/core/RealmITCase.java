@@ -214,7 +214,7 @@ public class RealmITCase extends AbstractITCase {
     public void deletingAuthenticationPolicy() {
         // 1. create authentication policy
         DefaultAuthenticationPolicyConf ruleConf = new DefaultAuthenticationPolicyConf();
-        ruleConf.setAuthenticationModules(List.of("LdapAuthentication1"));
+        ruleConf.getAuthenticationModules().addAll(List.of("LdapAuthentication1"));
 
         ImplementationTO rule = new ImplementationTO();
         rule.setKey("TestAuthenticationPolicy" + getUUIDString());
@@ -315,7 +315,7 @@ public class RealmITCase extends AbstractITCase {
         // 1. create attribute release policy
         AllowedAttrReleasePolicyConf ruleConf = new AllowedAttrReleasePolicyConf();
         ruleConf.setName("MyDefaultAttrReleasePolicyConf" + getUUIDString());
-        ruleConf.setAllowedAttributes(List.of("cn", "givenName"));
+        ruleConf.getAllowedAttributes().addAll(List.of("cn", "givenName"));
 
         ImplementationTO rule = new ImplementationTO();
         rule.setKey("TestAttrReleasePolicy" + getUUIDString());

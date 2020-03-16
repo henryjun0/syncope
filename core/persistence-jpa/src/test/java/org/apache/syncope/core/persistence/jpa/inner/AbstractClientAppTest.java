@@ -49,7 +49,7 @@ public class AbstractClientAppTest extends AbstractTest {
         DefaultAccessPolicyConf conf = new DefaultAccessPolicyConf();
         conf.setEnabled(true);
         conf.setName("Example Access Policy for an application");
-        conf.setRequiredAttributes(Map.of("attribute1", List.of("value1", "value2")));
+        conf.getRequiredAttributes().putAll(Map.of("attribute1", List.of("value1", "value2")));
         conf.setSsoEnabled(false);
 
         Implementation type = entityFactory.newEntity(Implementation.class);
@@ -70,7 +70,7 @@ public class AbstractClientAppTest extends AbstractTest {
         authenticationPolicy.setDescription("This is a sample authentication policy");
 
         DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
-        conf.setAuthenticationModules(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
+        conf.getAuthenticationModules().addAll(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
 
         Implementation type = entityFactory.newEntity(Implementation.class);
         type.setKey("AuthPolicyConfKey");

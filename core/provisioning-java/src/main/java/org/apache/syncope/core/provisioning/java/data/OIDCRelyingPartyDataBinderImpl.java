@@ -116,7 +116,7 @@ public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinde
         applicationTO.setDescription(rp.getDescription());
         applicationTO.setClientId(rp.getClientId());
         applicationTO.setClientSecret(rp.getClientSecret());
-        applicationTO.setRedirectUris(rp.getRedirectUris());
+        applicationTO.getRedirectUris().addAll(rp.getRedirectUris());
         applicationTO.setName(rp.getName());
 
         applicationTO.setAuthenticationPolicy(rp.getAuthenticationPolicy() == null

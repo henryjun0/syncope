@@ -18,12 +18,15 @@
  */
 package org.apache.syncope.common.lib.access;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlType
 @XmlSeeAlso({ DefaultAccessPolicyConf.class })
@@ -37,7 +40,7 @@ public abstract class AbstractAccessPolicyConf implements Serializable, AccessPo
 
     private boolean ssoEnabled = true;
 
-    private Map<String, List<String>> requiredAttributes = new LinkedHashMap<>();
+    private final Map<String, List<String>> requiredAttributes = new LinkedHashMap<>();
 
     public AbstractAccessPolicyConf() {
         setName(getClass().getName());
@@ -70,12 +73,12 @@ public abstract class AbstractAccessPolicyConf implements Serializable, AccessPo
         this.ssoEnabled = ssoEnabled;
     }
 
+    @XmlElementWrapper(name = "requiredAttributes")
+    @XmlElement(name = "requiredAttribute")
+    @JsonProperty("requiredAttributes")
     @Override
     public Map<String, List<String>> getRequiredAttributes() {
         return requiredAttributes;
     }
 
-    public void setRequiredAttributes(final Map<String, List<String>> requiredAttributes) {
-        this.requiredAttributes = requiredAttributes;
-    }
 }

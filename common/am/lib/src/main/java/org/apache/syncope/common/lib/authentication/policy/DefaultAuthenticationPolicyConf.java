@@ -18,11 +18,13 @@
  */
 package org.apache.syncope.common.lib.authentication.policy;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlRootElement(name = "DefaultAuthenticationPolicyConf")
 @XmlType
@@ -31,13 +33,13 @@ public class DefaultAuthenticationPolicyConf extends AbstractAuthenticationPolic
 
     private static final long serialVersionUID = -2969836600059025380L;
 
-    private List<String> authenticationModules = new ArrayList<>();
+    private final List<String> authenticationModules = new ArrayList<>();
 
+    @XmlElementWrapper(name = "authenticationModules")
+    @XmlElement(name = "authenticationModule")
+    @JsonProperty("authenticationModules")
     public List<String> getAuthenticationModules() {
         return authenticationModules;
     }
 
-    public void setAuthenticationModules(final List<String> authenticationModules) {
-        this.authenticationModules = authenticationModules;
-    }
 }

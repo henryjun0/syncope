@@ -55,7 +55,7 @@ public class AuthenticationModuleTest extends AbstractTest {
     @Test
     public void find() {
         AuthenticationModule module = authenticationModuleDAO.find(
-            "be456831-593d-4003-b273-4c3fb61700df");
+                "be456831-593d-4003-b273-4c3fb61700df");
         assertNotNull(module);
 
         module = authenticationModuleDAO.find(UUID.randomUUID().toString());
@@ -72,7 +72,7 @@ public class AuthenticationModuleTest extends AbstractTest {
     @Test
     public void saveWithPredefinedModule() {
         StaticAuthenticationModuleConf conf =
-            new StaticAuthenticationModuleConf(Map.of("user", UUID.randomUUID().toString()));
+                new StaticAuthenticationModuleConf(Map.of("user", UUID.randomUUID().toString()));
 
         Implementation config = getImplementation(conf);
 
@@ -121,7 +121,7 @@ public class AuthenticationModuleTest extends AbstractTest {
     @Test
     public void saveWithLdapModule() {
         LdapAuthenticationModuleConf conf = new LdapAuthenticationModuleConf();
-        conf.setAttributes(List.of("cn", "uid"));
+        conf.getAttributes().addAll(List.of("cn", "uid"));
         conf.setBaseDn("dc=example,dc=org");
         conf.setSearchFilter("cn={user}");
         conf.setSubtreeSearch(true);
@@ -150,7 +150,7 @@ public class AuthenticationModuleTest extends AbstractTest {
     @Test
     public void saveWithGoogleAuthenticatorModule() {
         GoogleMfaAuthenticationModuleConf conf =
-            new GoogleMfaAuthenticationModuleConf();
+                new GoogleMfaAuthenticationModuleConf();
         conf.setCodeDigits(6);
         conf.setIssuer("SyncopeTest");
         conf.setLabel("Syncope");
@@ -186,7 +186,7 @@ public class AuthenticationModuleTest extends AbstractTest {
     @Test
     public void delete() {
         AuthenticationModule athAuthenticationModule = authenticationModuleDAO.find(
-            "be456831-593d-4003-b273-4c3fb61700df");
+                "be456831-593d-4003-b273-4c3fb61700df");
         assertNotNull(athAuthenticationModule);
 
         authenticationModuleDAO.delete("be456831-593d-4003-b273-4c3fb61700df");

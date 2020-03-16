@@ -16,7 +16,6 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.to.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,18 +29,21 @@ import javax.xml.bind.annotation.XmlType;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlRootElement(name = "openIdConnectRelyingParty")
 @XmlType
 @Schema(allOf = { ClientAppTO.class })
 public class OIDCRelyingPartyTO extends ClientAppTO {
+
     private static final long serialVersionUID = -6370888503924521351L;
 
     private String clientId;
 
     private String clientSecret;
 
-    private List<String> redirectUris = new ArrayList<>();
+    private final List<String> redirectUris = new ArrayList<>();
 
     @XmlTransient
     @JsonProperty("@class")
@@ -67,14 +69,12 @@ public class OIDCRelyingPartyTO extends ClientAppTO {
         this.clientSecret = clientSecret;
     }
 
+    @XmlElementWrapper(name = "redirectUris")
+    @XmlElement(name = "redirectUri")
+    @JsonProperty("redirectUris")
     public List<String> getRedirectUris() {
         return redirectUris;
     }
-
-    public void setRedirectUris(final List<String> redirectUris) {
-        this.redirectUris = redirectUris;
-    }
-
 
     @Override
     public boolean equals(final Object obj) {
@@ -89,20 +89,20 @@ public class OIDCRelyingPartyTO extends ClientAppTO {
         }
         OIDCRelyingPartyTO rhs = (OIDCRelyingPartyTO) obj;
         return new EqualsBuilder()
-            .appendSuper(super.equals(obj))
-            .append(this.clientId, rhs.clientId)
-            .append(this.clientSecret, rhs.clientSecret)
-            .append(this.redirectUris, rhs.redirectUris)
-            .isEquals();
+                .appendSuper(super.equals(obj))
+                .append(this.clientId, rhs.clientId)
+                .append(this.clientSecret, rhs.clientSecret)
+                .append(this.redirectUris, rhs.redirectUris)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-            .appendSuper(super.hashCode())
-            .append(clientId)
-            .append(clientSecret)
-            .append(redirectUris)
-            .toHashCode();
+                .appendSuper(super.hashCode())
+                .append(clientId)
+                .append(clientSecret)
+                .append(redirectUris)
+                .toHashCode();
     }
 }

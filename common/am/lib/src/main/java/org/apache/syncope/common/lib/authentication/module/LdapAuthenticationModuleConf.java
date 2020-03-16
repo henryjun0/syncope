@@ -16,18 +16,21 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.authentication.module;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlRootElement(name = "ldapAuthenticationModuleConf")
 @XmlType
 public class LdapAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+
     private static final long serialVersionUID = -471527731042579422L;
 
     protected String searchFilter;
@@ -36,7 +39,7 @@ public class LdapAuthenticationModuleConf extends AbstractAuthenticationModuleCo
      * List of attributes to fetch from LDAP
      * for the user.
      */
-    private List<String> attributes = new ArrayList<>(0);
+    private final List<String> attributes = new ArrayList<>(0);
 
     /**
      * The attribute value that should be used
@@ -92,12 +95,11 @@ public class LdapAuthenticationModuleConf extends AbstractAuthenticationModuleCo
         this.baseDn = baseDn;
     }
 
+    @XmlElementWrapper(name = "attributes")
+    @XmlElement(name = "attribute")
+    @JsonProperty("attributes")
     public List<String> getAttributes() {
         return attributes;
-    }
-
-    public void setAttributes(final List<String> attributes) {
-        this.attributes = attributes;
     }
 
     public String getUserIdAttribute() {
