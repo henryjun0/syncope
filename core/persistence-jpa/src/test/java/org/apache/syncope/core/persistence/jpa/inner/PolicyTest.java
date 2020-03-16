@@ -83,7 +83,7 @@ public class PolicyTest extends AbstractTest {
         PullCorrelationRuleEntity pullCR = pullPolicy.getCorrelationRule(anyTypeDAO.findUser()).orElse(null);
         assertNotNull(pullCR);
         DefaultPullCorrelationRuleConf pullCRConf =
-            POJOHelper.deserialize(pullCR.getImplementation().getBody(), DefaultPullCorrelationRuleConf.class);
+                POJOHelper.deserialize(pullCR.getImplementation().getBody(), DefaultPullCorrelationRuleConf.class);
         assertNotNull(pullCRConf);
         assertEquals(2, pullCRConf.getSchemas().size());
         assertTrue(pullCRConf.getSchemas().contains("username"));
@@ -95,7 +95,7 @@ public class PolicyTest extends AbstractTest {
         PushCorrelationRuleEntity pushCR = pushPolicy.getCorrelationRule(anyTypeDAO.findUser()).orElse(null);
         assertNotNull(pushCR);
         DefaultPushCorrelationRuleConf pushCRConf =
-            POJOHelper.deserialize(pushCR.getImplementation().getBody(), DefaultPushCorrelationRuleConf.class);
+                POJOHelper.deserialize(pushCR.getImplementation().getBody(), DefaultPushCorrelationRuleConf.class);
         assertNotNull(pushCRConf);
         assertEquals(1, pushCRConf.getSchemas().size());
         assertTrue(pushCRConf.getSchemas().contains("surname"));
@@ -181,9 +181,9 @@ public class PolicyTest extends AbstractTest {
 
         assertNotNull(policy);
         assertEquals(pullURuleName,
-            policy.getCorrelationRule(anyTypeDAO.findUser()).get().getImplementation().getKey());
+                policy.getCorrelationRule(anyTypeDAO.findUser()).get().getImplementation().getKey());
         assertEquals(pullGRuleName,
-            policy.getCorrelationRule(anyTypeDAO.findGroup()).get().getImplementation().getKey());
+                policy.getCorrelationRule(anyTypeDAO.findGroup()).get().getImplementation().getKey());
 
         int beforeCount = policyDAO.findAll().size();
         AccessPolicy accessPolicy = entityFactory.newEntity(AccessPolicy.class);
@@ -191,7 +191,7 @@ public class PolicyTest extends AbstractTest {
         accessPolicy.setDescription("This is a sample attr release policy that releases everything");
 
         DefaultAccessPolicyConf conf = new DefaultAccessPolicyConf();
-        conf.setRequiredAttributes(Map.of("cn", List.of("syncope")));
+        conf.getRequiredAttributes().putAll(Map.of("cn", List.of("syncope")));
         conf.setName("AttrReleasePolicyAllowEverything");
 
         Implementation type = entityFactory.newEntity(Implementation.class);
@@ -216,7 +216,7 @@ public class PolicyTest extends AbstractTest {
         authenticationPolicy.setDescription("This is a sample authentication policy");
 
         DefaultAuthenticationPolicyConf authPolicyConf = new DefaultAuthenticationPolicyConf();
-        authPolicyConf.setAuthenticationModules(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
+        authPolicyConf.getAuthenticationModules().addAll(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
         DefaultAuthenticationPolicyCriteriaConf criteria = new DefaultAuthenticationPolicyCriteriaConf();
         criteria.setName("DefaultConf");
         criteria.setAll(true);
@@ -243,7 +243,7 @@ public class PolicyTest extends AbstractTest {
         attrReleasepolicy.setDescription("This is a sample attr release policy that releases everything");
 
         AllowedAttrReleasePolicyConf attrReleasePolicyConf = new AllowedAttrReleasePolicyConf();
-        attrReleasePolicyConf.setAllowedAttributes(List.of("*"));
+        attrReleasePolicyConf.getAllowedAttributes().addAll(List.of("*"));
         attrReleasePolicyConf.setName("AttrReleasePolicyAllowEverything");
 
         Implementation attrReleasePolicyType = entityFactory.newEntity(Implementation.class);

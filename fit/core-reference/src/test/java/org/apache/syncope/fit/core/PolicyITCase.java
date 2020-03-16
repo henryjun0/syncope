@@ -78,7 +78,7 @@ public class PolicyITCase extends AbstractITCase {
                 implementationTO.setType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
 
                 DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
-                conf.setAuthenticationModules(List.of("LdapAuthentication1"));
+                conf.getAuthenticationModules().addAll(List.of("LdapAuthentication1"));
                 implementationTO.setBody(POJOHelper.serialize(conf));
 
                 Response response = implementationService.create(implementationTO);
@@ -110,7 +110,7 @@ public class PolicyITCase extends AbstractITCase {
 
                 AllowedAttrReleasePolicyConf conf = new AllowedAttrReleasePolicyConf();
                 conf.setName("MyDefaultAttrReleasePolicyConf");
-                conf.setAllowedAttributes(List.of("cn", "givenName"));
+                conf.getAllowedAttributes().addAll(List.of("cn", "givenName"));
                 implementationTO.setBody(POJOHelper.serialize(conf));
 
                 Response response = implementationService.create(implementationTO);
@@ -410,7 +410,7 @@ public class PolicyITCase extends AbstractITCase {
         AllowedAttrReleasePolicyConf policyConf =
                 POJOHelper.deserialize(implementationTO.getBody(), AllowedAttrReleasePolicyConf.class);
         assertNotNull(policyConf);
-        policyConf.setAllowedAttributes(List.of("cn", "givenName", "postalCode"));
+        policyConf.getAllowedAttributes().add("postalCode");
         implementationTO.setBody(POJOHelper.serialize(policyConf));
 
         // update new policy

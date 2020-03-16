@@ -18,28 +18,32 @@
  */
 package org.apache.syncope.common.lib.attrs;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlRootElement(name = "AllowedAttrReleasePolicyConf")
 @XmlType
 public class AllowedAttrReleasePolicyConf extends AbstractAttrReleasePolicyConf implements AttrReleasePolicyConf {
+
     private static final long serialVersionUID = -1969836661359025380L;
 
     /**
      * Specify the list of allowed attribute to release.
      * Use the special {@code *} to release everything.
      */
-    private List<String> allowedAttributes = new ArrayList<>();
+    private final List<String> allowedAttributes = new ArrayList<>();
 
+    @XmlElementWrapper(name = "allowedAttributes")
+    @XmlElement(name = "allowedAttribute")
+    @JsonProperty("allowedAttributes")
     public List<String> getAllowedAttributes() {
         return allowedAttributes;
     }
 
-    public void setAllowedAttributes(final List<String> allowedAttributes) {
-        this.allowedAttributes = allowedAttributes;
-    }
 }

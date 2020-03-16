@@ -16,18 +16,21 @@
  * under the License.
  *
  */
-
 package org.apache.syncope.common.lib.authentication.module;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlRootElement(name = "saml2IdPAuthenticationModuleConf")
 @XmlType
 public class SAML2IdPAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+
     private static final long serialVersionUID = -471527731042579422L;
 
     /**
@@ -108,7 +111,7 @@ public class SAML2IdPAuthenticationModuleConf extends AbstractAuthenticationModu
     /**
      * Requested authentication context class in authn requests.
      */
-    private List<String> authnContextClassRef = new ArrayList<>(0);
+    private final List<String> authnContextClassRefs = new ArrayList<>(0);
 
     /**
      * Specifies the comparison rule that should be used to evaluate the specified authentication methods.
@@ -120,12 +123,10 @@ public class SAML2IdPAuthenticationModuleConf extends AbstractAuthenticationModu
      */
     private String authnContextComparisonType = "exact";
 
-
     /**
      * The key alias used in the keystore.
      */
     private String keystoreAlias;
-
 
     /**
      * NameID policy to request in the authentication requests.
@@ -176,17 +177,17 @@ public class SAML2IdPAuthenticationModuleConf extends AbstractAuthenticationModu
     /**
      * Collection of signing signature blacklisted algorithms, if any, to override the global defaults.
      */
-    private List<String> blackListedSignatureSigningAlgorithms = new ArrayList<>(0);
+    private final List<String> blackListedSignatureSigningAlgorithms = new ArrayList<>(0);
 
     /**
      * Collection of signing signature algorithms, if any, to override the global defaults.
      */
-    private List<String> signatureAlgorithms = new ArrayList<>(0);
+    private final List<String> signatureAlgorithms = new ArrayList<>(0);
 
     /**
      * Collection of signing signature reference digest methods, if any, to override the global defaults.
      */
-    private List<String> signatureReferenceDigestMethods = new ArrayList<>(0);
+    private final List<String> signatureReferenceDigestMethods = new ArrayList<>(0);
 
     /**
      * The signing signature canonicalization algorithm, if any, to override the global defaults.
@@ -296,12 +297,11 @@ public class SAML2IdPAuthenticationModuleConf extends AbstractAuthenticationModu
         this.passive = passive;
     }
 
-    public List<String> getAuthnContextClassRef() {
-        return authnContextClassRef;
-    }
-
-    public void setAuthnContextClassRef(final List<String> authnContextClassRef) {
-        this.authnContextClassRef = authnContextClassRef;
+    @XmlElementWrapper(name = "authnContextClassRefs")
+    @XmlElement(name = "authnContextClassRef")
+    @JsonProperty("authnContextClassRefs")
+    public List<String> getAuthnContextClassRefs() {
+        return authnContextClassRefs;
     }
 
     public String getAuthnContextComparisonType() {
@@ -384,28 +384,25 @@ public class SAML2IdPAuthenticationModuleConf extends AbstractAuthenticationModu
         this.signServiceProviderLogoutRequest = signServiceProviderLogoutRequest;
     }
 
+    @XmlElementWrapper(name = "blackListedSignatureSigningAlgorithms")
+    @XmlElement(name = "blackListedSignatureSigningAlgorithm")
+    @JsonProperty("blackListedSignatureSigningAlgorithms")
     public List<String> getBlackListedSignatureSigningAlgorithms() {
         return blackListedSignatureSigningAlgorithms;
     }
 
-    public void setBlackListedSignatureSigningAlgorithms(final List<String> blackListedSignatureSigningAlgorithms) {
-        this.blackListedSignatureSigningAlgorithms = blackListedSignatureSigningAlgorithms;
-    }
-
+    @XmlElementWrapper(name = "signatureAlgorithms")
+    @XmlElement(name = "signatureAlgorithm")
+    @JsonProperty("signatureAlgorithms")
     public List<String> getSignatureAlgorithms() {
         return signatureAlgorithms;
     }
 
-    public void setSignatureAlgorithms(final List<String> signatureAlgorithms) {
-        this.signatureAlgorithms = signatureAlgorithms;
-    }
-
+    @XmlElementWrapper(name = "signatureReferenceDigestMethods")
+    @XmlElement(name = "signatureReferenceDigestMethod")
+    @JsonProperty("signatureReferenceDigestMethods")
     public List<String> getSignatureReferenceDigestMethods() {
         return signatureReferenceDigestMethods;
-    }
-
-    public void setSignatureReferenceDigestMethods(final List<String> signatureReferenceDigestMethods) {
-        this.signatureReferenceDigestMethods = signatureReferenceDigestMethods;
     }
 
     public String getSignatureCanonicalizationAlgorithm() {
