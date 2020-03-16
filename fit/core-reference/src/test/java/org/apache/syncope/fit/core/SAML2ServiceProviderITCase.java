@@ -44,7 +44,7 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
         SAML2ServiceProviderTO samlSpTO = buildSAML2SP();
         samlSpTO = createSAML2SP(samlSpTO);
 
-        SAML2ServiceProviderTO found = saml2ServiceProviderService.read(samlSpTO.getKey());
+        SAML2ServiceProviderTO found = (SAML2ServiceProviderTO) clientAppService.read(samlSpTO.getKey());
         assertNotNull(found);
         assertFalse(StringUtils.isBlank(found.getEntityId()));
         assertFalse(StringUtils.isBlank(found.getMetadataLocation()));
@@ -66,8 +66,8 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
         samlSpTO.setEntityId("newEntityId");
         samlSpTO.setAccessPolicy(accessPolicyTO.getKey());
 
-        saml2ServiceProviderService.update(samlSpTO);
-        SAML2ServiceProviderTO updated = saml2ServiceProviderService.read(samlSpTO.getKey());
+        clientAppService.update(samlSpTO);
+        SAML2ServiceProviderTO updated = (SAML2ServiceProviderTO) clientAppService.read(samlSpTO.getKey());
 
         assertNotNull(updated);
         assertEquals("newEntityId", updated.getEntityId());
@@ -79,10 +79,10 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
         SAML2ServiceProviderTO samlSpTO = buildSAML2SP();
         samlSpTO = createSAML2SP(samlSpTO);
 
-        saml2ServiceProviderService.delete(samlSpTO.getKey());
+        clientAppService.delete(samlSpTO.getKey());
 
         try {
-            saml2ServiceProviderService.read(samlSpTO.getKey());
+            clientAppService.read(samlSpTO.getKey());
             fail("This should not happen");
         } catch (SyncopeClientException e) {
             assertNotNull(e);

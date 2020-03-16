@@ -24,6 +24,9 @@ import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.syncope.common.lib.to.client.ClientAppTO;
 import org.apache.syncope.common.rest.api.RESTHeaders;
 
@@ -45,7 +48,12 @@ import java.util.List;
 /**
  * REST operations for applications.
  */
-public interface ClientAppService<T extends ClientAppTO> extends JAXRSService {
+@Tag(name = "ClientApps")
+@SecurityRequirements({
+    @SecurityRequirement(name = "BasicAuthentication"),
+    @SecurityRequirement(name = "Bearer") })
+@Path("clientApps")
+public interface ClientAppService extends JAXRSService {
 
     /**
      * Returns a list of all applications.
@@ -54,7 +62,7 @@ public interface ClientAppService<T extends ClientAppTO> extends JAXRSService {
      */
     @GET
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
-    List<T> list();
+    List<ClientAppTO> list();
 
     /**
      * Returns application with matching key.
@@ -65,7 +73,7 @@ public interface ClientAppService<T extends ClientAppTO> extends JAXRSService {
     @GET
     @Path("{key}")
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
-    T read(@NotNull @PathParam("key") String key);
+    ClientAppTO read(@NotNull @PathParam("key") String key);
 
     /**
      * Creates a new application.
@@ -85,7 +93,7 @@ public interface ClientAppService<T extends ClientAppTO> extends JAXRSService {
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
-    Response create(@NotNull T applicationTO);
+    Response create(@NotNull ClientAppTO applicationTO);
 
     /**
      * Updates the application matching the provided key.
@@ -100,7 +108,7 @@ public interface ClientAppService<T extends ClientAppTO> extends JAXRSService {
     @Path("{key}")
     @Consumes({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
     @Produces({ MediaType.APPLICATION_JSON, RESTHeaders.APPLICATION_YAML, MediaType.APPLICATION_XML })
-    void update(@NotNull T applicationTO);
+    void update(@NotNull ClientAppTO applicationTO);
 
     /**
      * Deletes the application matching the provided key.

@@ -72,7 +72,6 @@ public class SAML2ServiceProviderLogic extends AbstractClientAppLogic<SAML2Servi
         SAML2ServiceProvider application = saml2ServiceProviderDAO.find(key);
         if (application == null) {
             LOG.error("Could not find application '" + key + '\'');
-
             throw new NotFoundException(key);
         }
 

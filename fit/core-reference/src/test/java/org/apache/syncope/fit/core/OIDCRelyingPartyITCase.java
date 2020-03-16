@@ -46,7 +46,7 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         OIDCRelyingPartyTO rpTO = buildRelyingParty();
         rpTO = createOIDCRelyingParty(rpTO);
 
-        OIDCRelyingPartyTO found = oidcRelyingPartyService.read(rpTO.getKey());
+        OIDCRelyingPartyTO found = (OIDCRelyingPartyTO) clientAppService.read(rpTO.getKey());
         assertNotNull(found);
         assertFalse(StringUtils.isBlank(found.getClientId()));
         assertTrue(StringUtils.isBlank(found.getClientSecret()));
@@ -68,8 +68,8 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         rpTO.setClientId("newClientId");
         rpTO.setAccessPolicy(accessPolicyTO.getKey());
 
-        oidcRelyingPartyService.update(rpTO);
-        OIDCRelyingPartyTO updated = oidcRelyingPartyService.read(rpTO.getKey());
+        clientAppService.update(rpTO);
+        OIDCRelyingPartyTO updated = (OIDCRelyingPartyTO) clientAppService.read(rpTO.getKey());
 
         assertNotNull(updated);
         assertEquals("newClientId", updated.getClientId());
@@ -81,10 +81,10 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         OIDCRelyingPartyTO rpTO = buildRelyingParty();
         rpTO = createOIDCRelyingParty(rpTO);
 
-        oidcRelyingPartyService.delete(rpTO.getKey());
+        clientAppService.delete(rpTO.getKey());
 
         try {
-            oidcRelyingPartyService.read(rpTO.getKey());
+            clientAppService.read(rpTO.getKey());
             fail("This should not happen");
         } catch (SyncopeClientException e) {
             assertNotNull(e);

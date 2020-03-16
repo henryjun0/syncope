@@ -89,11 +89,12 @@ import org.apache.syncope.common.rest.api.service.AnyTypeClassService;
 import org.apache.syncope.common.rest.api.service.AnyTypeService;
 import org.apache.syncope.common.rest.api.service.ApplicationService;
 import org.apache.syncope.common.rest.api.service.CamelRouteService;
+import org.apache.syncope.common.rest.api.service.ClientAppService;
 import org.apache.syncope.common.rest.api.service.ConnectorService;
 import org.apache.syncope.common.rest.api.service.DynRealmService;
 import org.apache.syncope.common.rest.api.service.LoggerService;
 import org.apache.syncope.common.rest.api.service.NotificationService;
-import org.apache.syncope.common.rest.api.service.oidc.OIDCRelyingPartyService;
+import org.apache.syncope.common.rest.api.service.SAML2SPService;
 import org.apache.syncope.common.rest.api.service.PolicyService;
 import org.apache.syncope.common.rest.api.service.ReportService;
 import org.apache.syncope.common.rest.api.service.ResourceService;
@@ -109,7 +110,6 @@ import org.apache.syncope.common.rest.api.service.RemediationService;
 import org.apache.syncope.common.rest.api.service.ReportTemplateService;
 import org.apache.syncope.common.rest.api.service.RoleService;
 import org.apache.syncope.common.rest.api.service.SAML2IdPService;
-import org.apache.syncope.common.rest.api.service.saml.SAML2ServiceProviderService;
 import org.apache.syncope.common.rest.api.service.SCIMConfService;
 import org.apache.syncope.common.rest.api.service.SchemaService;
 import org.apache.syncope.common.rest.api.service.SecurityQuestionService;
@@ -280,7 +280,7 @@ public abstract class AbstractITCase {
 
     protected static CamelRouteService camelRouteService;
 
-    protected static org.apache.syncope.common.rest.api.service.SAML2SPService saml2SpService;
+    protected static SAML2SPService saml2SpService;
 
     protected static SAML2IdPService saml2IdPService;
 
@@ -290,9 +290,7 @@ public abstract class AbstractITCase {
 
     protected static SCIMConfService scimConfService;
 
-    protected static OIDCRelyingPartyService oidcRelyingPartyService;
-
-    protected static SAML2ServiceProviderService saml2ServiceProviderService;
+    protected static ClientAppService clientAppService;
 
     @BeforeAll
     public static void securitySetup() {
@@ -363,8 +361,7 @@ public abstract class AbstractITCase {
         oidcClientService = adminClient.getService(OIDCClientService.class);
         oidcProviderService = adminClient.getService(OIDCProviderService.class);
         scimConfService = adminClient.getService(SCIMConfService.class);
-        oidcRelyingPartyService = adminClient.getService(OIDCRelyingPartyService.class);
-        saml2ServiceProviderService = adminClient.getService(SAML2ServiceProviderService.class);
+        clientAppService = adminClient.getService(ClientAppService.class);
     }
 
     @Autowired
@@ -568,25 +565,25 @@ public abstract class AbstractITCase {
     }
 
     protected OIDCRelyingPartyTO createOIDCRelyingParty(final OIDCRelyingPartyTO rpTO) {
-        Response response = oidcRelyingPartyService.create(rpTO);
+        Response response = clientAppService.create(rpTO);
         if (response.getStatusInfo().getStatusCode() != Response.Status.CREATED.getStatusCode()) {
             Exception ex = clientFactory.getExceptionMapper().fromResponse(response);
             if (ex != null) {
                 throw (RuntimeException) ex;
             }
         }
-        return getObject(response.getLocation(), OIDCRelyingPartyService.class, OIDCRelyingPartyTO.class);
+        return getObject(response.getLocation(), ClientAppService.class, OIDCRelyingPartyTO.class);
     }
 
     protected SAML2ServiceProviderTO createSAML2SP(final SAML2ServiceProviderTO saml2spTO) {
-        Response response = saml2ServiceProviderService.create(saml2spTO);
+        Response response = clientAppService.create(saml2spTO);
         if (response.getStatusInfo().getStatusCode() != Response.Status.CREATED.getStatusCode()) {
             Exception ex = clientFactory.getExceptionMapper().fromResponse(response);
             if (ex != null) {
                 throw (RuntimeException) ex;
             }
         }
-        return getObject(response.getLocation(), SAML2ServiceProviderService.class, SAML2ServiceProviderTO.class);
+        return getObject(response.getLocation(), ClientAppService.class, SAML2ServiceProviderTO.class);
     }
 
     protected ResourceTO createResource(final ResourceTO resourceTO) {
