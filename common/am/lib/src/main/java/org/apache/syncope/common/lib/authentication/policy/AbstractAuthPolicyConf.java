@@ -16,25 +16,37 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.syncope.common.lib.authentication.module;
+package org.apache.syncope.common.lib.authentication.policy;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 @XmlType
-@XmlSeeAlso({ JaasAuthenticationModuleConf.class, StaticAuthenticationModuleConf.class,
-    LDAPAuthenticationModuleConf.class })
-public abstract class AbstractAuthenticationModuleConf implements Serializable, AuthenticationModuleConf {
+@XmlSeeAlso({ DefaultAuthPolicyConf.class })
+public abstract class AbstractAuthPolicyConf implements Serializable, AuthPolicyConf {
 
-    private static final long serialVersionUID = 4153200197344709778L;
+    private static final long serialVersionUID = 9185127128182430142L;
 
     private String name;
 
-    private int order;
+    private AuthPolicyCriteriaConf criteria;
 
-    public AbstractAuthenticationModuleConf() {
+    public AbstractAuthPolicyConf() {
         setName(getClass().getName());
+    }
+
+    public AbstractAuthPolicyConf(final String name) {
+        setName(name);
+    }
+
+    @Override
+    public AuthPolicyCriteriaConf getCriteria() {
+        return criteria;
+    }
+
+    public void setCriteria(final AuthPolicyCriteriaConf criteria) {
+        this.criteria = criteria;
     }
 
     @Override
@@ -44,14 +56,5 @@ public abstract class AbstractAuthenticationModuleConf implements Serializable, 
 
     public final void setName(final String name) {
         this.name = name;
-    }
-
-    @Override
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(final int order) {
-        this.order = order;
     }
 }

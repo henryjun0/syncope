@@ -28,9 +28,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.syncope.common.lib.jaxb.XmlGenericMapAdapter;
 
-@XmlRootElement(name = "oidcAuthenticationModuleConf")
+@XmlRootElement(name = "oidcAuthModuleConf")
 @XmlType
-public class OIDCAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+public class OIDCAuthModuleConf extends AbstractAuthModuleConf {
 
     private static final long serialVersionUID = -471527731042579422L;
 

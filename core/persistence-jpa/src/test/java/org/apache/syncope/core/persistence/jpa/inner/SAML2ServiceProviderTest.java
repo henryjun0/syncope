@@ -21,7 +21,6 @@ package org.apache.syncope.core.persistence.jpa.inner;
 import org.apache.syncope.core.persistence.api.dao.authentication.SAML2ServiceProviderDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 @Transactional("Master")
 public class SAML2ServiceProviderTest extends AbstractClientAppTest {
@@ -48,8 +49,8 @@ public class SAML2ServiceProviderTest extends AbstractClientAppTest {
         AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
         rp.setAccessPolicy(accessPolicy);
 
-        AuthenticationPolicy authnPolicy = buildAndSaveAuthenticationPolicy();
-        rp.setAuthenticationPolicy(authnPolicy);
+        AuthPolicy authnPolicy = buildAndSaveAuthPolicy();
+        rp.setAuthPolicy(authnPolicy);
 
         saml2ServiceProviderDAO.save(rp);
 

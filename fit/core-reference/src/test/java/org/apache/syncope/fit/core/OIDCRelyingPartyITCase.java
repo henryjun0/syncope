@@ -18,20 +18,20 @@
  */
 package org.apache.syncope.fit.core;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
 import org.apache.syncope.common.lib.to.AccessPolicyTO;
 import org.apache.syncope.common.lib.SyncopeClientException;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.apache.syncope.common.lib.to.AuthPolicyTO;
 
 public class OIDCRelyingPartyITCase extends AbstractITCase {
 
@@ -50,7 +50,7 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         assertFalse(StringUtils.isBlank(found.getClientId()));
         assertTrue(StringUtils.isBlank(found.getClientSecret()));
         assertNotNull(found.getAccessPolicy());
-        assertNotNull(found.getAuthenticationPolicy());
+        assertNotNull(found.getAuthPolicy());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
     }
 
     private OIDCRelyingPartyTO buildRelyingParty() {
-        AuthenticationPolicyTO authPolicyTO = new AuthenticationPolicyTO();
+        AuthPolicyTO authPolicyTO = new AuthPolicyTO();
         authPolicyTO.setKey("AuthPolicyTest_" + getUUIDString());
         authPolicyTO.setDescription("Authentication Policy");
         authPolicyTO = createPolicy(PolicyType.AUTHENTICATION, authPolicyTO);
@@ -108,7 +108,7 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         rpTO.setDescription("Example OIDC RP application");
         rpTO.setClientId("clientId_" + getUUIDString());
         rpTO.setClientSecret(StringUtils.EMPTY);
-        rpTO.setAuthenticationPolicy(authPolicyTO.getKey());
+        rpTO.setAuthPolicy(authPolicyTO.getKey());
         rpTO.setAccessPolicy(accessPolicyTO.getKey());
 
         return rpTO;

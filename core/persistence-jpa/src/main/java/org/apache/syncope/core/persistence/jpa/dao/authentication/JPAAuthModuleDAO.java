@@ -18,63 +18,61 @@
  */
 package org.apache.syncope.core.persistence.jpa.dao.authentication;
 
-import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationModuleDAO;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
 import org.apache.syncope.core.persistence.jpa.dao.AbstractDAO;
-import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAAuthenticationModule;
+import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAAuthModule;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.TypedQuery;
-
 import java.util.List;
+import org.apache.syncope.core.persistence.api.entity.authentication.AuthModule;
+import org.apache.syncope.core.persistence.api.dao.authentication.AuthModuleDAO;
 
 @Repository
-public class JPAAuthenticationModuleDAO extends AbstractDAO<AuthenticationModule> implements AuthenticationModuleDAO {
+public class JPAAuthModuleDAO extends AbstractDAO<AuthModule> implements AuthModuleDAO {
 
     @Override
-    public AuthenticationModule find(final String key) {
-        return entityManager().find(JPAAuthenticationModule.class, key);
+    public AuthModule find(final String key) {
+        return entityManager().find(JPAAuthModule.class, key);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<AuthenticationModule> findAll() {
-        TypedQuery<AuthenticationModule> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e", AuthenticationModule.class);
+    public List<AuthModule> findAll() {
+        TypedQuery<AuthModule> query = entityManager().createQuery("SELECT e FROM " + JPAAuthModule.class.
+                getSimpleName() + " e", AuthModule.class);
 
         return query.getResultList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<AuthenticationModule> findByConfiguration(final Implementation configuration) {
-        TypedQuery<AuthenticationModule> query = entityManager().createQuery(
-                "SELECT e FROM " + JPAAuthenticationModule.class.getSimpleName() + " e "
-                + "WHERE :configuration MEMBER OF e.configurations", AuthenticationModule.class);
+    public List<AuthModule> findByConfiguration(final Implementation configuration) {
+        TypedQuery<AuthModule> query = entityManager().createQuery("SELECT e FROM " + JPAAuthModule.class.
+                getSimpleName() + " e "
+                + "WHERE :configuration MEMBER OF e.configurations", AuthModule.class);
         query.setParameter("configuration", configuration);
         return query.getResultList();
     }
 
     @Override
-    public AuthenticationModule save(final AuthenticationModule authenticationModule) {
-        return entityManager().merge(authenticationModule);
+    public AuthModule save(final AuthModule authModule) {
+        return entityManager().merge(authModule);
     }
 
     @Override
     public void delete(final String key) {
-        AuthenticationModule authenticationModule = find(key);
-        if (authenticationModule == null) {
+        AuthModule authModule = find(key);
+        if (authModule == null) {
             return;
         }
 
-        delete(authenticationModule);
+        delete(authModule);
     }
 
     @Override
-    public void delete(final AuthenticationModule authenticationModule) {
-        entityManager().remove(authenticationModule);
+    public void delete(final AuthModule authModule) {
+        entityManager().remove(authModule);
     }
 
 }

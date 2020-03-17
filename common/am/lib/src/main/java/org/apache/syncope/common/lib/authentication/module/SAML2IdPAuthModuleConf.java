@@ -26,9 +26,9 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
-@XmlRootElement(name = "saml2IdPAuthenticationModuleConf")
+@XmlRootElement(name = "saml2IdPAuthModuleConf")
 @XmlType
-public class SAML2IdPAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+public class SAML2IdPAuthModuleConf extends AbstractAuthModuleConf {
 
     private static final long serialVersionUID = -471527731042579422L;
 

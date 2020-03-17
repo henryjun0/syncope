@@ -18,28 +18,33 @@
  */
 package org.apache.syncope.common.lib.authentication.policy;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import java.io.Serializable;
 
-@XmlRootElement(name = "DefaultAuthenticationPolicyConf")
 @XmlType
-public class DefaultAuthenticationPolicyConf extends AbstractAuthenticationPolicyConf
-        implements AuthenticationPolicyConf {
+@XmlSeeAlso({ DefaultAuthPolicyCriteriaConf.class })
+public abstract class AbstractAuthPolicyCriteriaConf implements AuthPolicyCriteriaConf, Serializable {
 
-    private static final long serialVersionUID = -2969836600059025380L;
+    private static final long serialVersionUID = -6882164291962510245L;
 
-    private final List<String> authenticationModules = new ArrayList<>();
+    private String name;
 
-    @XmlElementWrapper(name = "authenticationModules")
-    @XmlElement(name = "authenticationModule")
-    @JsonProperty("authenticationModules")
-    public List<String> getAuthenticationModules() {
-        return authenticationModules;
+    public AbstractAuthPolicyCriteriaConf() {
+        setName(getClass().getName());
+    }
+
+    public AbstractAuthPolicyCriteriaConf(final String name) {
+        setName(name);
+    }
+
+    @Override
+    public final String getName() {
+        return name;
+    }
+
+    public final void setName(final String name) {
+        this.name = name;
     }
 
 }

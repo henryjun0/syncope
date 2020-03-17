@@ -20,8 +20,8 @@ package org.apache.syncope.core.persistence.jpa.inner;
 
 import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
 import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
-import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
-import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyCriteriaConf;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthPolicyConf;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthPolicyCriteriaConf;
 import org.apache.syncope.common.lib.policy.DefaultPasswordRuleConf;
 import org.apache.syncope.common.lib.policy.DefaultPullCorrelationRuleConf;
 import org.apache.syncope.common.lib.policy.DefaultPushCorrelationRuleConf;
@@ -37,7 +37,6 @@ import org.apache.syncope.core.persistence.api.dao.PullCorrelationRule;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
 import org.apache.syncope.core.persistence.api.entity.policy.PullCorrelationRuleEntity;
@@ -55,6 +54,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 @Transactional("Master")
 public class PolicyTest extends AbstractTest {
@@ -107,12 +108,12 @@ public class PolicyTest extends AbstractTest {
         accessPolicy = policyDAO.find(UUID.randomUUID().toString());
         assertNull(accessPolicy);
 
-        AuthenticationPolicy authenticationPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
-        assertNotNull(authenticationPolicy);
-        authenticationPolicy = policyDAO.find("659b9906-4b6e-4bc0-aca0-6809dff346d4");
-        assertNotNull(authenticationPolicy);
-        authenticationPolicy = policyDAO.find(UUID.randomUUID().toString());
-        assertNull(authenticationPolicy);
+        AuthPolicy authPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        assertNotNull(authPolicy);
+        authPolicy = policyDAO.find("659b9906-4b6e-4bc0-aca0-6809dff346d4");
+        assertNotNull(authPolicy);
+        authPolicy = policyDAO.find(UUID.randomUUID().toString());
+        assertNull(authPolicy);
 
         AttrReleasePolicy attrReleasePolicy = policyDAO.find("019935c7-deb3-40b3-8a9a-683037e523a2");
         assertNull(attrReleasePolicy);
@@ -127,14 +128,15 @@ public class PolicyTest extends AbstractTest {
     public void findByPolicyImpl() {
         AccessPolicy accessPolicy = policyDAO.find("419935c7-deb3-40b3-8a9a-683037e523a2");
         assertNotNull(accessPolicy);
-        AuthenticationPolicy authenticationPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
-        assertNotNull(authenticationPolicy);
+        AuthPolicy authPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        assertNotNull(authPolicy);
         AttrReleasePolicy attrReleasePolicy = policyDAO.find("319935c7-deb3-40b3-8a9a-683037e523a2");
         assertNotNull(attrReleasePolicy);
 
         accessPolicy.getConfigurations().forEach(cfg -> assertFalse(policyDAO.findByAccessPolicy(cfg).isEmpty()));
-        authenticationPolicy.getConfigurations().forEach(cfg -> assertFalse(policyDAO.findByAuthenticationPolicy(cfg).isEmpty()));
-        attrReleasePolicy.getConfigurations().forEach(cfg -> assertFalse(policyDAO.findByAttrReleasePolicy(cfg).isEmpty()));
+        authPolicy.getConfigurations().forEach(cfg -> assertFalse(policyDAO.findByAuthPolicy(cfg).isEmpty()));
+        attrReleasePolicy.getConfigurations().forEach(cfg -> assertFalse(policyDAO.findByAttrReleasePolicy(cfg).
+                isEmpty()));
     }
 
     @Test
@@ -147,9 +149,9 @@ public class PolicyTest extends AbstractTest {
         assertNotNull(accessPolicies);
         assertEquals(1, accessPolicies.size());
 
-        List<AuthenticationPolicy> authenticationPolicies = policyDAO.find(AuthenticationPolicy.class);
-        assertNotNull(authenticationPolicies);
-        assertEquals(2, authenticationPolicies.size());
+        List<AuthPolicy> authPolicies = policyDAO.find(AuthPolicy.class);
+        assertNotNull(authPolicies);
+        assertEquals(2, authPolicies.size());
 
         List<AttrReleasePolicy> attrReleasePolicies = policyDAO.find(AttrReleasePolicy.class);
         assertNotNull(attrReleasePolicies);
@@ -225,13 +227,13 @@ public class PolicyTest extends AbstractTest {
         assertEquals(afterCount, beforeCount + 1);
 
         beforeCount = policyDAO.findAll().size();
-        AuthenticationPolicy authenticationPolicy = entityFactory.newEntity(AuthenticationPolicy.class);
-        authenticationPolicy.setName("AuthenticationPolicyTest");
-        authenticationPolicy.setDescription("This is a sample authentication policy");
+        AuthPolicy authPolicy = entityFactory.newEntity(AuthPolicy.class);
+        authPolicy.setName("AuthPolicyTest");
+        authPolicy.setDescription("This is a sample authentication policy");
 
-        DefaultAuthenticationPolicyConf authPolicyConf = new DefaultAuthenticationPolicyConf();
-        authPolicyConf.getAuthenticationModules().addAll(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
-        DefaultAuthenticationPolicyCriteriaConf criteria = new DefaultAuthenticationPolicyCriteriaConf();
+        DefaultAuthPolicyConf authPolicyConf = new DefaultAuthPolicyConf();
+        authPolicyConf.getAuthModules().addAll(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
+        DefaultAuthPolicyCriteriaConf criteria = new DefaultAuthPolicyCriteriaConf();
         criteria.setName("DefaultConf");
         criteria.setAll(true);
         authPolicyConf.setCriteria(criteria);
@@ -242,11 +244,11 @@ public class PolicyTest extends AbstractTest {
         authPolicyType.setBody(POJOHelper.serialize(authPolicyConf));
         authPolicyType = implementationDAO.save(authPolicyType);
 
-        authenticationPolicy.addConfiguration(authPolicyType);
-        authenticationPolicy = policyDAO.save(authenticationPolicy);
+        authPolicy.addConfiguration(authPolicyType);
+        authPolicy = policyDAO.save(authPolicy);
 
-        assertNotNull(authenticationPolicy);
-        assertNotNull(authenticationPolicy.getKey());
+        assertNotNull(authPolicy);
+        assertNotNull(authPolicy.getKey());
 
         afterCount = policyDAO.findAll().size();
         assertEquals(afterCount, beforeCount + 1);
@@ -324,11 +326,11 @@ public class PolicyTest extends AbstractTest {
         accessPolicy = policyDAO.find("419935c7-deb3-40b3-8a9a-683037e523a2");
         assertNull(accessPolicy);
 
-        AuthenticationPolicy authenticationPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
-        assertNotNull(authenticationPolicy);
-        policyDAO.delete(authenticationPolicy);
-        authenticationPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
-        assertNull(authenticationPolicy);
+        AuthPolicy authPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        assertNotNull(authPolicy);
+        policyDAO.delete(authPolicy);
+        authPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        assertNull(authPolicy);
 
         AttrReleasePolicy attrReleasepolicy = policyDAO.find("319935c7-deb3-40b3-8a9a-683037e523a2");
         assertNotNull(attrReleasepolicy);

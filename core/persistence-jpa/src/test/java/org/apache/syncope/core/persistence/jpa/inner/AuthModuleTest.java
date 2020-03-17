@@ -18,61 +18,60 @@
  */
 package org.apache.syncope.core.persistence.jpa.inner;
 
-import org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.module.GoogleMfaAuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.module.JaasAuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.module.LDAPAuthenticationModuleConf;
-import org.apache.syncope.common.lib.authentication.module.StaticAuthenticationModuleConf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.apache.syncope.common.lib.authentication.module.GoogleMfaAuthModuleConf;
+import org.apache.syncope.common.lib.authentication.module.JaasAuthModuleConf;
+import org.apache.syncope.common.lib.authentication.module.LDAPAuthModuleConf;
+import org.apache.syncope.common.lib.authentication.module.StaticAuthModuleConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
 import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
-import org.apache.syncope.core.persistence.api.dao.authentication.AuthenticationModuleDAO;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
 import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import org.apache.syncope.core.persistence.api.entity.authentication.AuthModule;
+import org.apache.syncope.common.lib.authentication.module.AuthModuleConf;
+import org.apache.syncope.core.persistence.api.dao.authentication.AuthModuleDAO;
 
 @Transactional("Master")
-public class AuthenticationModuleTest extends AbstractTest {
+public class AuthModuleTest extends AbstractTest {
 
     @Autowired
-    private AuthenticationModuleDAO authenticationModuleDAO;
+    private AuthModuleDAO authModuleDAO;
 
     @Autowired
     private ImplementationDAO implementationDAO;
 
     @Test
     public void find() {
-        AuthenticationModule module = authenticationModuleDAO.find(
+        AuthModule module = authModuleDAO.find(
                 "be456831-593d-4003-b273-4c3fb61700df");
         assertNotNull(module);
 
-        module = authenticationModuleDAO.find(UUID.randomUUID().toString());
+        module = authModuleDAO.find(UUID.randomUUID().toString());
         assertNull(module);
     }
 
     @Test
     public void findAll() {
-        List<AuthenticationModule> modules = authenticationModuleDAO.findAll();
+        List<AuthModule> modules = authModuleDAO.findAll();
         assertNotNull(modules);
         assertEquals(1, modules.size());
     }
 
     @Test
     public void saveWithPredefinedModule() {
-        StaticAuthenticationModuleConf conf =
-                new StaticAuthenticationModuleConf(Map.of("user", UUID.randomUUID().toString()));
+        StaticAuthModuleConf conf =
+                new StaticAuthModuleConf(Map.of("user", UUID.randomUUID().toString()));
 
         Implementation config = getImplementation(conf);
 
@@ -81,20 +80,20 @@ public class AuthenticationModuleTest extends AbstractTest {
         assertNotNull(config);
         assertNotNull(config.getKey());
 
-        AuthenticationModule module = entityFactory.newEntity(AuthenticationModule.class);
-        module.setName("AuthenticationModuleTest");
+        AuthModule module = entityFactory.newEntity(AuthModule.class);
+        module.setName("AuthModuleTest");
         module.add(config);
-        authenticationModuleDAO.save(module);
+        authModuleDAO.save(module);
 
         assertNotNull(module);
         assertNotNull(module.getKey());
 
-        assertNotNull(authenticationModuleDAO.find(module.getKey()));
+        assertNotNull(authModuleDAO.find(module.getKey()));
     }
 
     @Test
     public void saveWithJaasModule() {
-        JaasAuthenticationModuleConf conf = new JaasAuthenticationModuleConf();
+        JaasAuthModuleConf conf = new JaasAuthModuleConf();
         conf.setKerberosKdcSystemProperty("sample-value");
         conf.setKerberosRealmSystemProperty("sample-value");
         conf.setLoginConfigType("JavaLoginConfig");
@@ -107,20 +106,20 @@ public class AuthenticationModuleTest extends AbstractTest {
         assertNotNull(config);
         assertNotNull(config.getKey());
 
-        AuthenticationModule module = entityFactory.newEntity(AuthenticationModule.class);
-        module.setName("AuthenticationModuleTest");
+        AuthModule module = entityFactory.newEntity(AuthModule.class);
+        module.setName("AuthModuleTest");
         module.add(config);
-        authenticationModuleDAO.save(module);
+        authModuleDAO.save(module);
 
         assertNotNull(module);
         assertNotNull(module.getKey());
 
-        assertNotNull(authenticationModuleDAO.find(module.getKey()));
+        assertNotNull(authModuleDAO.find(module.getKey()));
     }
 
     @Test
     public void saveWithLdapModule() {
-        LDAPAuthenticationModuleConf conf = new LDAPAuthenticationModuleConf();
+        LDAPAuthModuleConf conf = new LDAPAuthModuleConf();
         conf.getAttributes().addAll(List.of("cn", "uid"));
         conf.setBaseDn("dc=example,dc=org");
         conf.setSearchFilter("cn={user}");
@@ -136,21 +135,21 @@ public class AuthenticationModuleTest extends AbstractTest {
         assertNotNull(config);
         assertNotNull(config.getKey());
 
-        AuthenticationModule module = entityFactory.newEntity(AuthenticationModule.class);
-        module.setName("AuthenticationModuleTest");
+        AuthModule module = entityFactory.newEntity(AuthModule.class);
+        module.setName("AuthModuleTest");
         module.add(config);
-        authenticationModuleDAO.save(module);
+        authModuleDAO.save(module);
 
         assertNotNull(module);
         assertNotNull(module.getKey());
 
-        assertNotNull(authenticationModuleDAO.find(module.getKey()));
+        assertNotNull(authModuleDAO.find(module.getKey()));
     }
 
     @Test
     public void saveWithGoogleAuthenticatorModule() {
-        GoogleMfaAuthenticationModuleConf conf =
-                new GoogleMfaAuthenticationModuleConf();
+        GoogleMfaAuthModuleConf conf =
+                new GoogleMfaAuthModuleConf();
         conf.setCodeDigits(6);
         conf.setIssuer("SyncopeTest");
         conf.setLabel("Syncope");
@@ -163,18 +162,18 @@ public class AuthenticationModuleTest extends AbstractTest {
         assertNotNull(config);
         assertNotNull(config.getKey());
 
-        AuthenticationModule module = entityFactory.newEntity(AuthenticationModule.class);
-        module.setName("AuthenticationModuleTest");
+        AuthModule module = entityFactory.newEntity(AuthModule.class);
+        module.setName("AuthModuleTest");
         module.add(config);
-        authenticationModuleDAO.save(module);
+        authModuleDAO.save(module);
 
         assertNotNull(module);
         assertNotNull(module.getKey());
 
-        assertNotNull(authenticationModuleDAO.find(module.getKey()));
+        assertNotNull(authModuleDAO.find(module.getKey()));
     }
 
-    private Implementation getImplementation(final AuthenticationModuleConf conf) {
+    private Implementation getImplementation(final AuthModuleConf conf) {
         Implementation config = entityFactory.newEntity(Implementation.class);
         config.setKey(UUID.randomUUID().toString());
         config.setEngine(ImplementationEngine.JAVA);
@@ -185,14 +184,13 @@ public class AuthenticationModuleTest extends AbstractTest {
 
     @Test
     public void delete() {
-        AuthenticationModule athAuthenticationModule = authenticationModuleDAO.find(
-                "be456831-593d-4003-b273-4c3fb61700df");
-        assertNotNull(athAuthenticationModule);
+        AuthModule authModule = authModuleDAO.find("be456831-593d-4003-b273-4c3fb61700df");
+        assertNotNull(authModule);
 
-        authenticationModuleDAO.delete("be456831-593d-4003-b273-4c3fb61700df");
+        authModuleDAO.delete("be456831-593d-4003-b273-4c3fb61700df");
 
-        athAuthenticationModule = authenticationModuleDAO.find("be456831-593d-4003-b273-4c3fb61700df");
-        assertNull(athAuthenticationModule);
+        authModule = authModuleDAO.find("be456831-593d-4003-b273-4c3fb61700df");
+        assertNull(authModule);
     }
 
 }

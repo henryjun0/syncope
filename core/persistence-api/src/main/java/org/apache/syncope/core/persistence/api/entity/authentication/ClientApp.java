@@ -22,7 +22,7 @@ import org.apache.syncope.core.persistence.api.entity.Entity;
 import org.apache.syncope.core.persistence.api.entity.Realm;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 public interface ClientApp extends Entity {
 
@@ -34,9 +34,9 @@ public interface ClientApp extends Entity {
 
     void setDescription(String description);
 
-    AuthenticationPolicy getAuthenticationPolicy();
+    AuthPolicy getAuthPolicy();
 
-    void setAuthenticationPolicy(AuthenticationPolicy policy);
+    void setAuthPolicy(AuthPolicy policy);
 
     AccessPolicy getAccessPolicy();
 

@@ -56,7 +56,6 @@ import org.apache.syncope.core.persistence.api.entity.anyobject.APlainAttrUnique
 import org.apache.syncope.core.persistence.api.entity.anyobject.APlainAttrValue;
 import org.apache.syncope.core.persistence.api.entity.anyobject.ARelationship;
 import org.apache.syncope.core.persistence.api.entity.anyobject.AnyObject;
-import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
 import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 import org.apache.syncope.core.persistence.api.entity.group.GPlainAttr;
@@ -67,7 +66,6 @@ import org.apache.syncope.core.persistence.api.entity.group.TypeExtension;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PullCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
@@ -108,7 +106,7 @@ import org.apache.syncope.core.persistence.jpa.entity.anyobject.JPAAPlainAttrUni
 import org.apache.syncope.core.persistence.jpa.entity.anyobject.JPAAPlainAttrValue;
 import org.apache.syncope.core.persistence.jpa.entity.anyobject.JPAARelationship;
 import org.apache.syncope.core.persistence.jpa.entity.anyobject.JPAAnyObject;
-import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAAuthenticationModule;
+import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAAuthModule;
 import org.apache.syncope.core.persistence.jpa.entity.authentication.JPAOIDCRelyingParty;
 import org.apache.syncope.core.persistence.jpa.entity.authentication.JPASAML2ServiceProvider;
 import org.apache.syncope.core.persistence.jpa.entity.group.JPAGPlainAttr;
@@ -119,7 +117,7 @@ import org.apache.syncope.core.persistence.jpa.entity.group.JPATypeExtension;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccountPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAttrReleasePolicy;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPasswordPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPullCorrelationRuleEntity;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAPullPolicy;
@@ -153,6 +151,8 @@ import org.apache.syncope.core.persistence.jpa.entity.user.JPAUPlainAttrValue;
 import org.apache.syncope.core.persistence.jpa.entity.user.JPAURelationship;
 import org.apache.syncope.core.persistence.jpa.entity.user.JPAUser;
 import org.apache.syncope.core.spring.security.SecureRandomUtils;
+import org.apache.syncope.core.persistence.api.entity.authentication.AuthModule;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 public class JPAEntityFactory implements EntityFactory {
 
@@ -305,13 +305,13 @@ public class JPAEntityFactory implements EntityFactory {
             result = (E) new JPABatch();
         } else if (reference.equals(GatewayRoute.class)) {
             result = (E) new JPAGatewayRoute();
-        } else if (reference.equals(AuthenticationModule.class)) {
-            result = (E) new JPAAuthenticationModule();
-        } else if (reference.equals(AuthenticationPolicy.class)) {
-            result = (E) new JPAAuthenticationPolicy();
-        }  else if (reference.equals(AccessPolicy.class)) {
+        } else if (reference.equals(AuthModule.class)) {
+            result = (E) new JPAAuthModule();
+        } else if (reference.equals(AuthPolicy.class)) {
+            result = (E) new JPAAuthPolicy();
+        } else if (reference.equals(AccessPolicy.class)) {
             result = (E) new JPAAccessPolicy();
-        }  else if (reference.equals(AttrReleasePolicy.class)) {
+        } else if (reference.equals(AttrReleasePolicy.class)) {
             result = (E) new JPAAttrReleasePolicy();
         } else if (reference.equals(OIDCRelyingParty.class)) {
             result = (E) new JPAOIDCRelyingParty();

@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlSeeAlso({ OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class })
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@class")
 @JsonPropertyOrder(value = { "@class", "key", "name", "description",
-    "authenticationPolicy", "accessPolicy", "attReleasePolicy" })
+    "authPolicy", "accessPolicy", "attReleasePolicy" })
 @Schema(subTypes = { OIDCRelyingPartyTO.class, SAML2ServiceProviderTO.class }, discriminatorProperty = "@class")
 public abstract class ClientAppTO extends BaseBean implements EntityTO {
 
@@ -46,7 +46,7 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
 
     private String description;
 
-    private String authenticationPolicy;
+    private String authPolicy;
 
     private String accessPolicy;
 
@@ -68,12 +68,12 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
         this.accessPolicy = accessPolicy;
     }
 
-    public String getAuthenticationPolicy() {
-        return authenticationPolicy;
+    public String getAuthPolicy() {
+        return authPolicy;
     }
 
-    public void setAuthenticationPolicy(final String authenticationPolicy) {
-        this.authenticationPolicy = authenticationPolicy;
+    public void setAuthPolicy(final String authPolicy) {
+        this.authPolicy = authPolicy;
     }
 
     @Override
@@ -112,7 +112,7 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
                 .append(key)
                 .append(name)
                 .append(description)
-                .append(authenticationPolicy)
+                .append(authPolicy)
                 .append(accessPolicy)
                 .append(attrReleasePolicy)
                 .toHashCode();
@@ -135,7 +135,7 @@ public abstract class ClientAppTO extends BaseBean implements EntityTO {
                 .append(this.key, rhs.key)
                 .append(this.name, rhs.name)
                 .append(this.description, rhs.description)
-                .append(this.authenticationPolicy, rhs.authenticationPolicy)
+                .append(this.authPolicy, rhs.authPolicy)
                 .append(this.accessPolicy, rhs.accessPolicy)
                 .append(this.attrReleasePolicy, rhs.attrReleasePolicy)
                 .isEquals();

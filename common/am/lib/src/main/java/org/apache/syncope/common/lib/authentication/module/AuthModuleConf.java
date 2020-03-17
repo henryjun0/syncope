@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.io.Serializable;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public interface AuthenticationModuleConf extends Serializable {
+public interface AuthModuleConf extends Serializable {
 
     /**
      * Give name of related authentication module instance.

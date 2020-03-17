@@ -16,16 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.syncope.common.lib.types;
+package org.apache.syncope.core.persistence.api.entity.policy;
 
+import org.apache.syncope.core.persistence.api.entity.Implementation;
 
-public final class AuthenticationPolicyType {
-    
-    public static final String AUTHENTICATION_POLICY_BPM = "AUTHENTICATION_POLICY_BPM";
-    
-    public static final String AUTHENTICATION_POLICY_CHAIN = "AUTHENTICATION_POLICY_CHAIN";
+import java.util.List;
 
-    private AuthenticationPolicyType() {
-        // private constructor for static utility class
-    }
+public interface AuthPolicy extends Policy {
+
+    String getName();
+
+    void setName(String name);
+
+    List<? extends Implementation> getConfigurations();
+
+    boolean addConfiguration(Implementation configuration);
+
 }

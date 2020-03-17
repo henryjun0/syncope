@@ -21,7 +21,6 @@ package org.apache.syncope.core.persistence.jpa.inner;
 import org.apache.syncope.core.persistence.api.dao.authentication.OIDCRelyingPartyDAO;
 import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 @Transactional("Master")
 public class OIDCRelyingPartyTest extends AbstractClientAppTest {
@@ -49,8 +50,8 @@ public class OIDCRelyingPartyTest extends AbstractClientAppTest {
         AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
         rp.setAccessPolicy(accessPolicy);
 
-        AuthenticationPolicy authPolicy = buildAndSaveAuthenticationPolicy();
-        rp.setAuthenticationPolicy(authPolicy);
+        AuthPolicy authPolicy = buildAndSaveAuthPolicy();
+        rp.setAuthPolicy(authPolicy);
 
         openIdConnectRelyingPartyDAO.save(rp);
 
@@ -62,7 +63,7 @@ public class OIDCRelyingPartyTest extends AbstractClientAppTest {
 
         rp = openIdConnectRelyingPartyDAO.findByClientId("clientid");
         assertNotNull(rp);
-        assertNotNull(rp.getAuthenticationPolicy());
+        assertNotNull(rp.getAuthPolicy());
 
         rp = openIdConnectRelyingPartyDAO.findByName("OIDC");
         assertNotNull(rp);

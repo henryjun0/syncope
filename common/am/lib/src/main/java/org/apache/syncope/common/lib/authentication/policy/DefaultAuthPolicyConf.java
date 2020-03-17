@@ -18,25 +18,27 @@
  */
 package org.apache.syncope.common.lib.authentication.policy;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
-/**
- * Determine the criteria by which the authentication policy
- * should conduct itself. Typically, this translates to how
- * the policy should execute the modules to establish a success
- * criteria. Examples would include "all modules should validate the user"
- * or "any module can validate the user" before the policy can consider it
- * a success.
- */
-@FunctionalInterface
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public interface AuthenticationPolicyCriteriaConf extends Serializable {
+@XmlRootElement(name = "DefaultAuthPolicyConf")
+@XmlType
+public class DefaultAuthPolicyConf extends AbstractAuthPolicyConf implements AuthPolicyConf {
 
-    /**
-     * Describe the name of the authentication policy criteria.
-     *
-     * @return name of this authentication policy instance
-     */
-    String getName();
+    private static final long serialVersionUID = -2969836600059025380L;
+
+    private final List<String> authModules = new ArrayList<>();
+
+    @XmlElementWrapper(name = "authModules")
+    @XmlElement(name = "authModule")
+    @JsonProperty("authModules")
+    public List<String> getAuthModules() {
+        return authModules;
+    }
+
 }

@@ -16,26 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.syncope.core.persistence.api.dao.authentication;
+package org.apache.syncope.common.lib.types;
 
-import org.apache.syncope.core.persistence.api.dao.DAO;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
-import org.apache.syncope.core.persistence.api.entity.authentication.AuthenticationModule;
+public final class AuthPolicyType {
 
-import java.util.List;
+    public static final String AUTHENTICATION_POLICY_BPM = "AUTHENTICATION_POLICY_BPM";
 
-public interface AuthenticationModuleDAO extends DAO<AuthenticationModule> {
+    public static final String AUTHENTICATION_POLICY_CHAIN = "AUTHENTICATION_POLICY_CHAIN";
 
-    AuthenticationModule find(String key);
-
-    List<AuthenticationModule> findAll();
-
-    AuthenticationModule save(AuthenticationModule authenticationModule);
-
-    void delete(String key);
-
-    void delete(AuthenticationModule authenticationModule);
-
-    List<AuthenticationModule> findByConfiguration(Implementation configuration);
-
+    private AuthPolicyType() {
+        // private constructor for static utility class
+    }
 }

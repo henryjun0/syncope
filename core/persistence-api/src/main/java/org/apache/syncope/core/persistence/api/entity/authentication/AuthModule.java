@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.syncope.core.persistence.api.entity.policy;
+package org.apache.syncope.core.persistence.api.entity.authentication;
 
+import org.apache.syncope.core.persistence.api.entity.Entity;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
-
 import java.util.List;
 
-public interface AuthenticationPolicy extends Policy {
+public interface AuthModule extends Entity {
 
     String getName();
 
@@ -30,6 +30,5 @@ public interface AuthenticationPolicy extends Policy {
 
     List<? extends Implementation> getConfigurations();
 
-    boolean addConfiguration(Implementation configuration);
-
+    boolean add(Implementation configuration);
 }

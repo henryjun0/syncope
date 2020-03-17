@@ -27,11 +27,11 @@ import org.apache.syncope.core.persistence.api.entity.EntityFactory;
 import org.apache.syncope.core.persistence.api.entity.authentication.SAML2ServiceProvider;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
 import org.apache.syncope.core.provisioning.api.data.SAML2ServiceProviderDataBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 @Component
 public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderDataBinder {
@@ -62,15 +62,15 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
         application.setEntityId(applicationTO.getEntityId());
         application.setMetadataLocation(applicationTO.getMetadataLocation());
 
-        if (applicationTO.getAuthenticationPolicy() == null) {
-            application.setAuthenticationPolicy(null);
+        if (applicationTO.getAuthPolicy() == null) {
+            application.setAuthPolicy(null);
         } else {
-            Policy policy = policyDAO.find(applicationTO.getAuthenticationPolicy());
-            if (policy instanceof AuthenticationPolicy) {
-                application.setAuthenticationPolicy((AuthenticationPolicy) policy);
+            Policy policy = policyDAO.find(applicationTO.getAuthPolicy());
+            if (policy instanceof AuthPolicy) {
+                application.setAuthPolicy((AuthPolicy) policy);
             } else {
                 SyncopeClientException sce = SyncopeClientException.build(ClientExceptionType.InvalidPolicy);
-                sce.getElements().add("Expected " + AuthenticationPolicy.class.getSimpleName()
+                sce.getElements().add("Expected " + AuthPolicy.class.getSimpleName()
                         + ", found " + policy.getClass().getSimpleName());
                 throw sce;
             }
@@ -116,8 +116,8 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
         applicationTO.setMetadataLocation(sp.getMetadataLocation());
         applicationTO.setName(sp.getName());
 
-        applicationTO.setAuthenticationPolicy(sp.getAuthenticationPolicy() == null
-                ? null : sp.getAuthenticationPolicy().getKey());
+        applicationTO.setAuthPolicy(sp.getAuthPolicy() == null
+                ? null : sp.getAuthPolicy().getKey());
         applicationTO.setAccessPolicy(sp.getAccessPolicy() == null
                 ? null : sp.getAccessPolicy().getKey());
         applicationTO.setAttrReleasePolicy(sp.getAttrReleasePolicy() == null

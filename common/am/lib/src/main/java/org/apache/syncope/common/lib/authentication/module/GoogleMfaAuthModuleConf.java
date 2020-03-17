@@ -21,9 +21,9 @@ package org.apache.syncope.common.lib.authentication.module;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "googleMfaAuthenticationModuleConf")
+@XmlRootElement(name = "googleMfaAuthModuleConf")
 @XmlType
-public class GoogleMfaAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+public class GoogleMfaAuthModuleConf extends AbstractAuthModuleConf {
 
     private static final long serialVersionUID = -7883257599139312426L;
 

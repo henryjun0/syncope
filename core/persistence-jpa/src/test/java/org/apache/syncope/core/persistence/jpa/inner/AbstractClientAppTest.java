@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.Map;
 import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
 import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
-import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthPolicyConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
 import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
 import org.apache.syncope.core.provisioning.api.serialization.POJOHelper;
@@ -51,7 +51,7 @@ public class AbstractClientAppTest extends AbstractTest {
         AllowedAttrReleasePolicyConf conf = new AllowedAttrReleasePolicyConf();
         conf.setName("Example Attr Rel Policy for an application");
         conf.getAllowedAttributes().addAll(List.of("cn", "givenName"));
-        
+
         Implementation type = entityFactory.newEntity(Implementation.class);
         type.setKey("AttrRelPolicyTest");
         type.setEngine(ImplementationEngine.JAVA);
@@ -86,13 +86,13 @@ public class AbstractClientAppTest extends AbstractTest {
 
     }
 
-    protected AuthenticationPolicy buildAndSaveAuthenticationPolicy() {
-        AuthenticationPolicy authenticationPolicy = entityFactory.newEntity(AuthenticationPolicy.class);
-        authenticationPolicy.setName("AuthenticationPolicyTest");
-        authenticationPolicy.setDescription("This is a sample authentication policy");
+    protected AuthPolicy buildAndSaveAuthPolicy() {
+        AuthPolicy authPolicy = entityFactory.newEntity(AuthPolicy.class);
+        authPolicy.setName("AuthPolicyTest");
+        authPolicy.setDescription("This is a sample authentication policy");
 
-        DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
-        conf.getAuthenticationModules().addAll(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
+        DefaultAuthPolicyConf conf = new DefaultAuthPolicyConf();
+        conf.getAuthModules().addAll(List.of("LdapAuthentication1", "DatabaseAuthentication2"));
 
         Implementation type = entityFactory.newEntity(Implementation.class);
         type.setKey("AuthPolicyConfKey");
@@ -101,8 +101,8 @@ public class AbstractClientAppTest extends AbstractTest {
         type.setBody(POJOHelper.serialize(conf));
         type = implementationDAO.save(type);
 
-        authenticationPolicy.addConfiguration(type);
-        return policyDAO.save(authenticationPolicy);
+        authPolicy.addConfiguration(type);
+        return policyDAO.save(authPolicy);
     }
 
 }

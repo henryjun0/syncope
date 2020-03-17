@@ -34,13 +34,13 @@ import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.SyncopeConstants;
 import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
 import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
-import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthPolicyConf;
 import org.apache.syncope.common.lib.policy.AccountPolicyTO;
 import org.apache.syncope.common.lib.to.RealmTO;
 import org.apache.syncope.common.lib.policy.DefaultAccountRuleConf;
 import org.apache.syncope.common.lib.to.AccessPolicyTO;
 import org.apache.syncope.common.lib.to.AttrReleasePolicyTO;
-import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.AuthPolicyTO;
 import org.apache.syncope.common.lib.to.ImplementationTO;
 import org.apache.syncope.common.lib.to.PagedResult;
 import org.apache.syncope.common.lib.to.ProvisioningResult;
@@ -106,7 +106,7 @@ public class RealmITCase extends AbstractITCase {
         // 2. update setting policies
         actual.setAccountPolicy("06e2ed52-6966-44aa-a177-a0ca7434201f");
         actual.setPasswordPolicy("986d1236-3ac5-4a19-810c-5ab21d79cba1");
-        actual.setAuthenticationPolicy("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        actual.setAuthPolicy("b912a0d4-a890-416f-9ab8-84ab077eb028");
         actual.setAccessPolicy("419935c7-deb3-40b3-8a9a-683037e523a2");
         actual.setAttrReleasePolicy("319935c7-deb3-40b3-8a9a-683037e523a2");
         realmService.update(actual);
@@ -114,7 +114,7 @@ public class RealmITCase extends AbstractITCase {
         actual = getRealm(actual.getFullPath()).get();
         assertNotNull(actual.getAccountPolicy());
         assertNotNull(actual.getPasswordPolicy());
-        assertNotNull(actual.getAuthenticationPolicy());
+        assertNotNull(actual.getAuthPolicy());
         assertNotNull(actual.getAccessPolicy());
         assertNotNull(actual.getAttrReleasePolicy());
 
@@ -211,20 +211,20 @@ public class RealmITCase extends AbstractITCase {
     }
 
     @Test
-    public void deletingAuthenticationPolicy() {
+    public void deletingAuthPolicy() {
         // 1. create authentication policy
-        DefaultAuthenticationPolicyConf ruleConf = new DefaultAuthenticationPolicyConf();
-        ruleConf.getAuthenticationModules().addAll(List.of("LdapAuthentication1"));
+        DefaultAuthPolicyConf ruleConf = new DefaultAuthPolicyConf();
+        ruleConf.getAuthModules().addAll(List.of("LdapAuthentication1"));
 
         ImplementationTO rule = new ImplementationTO();
-        rule.setKey("TestAuthenticationPolicy" + getUUIDString());
+        rule.setKey("TestAuthPolicy" + getUUIDString());
         rule.setEngine(ImplementationEngine.JAVA);
         rule.setType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
         rule.setBody(POJOHelper.serialize(ruleConf));
         Response response = implementationService.create(rule);
         rule.setKey(response.getHeaderString(RESTHeaders.RESOURCE_KEY));
 
-        AuthenticationPolicyTO policy = new AuthenticationPolicyTO();
+        AuthPolicyTO policy = new AuthPolicyTO();
         policy.setDescription("Test Authentication policy");
         policy.setKey(rule.getKey());
         policy = createPolicy(PolicyType.AUTHENTICATION, policy);
@@ -240,23 +240,23 @@ public class RealmITCase extends AbstractITCase {
         assertTrue(actuals.length > 0);
         realm = actuals[0];
 
-        String existingAuthenticationPolicy = realm.getAuthenticationPolicy();
+        String existingAuthPolicy = realm.getAuthPolicy();
 
-        realm.setAuthenticationPolicy(policy.getKey());
+        realm.setAuthPolicy(policy.getKey());
         realmService.update(realm);
 
         actuals = getObject(response.getLocation(), RealmService.class, RealmTO[].class);
         assertNotNull(actuals);
         assertTrue(actuals.length > 0);
         RealmTO actual = actuals[0];
-        assertEquals(policy.getKey(), actual.getAuthenticationPolicy());
+        assertEquals(policy.getKey(), actual.getAuthPolicy());
 
         // 3. remove policy
         policyService.delete(PolicyType.AUTHENTICATION, policy.getKey());
 
         // 4. verify
         actual = getRealm(actual.getFullPath()).get();
-        assertEquals(existingAuthenticationPolicy, actual.getAuthenticationPolicy());
+        assertEquals(existingAuthPolicy, actual.getAuthPolicy());
     }
 
     @Test

@@ -18,12 +18,18 @@
  */
 package org.apache.syncope.fit.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
 import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
-import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
 import org.apache.syncope.common.lib.policy.AccountPolicyTO;
 import org.apache.syncope.common.lib.policy.DefaultAccountRuleConf;
 import org.apache.syncope.common.lib.policy.DefaultPasswordRuleConf;
@@ -32,7 +38,6 @@ import org.apache.syncope.common.lib.policy.PullPolicyTO;
 import org.apache.syncope.common.lib.policy.PushPolicyTO;
 import org.apache.syncope.common.lib.to.AccessPolicyTO;
 import org.apache.syncope.common.lib.to.AttrReleasePolicyTO;
-import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
 import org.apache.syncope.common.lib.to.ImplementationTO;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.AnyTypeKind;
@@ -47,25 +52,18 @@ import org.apache.syncope.fit.core.reference.DummyPullCorrelationRule;
 import org.apache.syncope.fit.core.reference.DummyPushCorrelationRule;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
-
 import javax.ws.rs.core.Response;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.apache.syncope.common.lib.authentication.policy.DefaultAuthPolicyConf;
+import org.apache.syncope.common.lib.to.AuthPolicyTO;
 
 public class PolicyITCase extends AbstractITCase {
 
-    private static AuthenticationPolicyTO buildAuthenticationPolicyTO() {
-        final String authPolicyName = "TestAuthenticationPolicy" + getUUIDString();
+    private static AuthPolicyTO buildAuthPolicyTO() {
+        final String authPolicyName = "TestAuthPolicy" + getUUIDString();
         ImplementationTO implementationTO = null;
         try {
             implementationTO = implementationService.read(
@@ -77,8 +75,8 @@ public class PolicyITCase extends AbstractITCase {
                 implementationTO.setEngine(ImplementationEngine.JAVA);
                 implementationTO.setType(AMImplementationType.AUTH_POLICY_CONFIGURATIONS);
 
-                DefaultAuthenticationPolicyConf conf = new DefaultAuthenticationPolicyConf();
-                conf.getAuthenticationModules().addAll(List.of("LdapAuthentication1"));
+                DefaultAuthPolicyConf conf = new DefaultAuthPolicyConf();
+                conf.getAuthModules().addAll(List.of("LdapAuthentication1"));
                 implementationTO.setBody(POJOHelper.serialize(conf));
 
                 Response response = implementationService.create(implementationTO);
@@ -89,7 +87,7 @@ public class PolicyITCase extends AbstractITCase {
         }
         assertNotNull(implementationTO);
 
-        AuthenticationPolicyTO policy = new AuthenticationPolicyTO();
+        AuthPolicyTO policy = new AuthPolicyTO();
         policy.setDescription("Test Authentication policy");
         policy.setKey(implementationTO.getKey());
 
@@ -252,8 +250,8 @@ public class PolicyITCase extends AbstractITCase {
     }
 
     @Test
-    public void getAuthenticationPolicy() {
-        AuthenticationPolicyTO policyTO =
+    public void getAuthPolicy() {
+        AuthPolicyTO policyTO =
                 policyService.read(PolicyType.AUTHENTICATION, "659b9906-4b6e-4bc0-aca0-6809dff346d4");
 
         assertNotNull(policyTO);
@@ -288,10 +286,10 @@ public class PolicyITCase extends AbstractITCase {
         assertNotNull(pushPolicyTO);
         assertEquals("TestPushRule", pushPolicyTO.getCorrelationRules().get(AnyTypeKind.USER.name()));
 
-        AuthenticationPolicyTO authenticationPolicyTO = createPolicy(PolicyType.AUTHENTICATION,
-                buildAuthenticationPolicyTO());
-        assertNotNull(authenticationPolicyTO);
-        assertEquals("Test Authentication policy", authenticationPolicyTO.getDescription());
+        AuthPolicyTO authPolicyTO = createPolicy(PolicyType.AUTHENTICATION,
+                buildAuthPolicyTO());
+        assertNotNull(authPolicyTO);
+        assertEquals("Test Authentication policy", authPolicyTO.getDescription());
 
         AccessPolicyTO accessPolicyTO = createPolicy(PolicyType.ACCESS, buildAccessPolicyTO());
         assertNotNull(accessPolicyTO);
@@ -329,20 +327,20 @@ public class PolicyITCase extends AbstractITCase {
     }
 
     @Test
-    public void updateAuthenticationPolicy() {
-        AuthenticationPolicyTO newAuthPolicyTO = buildAuthenticationPolicyTO();
+    public void updateAuthPolicy() {
+        AuthPolicyTO newAuthPolicyTO = buildAuthPolicyTO();
         assertNotNull(newAuthPolicyTO);
         newAuthPolicyTO = createPolicy(PolicyType.AUTHENTICATION, newAuthPolicyTO);
 
         ImplementationTO authPolicyImplementationTO = implementationService.read(
-                AMImplementationType.AUTH_POLICY_CONFIGURATIONS, "MyDefaultAuthenticationPolicyConf");
+                AMImplementationType.AUTH_POLICY_CONFIGURATIONS, "MyDefaultAuthPolicyConf");
         assertNotNull(authPolicyImplementationTO);
         assertFalse(StringUtils.isBlank(authPolicyImplementationTO.getBody()));
 
-        DefaultAuthenticationPolicyConf authPolicyConf =
-                POJOHelper.deserialize(authPolicyImplementationTO.getBody(), DefaultAuthenticationPolicyConf.class);
+        DefaultAuthPolicyConf authPolicyConf =
+                POJOHelper.deserialize(authPolicyImplementationTO.getBody(), DefaultAuthPolicyConf.class);
         assertNotNull(authPolicyConf);
-        authPolicyConf.getAuthenticationModules().add("LdapAuthentication");
+        authPolicyConf.getAuthModules().add("LdapAuthentication");
         authPolicyImplementationTO.setBody(POJOHelper.serialize(authPolicyConf));
 
         // update new authentication policy
@@ -351,10 +349,10 @@ public class PolicyITCase extends AbstractITCase {
         assertNotNull(newAuthPolicyTO);
 
         authPolicyConf = POJOHelper.deserialize(authPolicyImplementationTO.getBody(),
-                DefaultAuthenticationPolicyConf.class);
+                DefaultAuthPolicyConf.class);
         assertNotNull(authPolicyConf);
-        assertEquals(2, authPolicyConf.getAuthenticationModules().size());
-        assertTrue(authPolicyConf.getAuthenticationModules().contains("LdapAuthentication"));
+        assertEquals(2, authPolicyConf.getAuthModules().size());
+        assertTrue(authPolicyConf.getAuthModules().contains("LdapAuthentication"));
     }
 
     @Test
@@ -442,9 +440,9 @@ public class PolicyITCase extends AbstractITCase {
             assertNotNull(e);
         }
 
-        AuthenticationPolicyTO authPolicy = buildAuthenticationPolicyTO();
+        AuthPolicyTO authPolicy = buildAuthPolicyTO();
 
-        AuthenticationPolicyTO authPolicyTO = createPolicy(PolicyType.AUTHENTICATION, authPolicy);
+        AuthPolicyTO authPolicyTO = createPolicy(PolicyType.AUTHENTICATION, authPolicy);
         assertNotNull(authPolicyTO);
 
         policyService.delete(PolicyType.AUTHENTICATION, authPolicyTO.getKey());

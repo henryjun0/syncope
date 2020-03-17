@@ -54,7 +54,7 @@ public class RealmTO extends BaseBean implements NamedEntityTO, TemplatableTO {
 
     private String passwordPolicy;
 
-    private String authenticationPolicy;
+    private String authPolicy;
 
     private String accessPolicy;
 
@@ -120,12 +120,12 @@ public class RealmTO extends BaseBean implements NamedEntityTO, TemplatableTO {
         this.passwordPolicy = passwordPolicy;
     }
 
-    public String getAuthenticationPolicy() {
-        return authenticationPolicy;
+    public String getAuthPolicy() {
+        return authPolicy;
     }
 
-    public void setAuthenticationPolicy(final String authenticationPolicy) {
-        this.authenticationPolicy = authenticationPolicy;
+    public void setAuthPolicy(final String authPolicy) {
+        this.authPolicy = authPolicy;
     }
 
     public String getAccessPolicy() {
@@ -183,7 +183,7 @@ public class RealmTO extends BaseBean implements NamedEntityTO, TemplatableTO {
                 append(fullPath, other.fullPath).
                 append(accountPolicy, other.accountPolicy).
                 append(passwordPolicy, other.passwordPolicy).
-                append(authenticationPolicy, other.authenticationPolicy).
+                append(authPolicy, other.authPolicy).
                 append(accessPolicy, other.accessPolicy).
                 append(attrReleasePolicy, other.attrReleasePolicy).
                 append(actions, other.actions).
@@ -201,7 +201,7 @@ public class RealmTO extends BaseBean implements NamedEntityTO, TemplatableTO {
                 append(fullPath).
                 append(accountPolicy).
                 append(passwordPolicy).
-                append(authenticationPolicy).
+                append(authPolicy).
                 append(accessPolicy).
                 append(attrReleasePolicy).
                 append(actions).

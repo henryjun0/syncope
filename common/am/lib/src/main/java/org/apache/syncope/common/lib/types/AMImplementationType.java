@@ -19,11 +19,10 @@
 package org.apache.syncope.common.lib.types;
 
 import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.Map;
 
 public final class AMImplementationType {
-    
+
     public static final String AUTH_MODULE_CONFIGURATIONS = "AUTH_MODULE_CONFIGURATIONS";
 
     public static final String AUTH_POLICY_CONFIGURATIONS = "AUTH_POLICY_CONFIGURATIONS";
@@ -37,14 +36,14 @@ public final class AMImplementationType {
     }
 
     private static final Map<String, String> VALUES = Map.ofEntries(
-        Pair.of(AUTH_MODULE_CONFIGURATIONS,
-            "org.apache.syncope.common.lib.authentication.policy.AuthenticationPolicyConf"),
-        Pair.of(AUTH_POLICY_CONFIGURATIONS,
-            "org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf"),
-        Pair.of(ATTR_RELEASE_POLICY_CONFIGURATIONS,
-            "org.apache.syncope.common.lib.authentication.module.AuthenticationModuleConf"),
-        Pair.of(ACCESS_POLICY_CONFIGURATIONS,
-            "org.apache.syncope.common.lib.attrs.AttrReleasePolicyConf"));
+            Pair.of(AUTH_MODULE_CONFIGURATIONS,
+                    "org.apache.syncope.common.lib.authentication.policy.AuthPolicyConf"),
+            Pair.of(AUTH_POLICY_CONFIGURATIONS,
+                    "org.apache.syncope.common.lib.authentication.module.AuthModuleConf"),
+            Pair.of(ATTR_RELEASE_POLICY_CONFIGURATIONS,
+                    "org.apache.syncope.common.lib.authentication.module.AuthModuleConf"),
+            Pair.of(ACCESS_POLICY_CONFIGURATIONS,
+                    "org.apache.syncope.common.lib.attrs.AttrReleasePolicyConf"));
 
     public static Map<String, String> values() {
         return VALUES;

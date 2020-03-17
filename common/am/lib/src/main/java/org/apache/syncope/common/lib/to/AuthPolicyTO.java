@@ -16,24 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.syncope.common.lib.authentication.policy;
+package org.apache.syncope.common.lib.to;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.syncope.common.lib.policy.PolicyTO;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "AnyAuthenticationPolicyCriteriaConf")
+@XmlRootElement(name = "authPolicy")
 @XmlType
-public class DefaultAuthenticationPolicyCriteriaConf extends AbstractAuthenticationPolicyCriteriaConf {
+public class AuthPolicyTO extends PolicyTO {
 
-    private static final long serialVersionUID = 3928807032588105869L;
+    private static final long serialVersionUID = -6711411162433533300L;
 
-    private boolean all;
-
-    public boolean isAll() {
-        return all;
-    }
-
-    public void setAll(final boolean all) {
-        this.all = all;
+    @XmlTransient
+    @JsonProperty("@class")
+    @Schema(name = "@class", required = true,
+            example = "org.apache.syncope.common.lib.to.AuthPolicyTO")
+    @Override
+    public String getDiscriminator() {
+        return getClass().getName();
     }
 }

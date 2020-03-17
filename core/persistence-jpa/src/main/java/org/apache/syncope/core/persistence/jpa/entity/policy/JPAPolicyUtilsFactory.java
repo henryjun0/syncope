@@ -25,12 +25,11 @@ import org.apache.syncope.common.lib.policy.PolicyTO;
 import org.apache.syncope.common.lib.policy.PullPolicyTO;
 import org.apache.syncope.common.lib.policy.PushPolicyTO;
 import org.apache.syncope.common.lib.to.AttrReleasePolicyTO;
-import org.apache.syncope.common.lib.to.AuthenticationPolicyTO;
+import org.apache.syncope.common.lib.to.AuthPolicyTO;
 import org.apache.syncope.common.lib.types.PolicyType;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccountPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PasswordPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.Policy;
 import org.apache.syncope.core.persistence.api.entity.policy.PolicyUtils;
@@ -38,6 +37,7 @@ import org.apache.syncope.core.persistence.api.entity.policy.PolicyUtilsFactory;
 import org.springframework.stereotype.Component;
 import org.apache.syncope.core.persistence.api.entity.policy.PullPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.PushPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 @Component
 public class JPAPolicyUtilsFactory implements PolicyUtilsFactory {
@@ -58,7 +58,7 @@ public class JPAPolicyUtilsFactory implements PolicyUtilsFactory {
             type = PolicyType.PULL;
         } else if (policy instanceof PushPolicy) {
             type = PolicyType.PUSH;
-        } else if (policy instanceof AuthenticationPolicy) {
+        } else if (policy instanceof AuthPolicy) {
             type = PolicyType.AUTHENTICATION;
         } else if (policy instanceof AccessPolicy) {
             type = PolicyType.ACCESS;
@@ -82,7 +82,7 @@ public class JPAPolicyUtilsFactory implements PolicyUtilsFactory {
             type = PolicyType.PULL;
         } else if (policyClass == PushPolicyTO.class) {
             type = PolicyType.PUSH;
-        } else if (policyClass == AuthenticationPolicyTO.class) {
+        } else if (policyClass == AuthPolicyTO.class) {
             type = PolicyType.AUTHENTICATION;
         } else if (policyClass == AccessPolicyTO.class) {
             type = PolicyType.ACCESS;

@@ -26,9 +26,9 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
-@XmlRootElement(name = "ldapAuthenticationModuleConf")
+@XmlRootElement(name = "ldapAuthModuleConf")
 @XmlType
-public class LDAPAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+public class LDAPAuthModuleConf extends AbstractAuthModuleConf {
 
     private static final long serialVersionUID = -471527731042579422L;
 

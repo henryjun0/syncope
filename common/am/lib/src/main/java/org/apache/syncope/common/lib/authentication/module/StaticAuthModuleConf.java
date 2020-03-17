@@ -28,16 +28,16 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.syncope.common.lib.jaxb.XmlGenericMapAdapter;
 
-@XmlRootElement(name = "staticAuthenticationModuleConf")
+@XmlRootElement(name = "staticAuthModuleConf")
 @XmlType
-public class StaticAuthenticationModuleConf extends AbstractAuthenticationModuleConf {
+public class StaticAuthModuleConf extends AbstractAuthModuleConf {
 
     private static final long serialVersionUID = -7775771400318503131L;
 
     @XmlJavaTypeAdapter(XmlGenericMapAdapter.class)
     private final Map<String, String> users = new HashMap<>();
 
-    public StaticAuthenticationModuleConf(final Map<String, String> users) {
+    public StaticAuthModuleConf(final Map<String, String> users) {
         setName(getClass().getSimpleName());
         getUsers().clear();
         getUsers().putAll(users);

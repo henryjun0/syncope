@@ -82,7 +82,7 @@ public class ResourceTO implements EntityTO {
 
     private String provisionSorter;
 
-    private String authenticationPolicy;
+    private String authPolicy;
 
     private String accessPolicy;
 
@@ -209,12 +209,12 @@ public class ResourceTO implements EntityTO {
         this.provisionSorter = provisionSorter;
     }
 
-    public String getAuthenticationPolicy() {
-        return authenticationPolicy;
+    public String getAuthPolicy() {
+        return authPolicy;
     }
 
-    public void setAuthenticationPolicy(final String authenticationPolicy) {
-        this.authenticationPolicy = authenticationPolicy;
+    public void setAuthPolicy(final String authPolicy) {
+        this.authPolicy = authPolicy;
     }
 
     public String getAccessPolicy() {
@@ -314,7 +314,7 @@ public class ResourceTO implements EntityTO {
                 append(accountPolicy, other.accountPolicy).
                 append(pullPolicy, other.pullPolicy).
                 append(pushPolicy, other.pushPolicy).
-                append(authenticationPolicy, other.authenticationPolicy).
+                append(authPolicy, other.authPolicy).
                 append(accessPolicy, other.accessPolicy).
                 append(confOverride, other.confOverride).
                 append(capabilitiesOverride, other.capabilitiesOverride).
@@ -342,7 +342,7 @@ public class ResourceTO implements EntityTO {
                 append(accountPolicy).
                 append(pullPolicy).
                 append(pushPolicy).
-                append(authenticationPolicy).
+                append(authPolicy).
                 append(accessPolicy).
                 append(confOverride).
                 append(overrideCapabilities).

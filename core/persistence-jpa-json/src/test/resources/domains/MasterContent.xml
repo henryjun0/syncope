@@ -45,13 +45,13 @@ under the License.
   <PasswordPolicyRule policy_id="55e5de0b-c79c-4e66-adda-251b6fb8579a" implementation_id="DefaultPasswordRuleConf3"/>
   
   <!-- authentication policies -->
-  <Implementation id="MyDefaultAuthenticationPolicyConf" type="AUTH_POLICY_CONFIGURATIONS" engine="JAVA"
-                  body='{"@class":"org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf","authenticationModules":["LdapAuthenticationTest"]}'/>
-  <AuthenticationPolicy id="659b9906-4b6e-4bc0-aca0-6809dff346d4" name="MyDefaultAuthenticationPolicyConf" 
-                        description="an authentication policy" />
-  <AuthenticationPolicy id="b912a0d4-a890-416f-9ab8-84ab077eb028" name="DefaultAuthenticationPolicy" 
-                        description="Default authentication policy"/>
-  <AuthenticationModule id="be456831-593d-4003-b273-4c3fb61700df" name="DefaultAuthenticationModule"/>
+  <Implementation id="MyDefaultAuthPolicyConf" type="AUTH_POLICY_CONFIGURATIONS" engine="JAVA"
+                  body='{"@class":"org.apache.syncope.common.lib.authentication.policy.DefaultAuthPolicyConf","authModules":["LdapAuthenticationTest"]}'/>
+  <AuthPolicy id="659b9906-4b6e-4bc0-aca0-6809dff346d4" name="MyDefaultAuthPolicyConf" 
+              description="an authentication policy" />
+  <AuthPolicy id="b912a0d4-a890-416f-9ab8-84ab077eb028" name="DefaultAuthPolicy" 
+              description="Default authentication policy"/>
+  <AuthModule id="be456831-593d-4003-b273-4c3fb61700df" name="DefaultAuthModule"/>
   
   <!-- access policies -->
   <Implementation id="MyDefaultAccessPolicyConf" type="ACCESS_POLICY_CONFIGURATIONS" engine="JAVA"

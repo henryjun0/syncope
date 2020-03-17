@@ -16,20 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.syncope.core.persistence.api.entity.authentication;
+package org.apache.syncope.common.lib.authentication.policy;
 
-import org.apache.syncope.core.persistence.api.entity.Entity;
-import org.apache.syncope.core.persistence.api.entity.Implementation;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-import java.util.List;
+@XmlRootElement(name = "AnyAuthPolicyCriteriaConf")
+@XmlType
+public class DefaultAuthPolicyCriteriaConf extends AbstractAuthPolicyCriteriaConf {
 
-public interface AuthenticationModule extends Entity {
+    private static final long serialVersionUID = 3928807032588105869L;
 
-    String getName();
+    private boolean all;
 
-    void setName(String name);
+    public boolean isAll() {
+        return all;
+    }
 
-    List<? extends Implementation> getConfigurations();
-
-    boolean add(Implementation configuration);
+    public void setAll(final boolean all) {
+        this.all = all;
+    }
 }

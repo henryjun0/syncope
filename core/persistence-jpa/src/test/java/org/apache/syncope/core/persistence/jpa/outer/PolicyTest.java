@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.syncope.core.persistence.jpa.outer;
 
 import org.apache.syncope.common.lib.SyncopeConstants;
@@ -26,7 +25,7 @@ import org.apache.syncope.core.persistence.api.entity.Realm;
 import org.apache.syncope.core.persistence.api.entity.authentication.OIDCRelyingParty;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 import org.apache.syncope.core.persistence.jpa.inner.AbstractClientAppTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional("Master")
 public class PolicyTest extends AbstractClientAppTest {
+
     @Autowired
     private OIDCRelyingPartyDAO openIdConnectRelyingPartyDAO;
 
@@ -53,7 +53,7 @@ public class PolicyTest extends AbstractClientAppTest {
     public void policyCannotBeRemovedForApps() {
         // Create new policy
         AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
-        AuthenticationPolicy authPolicy = buildAndSaveAuthenticationPolicy();
+        AuthPolicy authPolicy = buildAndSaveAuthPolicy();
 
         // Create new client app and assign policy
         OIDCRelyingParty rp = entityFactory.newEntity(OIDCRelyingParty.class);
@@ -62,7 +62,7 @@ public class PolicyTest extends AbstractClientAppTest {
         rp.setClientId(UUID.randomUUID().toString());
         rp.setClientSecret("secret");
         rp.setAccessPolicy(accessPolicy);
-        rp.setAuthenticationPolicy(authPolicy);
+        rp.setAuthPolicy(authPolicy);
 
         rp = openIdConnectRelyingPartyDAO.save(rp);
         assertNotNull(rp);
@@ -89,7 +89,7 @@ public class PolicyTest extends AbstractClientAppTest {
         rp.setClientId(UUID.randomUUID().toString());
         rp.setClientSecret("secret");
         rp.setRealm(realm);
-        
+
         assertDoesNotThrow(() -> {
             openIdConnectRelyingPartyDAO.save(rp);
             entityManager().flush();
@@ -98,13 +98,13 @@ public class PolicyTest extends AbstractClientAppTest {
 
     @Test
     public void policyForRealmsCanBeRemoved() {
-        AuthenticationPolicy authPolicy = buildAndSaveAuthenticationPolicy();
+        AuthPolicy authPolicy = buildAndSaveAuthPolicy();
         AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
         AttrReleasePolicy attrPolicy = buildAndSaveAttrRelPolicy();
 
         Realm realm = realmDAO.findByFullPath(SyncopeConstants.ROOT_REALM);
         assertNotNull(realm);
-        realm.setAuthenticationPolicy(authPolicy);
+        realm.setAuthPolicy(authPolicy);
         realm.setAccessPolicy(accessPolicy);
         realm.setAttrReleasePolicy(attrPolicy);
         realm = realmDAO.save(realm);

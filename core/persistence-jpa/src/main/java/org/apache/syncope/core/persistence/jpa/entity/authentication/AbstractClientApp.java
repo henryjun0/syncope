@@ -21,17 +21,17 @@ package org.apache.syncope.core.persistence.jpa.entity.authentication;
 import org.apache.syncope.core.persistence.api.entity.Realm;
 import org.apache.syncope.core.persistence.api.entity.authentication.ClientApp;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
-import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.AbstractGeneratedKeyEntity;
 import org.apache.syncope.core.persistence.jpa.entity.JPARealm;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAttrReleasePolicy;
-import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
+import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 @MappedSuperclass
 public class AbstractClientApp extends AbstractGeneratedKeyEntity implements ClientApp {
@@ -46,9 +46,9 @@ public class AbstractClientApp extends AbstractGeneratedKeyEntity implements Cli
 
     @ManyToOne(fetch = FetchType.EAGER)
     private JPARealm realm;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
-    private JPAAuthenticationPolicy authenticationPolicy;
+    private JPAAuthPolicy authPolicy;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private JPAAccessPolicy accessPolicy;
@@ -77,14 +77,14 @@ public class AbstractClientApp extends AbstractGeneratedKeyEntity implements Cli
     }
 
     @Override
-    public JPAAuthenticationPolicy getAuthenticationPolicy() {
-        return authenticationPolicy;
+    public JPAAuthPolicy getAuthPolicy() {
+        return authPolicy;
     }
 
     @Override
-    public void setAuthenticationPolicy(final AuthenticationPolicy authenticationPolicy) {
-        checkType(authenticationPolicy, JPAAuthenticationPolicy.class);
-        this.authenticationPolicy = (JPAAuthenticationPolicy) authenticationPolicy;
+    public void setAuthPolicy(final AuthPolicy authPolicy) {
+        checkType(authPolicy, JPAAuthPolicy.class);
+        this.authPolicy = (JPAAuthPolicy) authPolicy;
     }
 
     public JPAAccessPolicy getAccessPolicy() {
