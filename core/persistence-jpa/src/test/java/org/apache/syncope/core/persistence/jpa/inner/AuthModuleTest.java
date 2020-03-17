@@ -120,7 +120,6 @@ public class AuthModuleTest extends AbstractTest {
     @Test
     public void saveWithLdapModule() {
         LDAPAuthModuleConf conf = new LDAPAuthModuleConf();
-        conf.getAttributes().addAll(List.of("cn", "uid"));
         conf.setBaseDn("dc=example,dc=org");
         conf.setSearchFilter("cn={user}");
         conf.setSubtreeSearch(true);
