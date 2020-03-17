@@ -71,6 +71,10 @@ public class PolicyTest extends AbstractClientAppTest {
             this.policyDAO.delete(accessPolicy);
             entityManager().flush();
         });
+        assertThrows(PersistenceException.class, () -> {
+            this.policyDAO.delete(authPolicy);
+            entityManager().flush();
+        });
     }
 
     @Test
