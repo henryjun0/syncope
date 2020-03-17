@@ -21,12 +21,14 @@ package org.apache.syncope.core.persistence.jpa.inner;
 import java.util.List;
 import java.util.Map;
 import org.apache.syncope.common.lib.access.DefaultAccessPolicyConf;
+import org.apache.syncope.common.lib.attrs.AllowedAttrReleasePolicyConf;
 import org.apache.syncope.common.lib.authentication.policy.DefaultAuthenticationPolicyConf;
 import org.apache.syncope.common.lib.types.AMImplementationType;
 import org.apache.syncope.common.lib.types.ImplementationEngine;
 import org.apache.syncope.core.persistence.api.dao.ImplementationDAO;
 import org.apache.syncope.core.persistence.api.entity.Implementation;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
+import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.dao.PolicyDAO;
 import org.apache.syncope.core.persistence.jpa.AbstractTest;
@@ -40,6 +42,26 @@ public class AbstractClientAppTest extends AbstractTest {
 
     @Autowired
     protected ImplementationDAO implementationDAO;
+
+    protected AttrReleasePolicy buildAndSaveAttrRelPolicy() {
+        AttrReleasePolicy attrRelPolicy = entityFactory.newEntity(AttrReleasePolicy.class);
+        attrRelPolicy.setName("AttrRelPolicyTest");
+        attrRelPolicy.setDescription("This is a sample access policy");
+
+        AllowedAttrReleasePolicyConf conf = new AllowedAttrReleasePolicyConf();
+        conf.setName("Example Attr Rel Policy for an application");
+        conf.getAllowedAttributes().addAll(List.of("cn", "givenName"));
+        
+        Implementation type = entityFactory.newEntity(Implementation.class);
+        type.setKey("AttrRelPolicyTest");
+        type.setEngine(ImplementationEngine.JAVA);
+        type.setType(AMImplementationType.ATTR_RELEASE_POLICY_CONFIGURATIONS);
+        type.setBody(POJOHelper.serialize(conf));
+        type = implementationDAO.save(type);
+        attrRelPolicy.addConfiguration(type);
+        return policyDAO.save(attrRelPolicy);
+
+    }
 
     protected AccessPolicy buildAndSaveAccessPolicy() {
         AccessPolicy accessPolicy = entityFactory.newEntity(AccessPolicy.class);

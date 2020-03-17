@@ -19,6 +19,7 @@
 package org.apache.syncope.core.persistence.api.entity.authentication;
 
 import org.apache.syncope.core.persistence.api.entity.Entity;
+import org.apache.syncope.core.persistence.api.entity.Realm;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
@@ -44,4 +45,8 @@ public interface ClientApp extends Entity {
     AttrReleasePolicy getAttrReleasePolicy();
 
     void setAttrReleasePolicy(AttrReleasePolicy policy);
+
+    Realm getRealm();
+
+    void setRealm(Realm realm);
 }

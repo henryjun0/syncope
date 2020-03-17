@@ -82,8 +82,8 @@ public class JPAOIDCRelyingPartyDAO extends AbstractDAO<OIDCRelyingParty>
     }
 
     @Override
-    public OIDCRelyingParty save(final OIDCRelyingParty rpTO) {
-        return entityManager().merge(rpTO);
+    public OIDCRelyingParty save(final OIDCRelyingParty rp) {
+        return entityManager().merge(rp);
     }
 
     @Override

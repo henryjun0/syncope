@@ -124,6 +124,20 @@ public class PolicyTest extends AbstractTest {
     }
 
     @Test
+    public void findByPolicyImpl() {
+        AccessPolicy accessPolicy = policyDAO.find("419935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNotNull(accessPolicy);
+        AuthenticationPolicy authenticationPolicy = policyDAO.find("b912a0d4-a890-416f-9ab8-84ab077eb028");
+        assertNotNull(authenticationPolicy);
+        AttrReleasePolicy attrReleasePolicy = policyDAO.find("319935c7-deb3-40b3-8a9a-683037e523a2");
+        assertNotNull(attrReleasePolicy);
+
+        accessPolicy.getConfigurations().forEach(cfg -> assertFalse(policyDAO.findByAccessPolicy(cfg).isEmpty()));
+        authenticationPolicy.getConfigurations().forEach(cfg -> assertFalse(policyDAO.findByAuthenticationPolicy(cfg).isEmpty()));
+        attrReleasePolicy.getConfigurations().forEach(cfg -> assertFalse(policyDAO.findByAttrReleasePolicy(cfg).isEmpty()));
+    }
+
+    @Test
     public void findByType() {
         List<PullPolicy> pullPolicies = policyDAO.find(PullPolicy.class);
         assertNotNull(pullPolicies);

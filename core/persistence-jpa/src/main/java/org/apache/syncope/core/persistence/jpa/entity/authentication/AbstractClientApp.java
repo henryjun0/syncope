@@ -18,11 +18,13 @@
  */
 package org.apache.syncope.core.persistence.jpa.entity.authentication;
 
+import org.apache.syncope.core.persistence.api.entity.Realm;
 import org.apache.syncope.core.persistence.api.entity.authentication.ClientApp;
 import org.apache.syncope.core.persistence.api.entity.policy.AttrReleasePolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthenticationPolicy;
 import org.apache.syncope.core.persistence.api.entity.policy.AccessPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.AbstractGeneratedKeyEntity;
+import org.apache.syncope.core.persistence.jpa.entity.JPARealm;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAttrReleasePolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAuthenticationPolicy;
 import org.apache.syncope.core.persistence.jpa.entity.policy.JPAAccessPolicy;
@@ -42,6 +44,9 @@ public class AbstractClientApp extends AbstractGeneratedKeyEntity implements Cli
     @Column
     private String description;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private JPARealm realm;
+    
     @ManyToOne(fetch = FetchType.EAGER)
     private JPAAuthenticationPolicy authenticationPolicy;
 
@@ -100,5 +105,16 @@ public class AbstractClientApp extends AbstractGeneratedKeyEntity implements Cli
     public void setAttrReleasePolicy(final AttrReleasePolicy policy) {
         checkType(policy, JPAAccessPolicy.class);
         this.attrReleasePolicy = (JPAAttrReleasePolicy) policy;
+    }
+
+    @Override
+    public Realm getRealm() {
+        return realm;
+    }
+
+    @Override
+    public void setRealm(final Realm realm) {
+        checkType(realm, JPARealm.class);
+        this.realm = (JPARealm) realm;
     }
 }
