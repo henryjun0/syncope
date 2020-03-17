@@ -153,7 +153,7 @@ under the License.
         <role>PMC member</role>
       </roles>
       <url>http://people.apache.org/~massi/</url>
-    </developer>    
+    </developer>
     <developer>
       <id>rene</id>
       <name>René Mulder</name>
@@ -409,9 +409,9 @@ under the License.
     <jackson.version>2.10.3</jackson.version>
 
     <spring.version>5.2.4.RELEASE</spring.version>
-    <spring-security.version>5.3.0.RELEASE</spring-security.version>
+    <spring-security.version>5.2.2.RELEASE</spring-security.version>
     <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-    <spring-cloud-gateway.version>2.2.2.RELEASE</spring-cloud-gateway.version>
+    <spring-cloud-gateway.version>2.2.1.RELEASE</spring-cloud-gateway.version>
 
     <openjpa.version>3.1.1</openjpa.version>
     <hikaricp.version>3.4.2</hikaricp.version>
@@ -432,34 +432,29 @@ under the License.
     <slf4j.version>1.7.30</slf4j.version>
     <opensaml.version>3.3.1</opensaml.version>
 
-    <elasticsearch.version>7.6.1</elasticsearch.version>
+    <elasticsearch.version>7.6.0</elasticsearch.version>
 
     <apacheds.version>2.0.0.AM25</apacheds.version>
     <apachedirapi.version>2.0.0.AM2</apachedirapi.version>
 
     <log4j.version>2.13.1</log4j.version>
     <disruptor.version>3.4.2</disruptor.version>
-
+    
     <commons-jexl.version>3.1</commons-jexl.version>
     <commons-lang.version>3.9</commons-lang.version>
     <commons-text.version>1.8</commons-text.version>
     <commons-logging.version>1.1.3</commons-logging.version>
     
-    <tika.version>1.23</tika.version>
-
     <joda.version>2.10.5</joda.version>
+
+    <cas.version>6.2.0-SNAPSHOT</cas.version>
 
     <h2.version>1.4.200</h2.version>
 
     <junit.version>5.6.0</junit.version>
     <mockito.version>3.3.0</mockito.version>
 
-    <conf.directory>${project.build.directory}/test-classes</conf.directory>
-    <bundles.directory>${project.build.directory}/bundles</bundles.directory>
-    <connid.location>file:${bundles.directory}/</connid.location>
-    <log.directory>${project.build.directory}/log</log.directory>
-
-    <swagger-core.version>2.1.1</swagger-core.version>    
+    <swagger-core.version>2.1.1</swagger-core.version>
     <swagger-ui.version>3.25.0</swagger-ui.version>
     <guava.version>20.0</guava.version>
 
@@ -467,7 +462,7 @@ under the License.
     <jquery-ui.version>1.12.1</jquery-ui.version>
     <jquery-slimscroll.version>1.3.8</jquery-slimscroll.version>
     <jquery-cookie.version>1.4.1-1</jquery-cookie.version>
-    
+
     <bootstrap.version>3.4.1</bootstrap.version>
     <bootstrap-select.version>1.12.4</bootstrap-select.version>
     <bootstrap-fileinput.version>4.4.8</bootstrap-fileinput.version>
@@ -480,15 +475,15 @@ under the License.
     <googlediffmatchpath.version>895a9512bb</googlediffmatchpath.version>
     <jsplumb.version>2.0.7</jsplumb.version>
     <chartjs.version>1.0.2</chartjs.version>
-    
+
     <wicket.version>8.7.0</wicket.version>
     <wicket-jqueryui.version>8.6.0</wicket-jqueryui.version>
     <wicket-bootstrap.version>2.0.12</wicket-bootstrap.version>
     <wicket-spring-boot.version>2.1.9</wicket-spring-boot.version>
-    
+
     <ianal-maven-plugin-version>1.0-alpha-1</ianal-maven-plugin-version>
 
-    <netbeans.version>RELEASE111</netbeans.version>
+    <netbeans.version>RELEASE112</netbeans.version>
 
     <antlr4.version>4.8-1</antlr4.version>
 
@@ -532,6 +527,11 @@ under the License.
     <jdbc.mssql.version>8.2.0.jre</jdbc.mssql.version>
     <jdbc.oracle.version>19.3.0.0</jdbc.oracle.version>
 
+    <conf.directory>${project.build.directory}/test-classes</conf.directory>
+    <bundles.directory>${project.build.directory}/bundles</bundles.directory>
+    <connid.location>file:${bundles.directory}/</connid.location>
+    <log.directory>${project.build.directory}/log</log.directory>
+
     <adminUser>admin</adminUser>
     <anonymousUser>anonymous</anonymousUser>
     <adminPassword>DE088591C00CC98B36F5ADAAF7DA2B004CF7F2FE7BBB45B766B6409876E2F3DB13C7905C6AA59464</adminPassword>
@@ -547,7 +547,8 @@ under the License.
     <argLine>-Xms512m -Xmx1024m -Xss256k</argLine>
 
     <ianal.skip>false</ianal.skip>
-    <skip.sass>false</skip.sass>
+    <sass.skip>false</sass.skip>
+    <remote-resources.skip>true</remote-resources.skip>
 
     <sonar.language>java</sonar.language>
     <sonar.java.source>${targetJdk}</sonar.java.source>
@@ -589,9 +590,9 @@ under the License.
         <artifactId>geronimo-javamail_1.4_mail</artifactId>
         <version>1.8.4</version>
       </dependency>
-      <dependency> 
-        <groupId>javax.servlet</groupId> 
-        <artifactId>javax.servlet-api</artifactId> 
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
         <version>4.0.1</version>
         <scope>provided</scope>
       </dependency>
@@ -606,7 +607,7 @@ under the License.
         <artifactId>taglibs-standard-impl</artifactId>
         <version>1.2.5</version>
       </dependency>
-      
+
       <!-- CXF -->
       <dependency>
         <groupId>org.apache.cxf</groupId>
@@ -670,7 +671,7 @@ under the License.
       </dependency>
       <!-- /CXF -->
 
-      <!-- Swagger -->      
+      <!-- Swagger -->
       <dependency>
         <groupId>io.swagger.core.v3</groupId>
         <artifactId>swagger-annotations</artifactId>
@@ -681,7 +682,7 @@ under the License.
             <artifactId>jackson-dataformat-yaml</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>      
+      </dependency>
       <dependency>
         <groupId>io.swagger.core.v3</groupId>
         <artifactId>swagger-jaxrs2</artifactId>
@@ -692,13 +693,13 @@ under the License.
         <artifactId>swagger-ui</artifactId>
         <version>${swagger-ui.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
       </dependency>
-      <!-- /Swagger -->      
+      <!-- /Swagger -->
 
       <!-- Camel -->
       <dependency>
@@ -916,7 +917,7 @@ under the License.
         <artifactId>javax.el</artifactId>
         <version>3.0.1-b09</version>
       </dependency>
-            
+
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
@@ -987,7 +988,7 @@ under the License.
             <artifactId>joda-time</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>    
+      </dependency>
 
       <dependency>
         <groupId>joda-time</groupId>
@@ -1011,6 +1012,22 @@ under the License.
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-autoconfigure</artifactId>
         <version>${spring-boot.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring-boot.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -1155,13 +1172,13 @@ under the License.
         <artifactId>spring-security-config</artifactId>
         <version>${spring-security.version}</version>
       </dependency>
-    
+
       <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjweaver</artifactId>
         <version>1.9.5</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-jexl3</artifactId>
@@ -1181,7 +1198,7 @@ under the License.
       <dependency>
         <groupId>org.apache.tika</groupId>
         <artifactId>tika-core</artifactId>
-        <version>${tika.version}</version>
+        <version>1.23</version>
       </dependency>
 
       <dependency>
@@ -1199,7 +1216,7 @@ under the License.
         <artifactId>slf4j-logging</artifactId>
         <version>${connid.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.codehaus.groovy</groupId>
         <artifactId>groovy</artifactId>
@@ -1213,7 +1230,7 @@ under the License.
           <exclusion>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-xml</artifactId>
-          </exclusion>    
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -1246,7 +1263,17 @@ under the License.
         <artifactId>groovy-sql</artifactId>
         <version>${groovy.version}</version>
       </dependency>
-    
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-json</artifactId>
+        <version>${groovy.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-groovysh</artifactId>
+        <version>${groovy.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
@@ -1301,13 +1328,13 @@ under the License.
           </exclusion>
         </exclusions>
       </dependency>
-      
+
       <dependency>
         <groupId>org.jasypt</groupId>
         <artifactId>jasypt</artifactId>
         <version>${jasypt.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.quartz-scheduler</groupId>
         <artifactId>quartz</artifactId>
@@ -1327,7 +1354,7 @@ under the License.
           </exclusion>
         </exclusions>
       </dependency>
-      
+
       <dependency>
         <groupId>org.apache.cocoon.sax</groupId>
         <artifactId>cocoon-sax</artifactId>
@@ -1342,25 +1369,18 @@ under the License.
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>fop</artifactId>
-        <version>2.3</version>
+        <version>2.4</version>
         <exclusions>
           <exclusion>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
-      <dependency>
-        <groupId>org.apache.xmlgraphics</groupId>
-        <artifactId>batik-i18n</artifactId>
-        <version>1.10</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.xmlgraphics</groupId>
-        <artifactId>batik-constants</artifactId>
-        <version>1.10</version>
-      </dependency>
-
       <!-- Flowable -->
       <dependency>
         <groupId>org.flowable</groupId>
@@ -1495,7 +1515,7 @@ under the License.
         </exclusions>
       </dependency>
       <!-- /Wicket -->
-      
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -1513,7 +1533,27 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-jul</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-jcl</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-web</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-slf4j-impl</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j18-impl</artifactId>
         <version>${log4j.version}</version>
       </dependency>
       <dependency>
@@ -1532,13 +1572,18 @@ under the License.
         <artifactId>jcl-over-slf4j</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
-      
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jul-to-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>org.apache.pdfbox</groupId>
         <artifactId>pdfbox</artifactId>
         <version>2.0.18</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.webjars</groupId>
         <artifactId>jquery</artifactId>
@@ -1583,7 +1628,7 @@ under the License.
             <artifactId>bootstrap</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>      
+      </dependency>
       <dependency>
         <groupId>org.webjars</groupId>
         <artifactId>font-awesome</artifactId>
@@ -1812,7 +1857,7 @@ under the License.
         <scope>test</scope>
       </dependency>
     </dependencies>
-      
+
   </dependencyManagement>
 
   <repositories>
@@ -1825,10 +1870,6 @@ under the License.
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-    </repository>
-    <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
@@ -1873,7 +1914,7 @@ under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version> 
+          <version>3.8.1</version>
           <configuration>
             <release>${targetJdk}</release>
             <useIncrementalCompilation>false</useIncrementalCompilation>
@@ -1882,7 +1923,7 @@ under the License.
             <compilerArgument>-Xlint:unchecked</compilerArgument>
           </configuration>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
@@ -1894,7 +1935,7 @@ under the License.
             </delimiters>
           </configuration>
         </plugin>
-        
+
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
@@ -1904,9 +1945,9 @@ under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.2.0</version>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.openjpa</groupId>
           <artifactId>openjpa-maven-plugin</artifactId>
@@ -1979,13 +2020,13 @@ under the License.
             </artifactItems>
           </configuration>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.2.0</version>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
@@ -2003,13 +2044,13 @@ under the License.
             </webResources>
           </configuration>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>1.8</version>
         </plugin>
-        
+
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>xml-maven-plugin</artifactId>
@@ -2022,13 +2063,13 @@ under the License.
             </dependency>
           </dependencies>
         </plugin>
-        
+
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring-boot.version}</version>
         </plugin>
-        
+
         <plugin>
           <groupId>org.codehaus.cargo</groupId>
           <artifactId>cargo-maven2-plugin</artifactId>
@@ -2046,7 +2087,7 @@ under the License.
             </configuration>
           </configuration>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -2075,7 +2116,7 @@ under the License.
             </execution>
           </executions>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
@@ -2110,7 +2151,7 @@ under the License.
           <artifactId>buildnumber-maven-plugin</artifactId>
           <version>1.4</version>
         </plugin>
-              
+
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>nbm-maven-plugin</artifactId>
@@ -2122,13 +2163,13 @@ under the License.
           <artifactId>exec-maven-plugin</artifactId>
           <version>1.6.0</version>
         </plugin>
-        
+
         <plugin>
           <groupId>org.antlr</groupId>
           <artifactId>antlr4-maven-plugin</artifactId>
           <version>${antlr4.version}</version>
         </plugin>
-        
+
         <plugin>
           <groupId>nl.geodienstencentrum.maven</groupId>
           <artifactId>sass-maven-plugin</artifactId>
@@ -2168,7 +2209,7 @@ under the License.
                 <requireMavenVersion>
                   <version>3.5.0</version>
                 </requireMavenVersion>
-              </rules> 
+              </rules>
             </configuration>
           </execution>
         </executions>
@@ -2258,11 +2299,11 @@ under the License.
                 <script><![CDATA[
                 import java.util.Date
                 import java.text.MessageFormat
-                def year = MessageFormat.format("{0,date,yyyy}", new Date()) 
+                def year = MessageFormat.format("{0,date,yyyy}", new Date())
                 project.properties['year'] = year
                 project.properties['snapshotOrRelease'] = project.version.endsWith("SNAPSHOT") ? "snapshot" : "release"
                 project.properties['licenseUrl'] = project.parent.licenses[0].url
-                project.properties['site.deploymentBaseDir'] = 
+                project.properties['site.deploymentBaseDir'] =
                 project.properties['site.deploymentBaseUrl'] == null || !project.properties['site.deploymentBaseUrl'].startsWith('file:') ? project.properties['project.build.directory'] + "/generated-docs" : project.properties['site.deploymentBaseUrl'].substring(7)
 
                 if (!project.properties.containsKey('buildNumber'))
@@ -2273,7 +2314,7 @@ under the License.
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
@@ -2284,7 +2325,7 @@ under the License.
             <exclude>**/nb-configuration.xml</exclude>
             <exclude>**/META-INF/cxf/**</exclude>
             <exclude>**/META-INF/services/**</exclude>
-            <exclude>**/META-INF/MANIFEST.MF</exclude>            
+            <exclude>**/META-INF/MANIFEST.MF</exclude>
             <exclude>**/*.csv</exclude>
             <exclude>**/archetype-resources/**</exclude>
             <exclude>**/AdminLTE*/**</exclude>
@@ -2315,20 +2356,15 @@ under the License.
           </execution>
         </executions>
       </plugin>
-      
-      <!-- Drop inherited behavior (i.e. don't put any more default LICENSE and NOTICE files in all artifacts) -->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>process</goal>
-            </goals>
-            <phase>none</phase>
-          </execution>
-        </executions>
+        <configuration>
+          <skip>${remote-resources.skip}</skip>
+        </configuration>
       </plugin>
+
       <!-- Put NOTICE and LICENSE files in all artifacts and javadocs -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -2375,7 +2411,7 @@ under the License.
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>ianal-maven-plugin</artifactId>
@@ -2463,7 +2499,7 @@ under the License.
             <link>https://docs.spring.io/spring-security/site/docs/current/api/</link>
             <link>http://www.flowable.org/docs/javadocs/</link>
             <link>https://build.shibboleth.net/nexus/content/sites/site/java-opensaml/3.3.1/apidocs/</link>
-            <link>https://artifacts.elastic.co/javadoc/org/elasticsearch/elasticsearch/7.6.1/index.html</link>
+            <link>https://artifacts.elastic.co/javadoc/org/elasticsearch/elasticsearch/7.6.0/index.html</link>
             <link>http://docs.swagger.io/swagger-core/v2.1.1/apidocs/</link>
           </links>
         </configuration>
@@ -2487,6 +2523,10 @@ under the License.
 
     <profile>
       <id>apache-release</id>
+
+      <properties>
+        <remote-resources.skip>false</remote-resources.skip>
+      </properties>
 
       <build>
         <plugins>
@@ -2633,7 +2673,7 @@ under the License.
               <generateProjectInfo>false</generateProjectInfo>
             </configuration>
           </plugin>
-          
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
@@ -2674,7 +2714,7 @@ under the License.
 
       <build>
         <defaultGoal>clean install</defaultGoal>
-        
+
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -2698,12 +2738,13 @@ under the License.
       </modules>
     </profile>
   </profiles>
-  
+
   <modules>
     <module>common</module>
     <module>core</module>
     <module>client</module>
     <module>sra</module>
+    <module>wa</module>
     <module>fit</module>
     <module>ext</module>
     <module>archetype</module>

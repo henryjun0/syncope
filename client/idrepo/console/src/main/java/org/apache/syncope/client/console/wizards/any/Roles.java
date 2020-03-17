@@ -49,6 +49,8 @@ public class Roles extends WizardStep implements ICondition {
 
     private final List<String> allRoles;
 
+    protected final UserTO userTO;
+
     protected WebMarkupContainer dynrolesContainer;
 
     public <T extends AnyTO> Roles(final AnyWrapper<?> modelObject) {
@@ -65,7 +67,7 @@ public class Roles extends WizardStep implements ICondition {
             add(new Label("changed", StringUtils.EMPTY));
         }
 
-        UserTO entityTO = UserTO.class.cast(modelObject.getInnerObject());
+        userTO = UserTO.class.cast(modelObject.getInnerObject());
 
         // -----------------------------------------------------------------
         // Pre-Authorizations
@@ -78,10 +80,7 @@ public class Roles extends WizardStep implements ICondition {
 
         this.setOutputMarkupId(true);
 
-        allRoles = SyncopeWebApplication.get().getSecuritySettings().getAuthorizationStrategy().
-                isActionAuthorized(this, RENDER)
-                ? RoleRestClient.list().stream().map(RoleTO::getKey).sorted().collect(Collectors.toList())
-                : List.of();
+        allRoles = getManagedRoles();
 
         add(new AjaxPalettePanel.Builder<String>().
                 withFilter().
@@ -114,7 +113,7 @@ public class Roles extends WizardStep implements ICondition {
         add(dynrolesContainer);
 
         dynrolesContainer.add(new AjaxPalettePanel.Builder<String>().build("dynroles",
-                new PropertyModel<>(entityTO, "dynRoles"),
+                new PropertyModel<>(userTO, "dynRoles"),
                 new ListModel<>(allRoles)).hideLabel().setEnabled(false).setOutputMarkupId(true));
     }
 
@@ -123,5 +122,12 @@ public class Roles extends WizardStep implements ICondition {
         return CollectionUtils.isNotEmpty(allRoles)
                 && SyncopeWebApplication.get().getSecuritySettings().getAuthorizationStrategy().
                         isActionAuthorized(this, RENDER);
+    }
+
+    protected List<String> getManagedRoles() {
+        return SyncopeWebApplication.get().getSecuritySettings().getAuthorizationStrategy().
+                isActionAuthorized(this, RENDER)
+                ? RoleRestClient.list().stream().map(RoleTO::getKey).sorted().collect(Collectors.toList())
+                : List.of();
     }
 }
