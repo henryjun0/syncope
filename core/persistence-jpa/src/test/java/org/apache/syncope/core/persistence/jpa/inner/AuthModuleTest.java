@@ -40,6 +40,8 @@ import java.util.Map;
 import java.util.UUID;
 import org.apache.syncope.core.persistence.api.entity.authentication.AuthModule;
 import org.apache.syncope.common.lib.authentication.module.AuthModuleConf;
+import org.apache.syncope.common.lib.authentication.module.OIDCAuthModuleConf;
+import org.apache.syncope.common.lib.to.ProfileItemTO;
 import org.apache.syncope.core.persistence.api.dao.authentication.AuthModuleDAO;
 
 @Transactional("Master")
@@ -80,15 +82,7 @@ public class AuthModuleTest extends AbstractTest {
         assertNotNull(config);
         assertNotNull(config.getKey());
 
-        AuthModule module = entityFactory.newEntity(AuthModule.class);
-        module.setName("AuthModuleTest");
-        module.add(config);
-        authModuleDAO.save(module);
-
-        assertNotNull(module);
-        assertNotNull(module.getKey());
-
-        assertNotNull(authModuleDAO.find(module.getKey()));
+        saveAuthModule(config, "AuthModulePredefinedTest");
     }
 
     @Test
@@ -106,15 +100,7 @@ public class AuthModuleTest extends AbstractTest {
         assertNotNull(config);
         assertNotNull(config.getKey());
 
-        AuthModule module = entityFactory.newEntity(AuthModule.class);
-        module.setName("AuthModuleTest");
-        module.add(config);
-        authModuleDAO.save(module);
-
-        assertNotNull(module);
-        assertNotNull(module.getKey());
-
-        assertNotNull(authModuleDAO.find(module.getKey()));
+        saveAuthModule(config, "AuthModuleJaasTest");
     }
 
     @Test
@@ -127,6 +113,13 @@ public class AuthModuleTest extends AbstractTest {
         conf.setUserIdAttribute("uid");
         conf.setBaseDn("cn=Directory Manager,dc=example,dc=org");
         conf.setBindCredential("Password");
+        ProfileItemTO keyMapping = new ProfileItemTO();
+        keyMapping.setIntAttrName("uid");
+        keyMapping.setExtAttrName("username");
+        ProfileItemTO fullnameMapping = new ProfileItemTO();
+        fullnameMapping.setIntAttrName("cn");
+        fullnameMapping.setExtAttrName("fullname");
+        conf.getProfileItems().addAll(List.of(fullnameMapping, keyMapping));
         Implementation config = getImplementation(conf);
 
         config = implementationDAO.save(config);
@@ -134,21 +127,12 @@ public class AuthModuleTest extends AbstractTest {
         assertNotNull(config);
         assertNotNull(config.getKey());
 
-        AuthModule module = entityFactory.newEntity(AuthModule.class);
-        module.setName("AuthModuleTest");
-        module.add(config);
-        authModuleDAO.save(module);
-
-        assertNotNull(module);
-        assertNotNull(module.getKey());
-
-        assertNotNull(authModuleDAO.find(module.getKey()));
+        saveAuthModule(config, "AuthModuleLdapTest");
     }
 
     @Test
     public void saveWithGoogleAuthenticatorModule() {
-        GoogleMfaAuthModuleConf conf =
-                new GoogleMfaAuthModuleConf();
+        GoogleMfaAuthModuleConf conf = new GoogleMfaAuthModuleConf();
         conf.setCodeDigits(6);
         conf.setIssuer("SyncopeTest");
         conf.setLabel("Syncope");
@@ -161,8 +145,34 @@ public class AuthModuleTest extends AbstractTest {
         assertNotNull(config);
         assertNotNull(config.getKey());
 
+        saveAuthModule(config, "AuthModuleGoogleTest");
+    }
+
+    @Test
+    public void saveWithOIDCAuthModule() {
+        OIDCAuthModuleConf conf = new OIDCAuthModuleConf();
+        conf.setId("OIDCTestId");
+        conf.setDiscoveryUri("www.testurl.com");
+        conf.setUserIdAttribute("username");
+        conf.setResponseType("code");
+        conf.setScope("openid email profile");
+        ProfileItemTO keyMapping = new ProfileItemTO();
+        keyMapping.setIntAttrName("uid");
+        keyMapping.setExtAttrName("username");
+        conf.getProfileItems().add(keyMapping);
+        Implementation config = getImplementation(conf);
+
+        config = implementationDAO.save(config);
+
+        assertNotNull(config);
+        assertNotNull(config.getKey());
+
+        saveAuthModule(config, "AuthModuleOIDCTest");
+    }
+
+    private void saveAuthModule(final Implementation config, final String name) {
         AuthModule module = entityFactory.newEntity(AuthModule.class);
-        module.setName("AuthModuleTest");
+        module.setName(name);
         module.add(config);
         authModuleDAO.save(module);
 

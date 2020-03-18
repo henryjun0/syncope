@@ -16,19 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.syncope.core.persistence.api.entity.policy;
+package org.apache.syncope.common.lib.to;
 
-import org.apache.syncope.core.persistence.api.entity.Implementation;
-import java.util.List;
+public class ProfileItemTO extends ItemTO {
 
-public interface AuthPolicy extends Policy {
-
-    String getName();
-
-    void setName(String name);
-
-    List<? extends Implementation> getConfigurations();
-
-    boolean addConfiguration(Implementation configuration);
+    private static final long serialVersionUID = 5308969043827855713L;
 
 }
