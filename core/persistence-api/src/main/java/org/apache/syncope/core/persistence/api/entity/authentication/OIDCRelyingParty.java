@@ -20,6 +20,8 @@
 package org.apache.syncope.core.persistence.api.entity.authentication;
 
 import java.util.List;
+import java.util.Set;
+import org.apache.syncope.common.lib.types.OIDCSubjectType;
 
 public interface OIDCRelyingParty extends ClientApp {
 
@@ -33,5 +35,20 @@ public interface OIDCRelyingParty extends ClientApp {
 
     List<String> getRedirectUris();
 
-    void setRedirectUris(List<String> uris);
+    Set<String> getSupportedGrantTypes();
+
+    Set<String> getSupportedResponseTypes();
+
+    boolean isSignIdToken();
+
+    void setSignIdToken(boolean signIdToken);
+
+    String getJwks();
+
+    void setJwks(String jwks);
+
+    OIDCSubjectType getSubjectType();
+
+    void setSubjectType(OIDCSubjectType subjectType);
+
 }

@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.apache.syncope.common.lib.types.SAML2ServiceProviderNameId;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 @Transactional("Master")
@@ -45,6 +46,9 @@ public class SAML2ServiceProviderTest extends AbstractClientAppTest {
         rp.setDescription("This is a sample SAML2 SP");
         rp.setEntityId("urn:example:saml2:sp");
         rp.setMetadataLocation("https://example.org/metadata.xml");
+        rp.setRequiredNameIdFormat(SAML2ServiceProviderNameId.EMAIL_ADDRESS);
+        rp.setEncryptionOptional(true);
+        rp.setEncryptAssertions(true);
 
         AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
         rp.setAccessPolicy(accessPolicy);

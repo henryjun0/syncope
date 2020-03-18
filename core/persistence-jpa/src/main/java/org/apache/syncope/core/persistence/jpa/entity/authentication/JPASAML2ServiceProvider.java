@@ -22,6 +22,7 @@ import org.apache.syncope.core.persistence.api.entity.authentication.SAML2Servic
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import org.apache.syncope.common.lib.types.SAML2ServiceProviderNameId;
 
 @Entity
 @Table(name = JPASAML2ServiceProvider.TABLE)
@@ -36,6 +37,39 @@ public class JPASAML2ServiceProvider extends AbstractClientApp implements SAML2S
 
     @Column(nullable = false)
     private String metadataLocation;
+
+    @Column
+    private String metadataSignatureLocation;
+
+    @Column
+    private boolean signAssertions;
+
+    @Column
+    private boolean signResponses;
+
+    @Column
+    private boolean encryptionOptional;
+
+    @Column
+    private boolean encryptAssertions;
+
+    @Column(name = "reqAuthnContextClass")
+    private String requiredAuthenticationContextClass;
+
+    @Column
+    private SAML2ServiceProviderNameId requiredNameIdFormat;
+
+    @Column
+    private Integer skewAllowance;
+
+    @Column
+    private String nameIdQualifier;
+
+    @Column
+    private String assertionAudiences;
+
+    @Column(name = "spNameIdQualifier")
+    private String serviceProviderNameIdQualifier;
 
     @Override
     public String getEntityId() {
@@ -56,4 +90,115 @@ public class JPASAML2ServiceProvider extends AbstractClientApp implements SAML2S
     public void setMetadataLocation(final String metadataLocation) {
         this.metadataLocation = metadataLocation;
     }
+
+    @Override
+    public String getMetadataSignatureLocation() {
+        return metadataSignatureLocation;
+    }
+
+    @Override
+    public void setMetadataSignatureLocation(final String metadataSignatureLocation) {
+        this.metadataSignatureLocation = metadataSignatureLocation;
+    }
+
+    @Override
+    public boolean isSignAssertions() {
+        return signAssertions;
+    }
+
+    @Override
+    public void setSignAssertions(final boolean signAssertions) {
+        this.signAssertions = signAssertions;
+    }
+
+    @Override
+    public boolean isSignResponses() {
+        return signResponses;
+    }
+
+    @Override
+    public void setSignResponses(final boolean signResponses) {
+        this.signResponses = signResponses;
+    }
+
+    @Override
+    public boolean isEncryptionOptional() {
+        return encryptionOptional;
+    }
+
+    @Override
+    public void setEncryptionOptional(final boolean encryptionOptional) {
+        this.encryptionOptional = encryptionOptional;
+    }
+
+    @Override
+    public boolean isEncryptAssertions() {
+        return encryptAssertions;
+    }
+
+    @Override
+    public void setEncryptAssertions(final boolean encryptAssertions) {
+        this.encryptAssertions = encryptAssertions;
+    }
+
+    @Override
+    public String getRequiredAuthenticationContextClass() {
+        return requiredAuthenticationContextClass;
+    }
+
+    @Override
+    public void setRequiredAuthenticationContextClass(final String requiredAuthenticationContextClass) {
+        this.requiredAuthenticationContextClass = requiredAuthenticationContextClass;
+    }
+
+    @Override
+    public SAML2ServiceProviderNameId getRequiredNameIdFormat() {
+        return requiredNameIdFormat;
+    }
+
+    @Override
+    public void setRequiredNameIdFormat(final SAML2ServiceProviderNameId requiredNameIdFormat) {
+        this.requiredNameIdFormat = requiredNameIdFormat;
+    }
+
+    @Override
+    public Integer getSkewAllowance() {
+        return skewAllowance;
+    }
+
+    @Override
+    public void setSkewAllowance(final Integer skewAllowance) {
+        this.skewAllowance = skewAllowance;
+    }
+
+    @Override
+    public String getNameIdQualifier() {
+        return nameIdQualifier;
+    }
+
+    @Override
+    public void setNameIdQualifier(final String nameIdQualifier) {
+        this.nameIdQualifier = nameIdQualifier;
+    }
+
+    @Override
+    public String getAssertionAudiences() {
+        return assertionAudiences;
+    }
+
+    @Override
+    public void setAssertionAudiences(final String assertionAudiences) {
+        this.assertionAudiences = assertionAudiences;
+    }
+
+    @Override
+    public String getServiceProviderNameIdQualifier() {
+        return serviceProviderNameIdQualifier;
+    }
+
+    @Override
+    public void setServiceProviderNameIdQualifier(final String serviceProviderNameIdQualifier) {
+        this.serviceProviderNameIdQualifier = serviceProviderNameIdQualifier;
+    }
+
 }

@@ -29,13 +29,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import org.apache.syncope.common.lib.types.OIDCSubjectType;
 
 @Entity
 @Table(name = JPAOIDCRelyingParty.TABLE)
 public class JPAOIDCRelyingParty extends AbstractClientApp implements OIDCRelyingParty {
 
-    public static final String TABLE = "OpenIdConnectRelyingParty";
+    public static final String TABLE = "OIDCRelyingParty";
 
     private static final long serialVersionUID = 7422422526695279794L;
 
@@ -45,20 +48,39 @@ public class JPAOIDCRelyingParty extends AbstractClientApp implements OIDCRelyin
     @Column
     private String clientSecret;
 
+    @Column
+    private boolean signIdToken;
+
+    @Column
+    private String jwks;
+
+    @Column
+    private OIDCSubjectType subjectType;
+
     @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "redirectUris")
-    @CollectionTable(name = "OpenIdConnectRelyingParty_RedirectUris", joinColumns =
-            @JoinColumn(name = "clientId"))
+    @Column
+    @CollectionTable(name = "OIDCRelyingParty_RedirectUris",
+            joinColumns =
+            @JoinColumn(name = "client_id", referencedColumnName = "id"))
     private List<String> redirectUris = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column
+    @CollectionTable(name = "OIDCRelyingParty_SupportedGrantTypes",
+            joinColumns =
+            @JoinColumn(name = "client_id", referencedColumnName = "id"))
+    private Set<String> supportedGrantTypes = new HashSet<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "supportedResponseType")
+    @CollectionTable(name = "OIDCRelyingParty_SupportedResponseTypes",
+            joinColumns =
+            @JoinColumn(name = "client_id", referencedColumnName = "id"))
+    private Set<String> supportedResponseTypes = new HashSet<>();
 
     @Override
     public List<String> getRedirectUris() {
         return redirectUris;
-    }
-
-    @Override
-    public void setRedirectUris(final List<String> redirectUris) {
-        this.redirectUris = redirectUris;
     }
 
     @Override
@@ -80,4 +102,45 @@ public class JPAOIDCRelyingParty extends AbstractClientApp implements OIDCRelyin
     public void setClientSecret(final String clientSecret) {
         this.clientSecret = clientSecret;
     }
+
+    @Override
+    public boolean isSignIdToken() {
+        return signIdToken;
+    }
+
+    @Override
+    public void setSignIdToken(final boolean signIdToken) {
+        this.signIdToken = signIdToken;
+    }
+
+    @Override
+    public String getJwks() {
+        return jwks;
+    }
+
+    @Override
+    public void setJwks(final String jwks) {
+        this.jwks = jwks;
+    }
+
+    @Override
+    public OIDCSubjectType getSubjectType() {
+        return subjectType;
+    }
+
+    @Override
+    public void setSubjectType(final OIDCSubjectType subjectType) {
+        this.subjectType = subjectType;
+    }
+
+    @Override
+    public Set<String> getSupportedGrantTypes() {
+        return supportedGrantTypes;
+    }
+
+    @Override
+    public Set<String> getSupportedResponseTypes() {
+        return supportedResponseTypes;
+    }
+
 }

@@ -20,17 +20,20 @@ package org.apache.syncope.common.lib.to.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import org.apache.syncope.common.lib.types.OIDCSubjectType;
 
-@XmlRootElement(name = "openIdConnectRelyingParty")
+@XmlRootElement(name = "oidcRelyingParty")
 @XmlType
 @Schema(allOf = { ClientAppTO.class })
 public class OIDCRelyingPartyTO extends ClientAppTO {
@@ -41,11 +44,22 @@ public class OIDCRelyingPartyTO extends ClientAppTO {
 
     private String clientSecret;
 
+    private boolean signIdToken;
+
+    private String jwks;
+
+    private OIDCSubjectType subjectType;
+
     private final List<String> redirectUris = new ArrayList<>();
+
+    private final Set<String> supportedGrantTypes = new HashSet<>();
+
+    private final Set<String> supportedResponseTypes = new HashSet<>();
 
     @XmlTransient
     @JsonProperty("@class")
-    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.to.OpenIdConnectRelyingPartyTO")
+    @Schema(name = "@class", required = true,
+            example = "org.apache.syncope.common.lib.to.client.OIDCRelyingPartyTO")
     @Override
     public String getDiscriminator() {
         return getClass().getName();
@@ -74,6 +88,44 @@ public class OIDCRelyingPartyTO extends ClientAppTO {
         return redirectUris;
     }
 
+    @XmlElementWrapper(name = "supportedGrantTypes")
+    @XmlElement(name = "supportedGrantType")
+    @JsonProperty("supportedGrantTypes")
+    public Set<String> getSupportedGrantTypes() {
+        return supportedGrantTypes;
+    }
+
+    @XmlElementWrapper(name = "supportedResponseTypes")
+    @XmlElement(name = "supportedResponseType")
+    @JsonProperty("supportedResponseTypes")
+    public Set<String> getSupportedResponseTypes() {
+        return supportedResponseTypes;
+    }
+
+    public boolean isSignIdToken() {
+        return signIdToken;
+    }
+
+    public void setSignIdToken(final boolean signIdToken) {
+        this.signIdToken = signIdToken;
+    }
+
+    public String getJwks() {
+        return jwks;
+    }
+
+    public void setJwks(final String jwks) {
+        this.jwks = jwks;
+    }
+
+    public OIDCSubjectType getSubjectType() {
+        return subjectType;
+    }
+
+    public void setSubjectType(final OIDCSubjectType subjectType) {
+        this.subjectType = subjectType;
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {
@@ -91,6 +143,11 @@ public class OIDCRelyingPartyTO extends ClientAppTO {
                 .append(this.clientId, rhs.clientId)
                 .append(this.clientSecret, rhs.clientSecret)
                 .append(this.redirectUris, rhs.redirectUris)
+                .append(this.supportedGrantTypes, rhs.supportedGrantTypes)
+                .append(this.supportedResponseTypes, rhs.supportedResponseTypes)
+                .append(this.signIdToken, rhs.signIdToken)
+                .append(this.jwks, rhs.jwks)
+                .append(this.subjectType, rhs.subjectType)
                 .isEquals();
     }
 
@@ -101,6 +158,11 @@ public class OIDCRelyingPartyTO extends ClientAppTO {
                 .append(clientId)
                 .append(clientSecret)
                 .append(redirectUris)
+                .append(supportedGrantTypes)
+                .append(supportedResponseTypes)
+                .append(signIdToken)
+                .append(jwks)
+                .append(subjectType)
                 .toHashCode();
     }
 }

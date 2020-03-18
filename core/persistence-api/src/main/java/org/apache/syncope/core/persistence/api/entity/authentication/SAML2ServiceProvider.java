@@ -19,6 +19,8 @@
  */
 package org.apache.syncope.core.persistence.api.entity.authentication;
 
+import org.apache.syncope.common.lib.types.SAML2ServiceProviderNameId;
+
 public interface SAML2ServiceProvider extends ClientApp {
 
     String getEntityId();
@@ -28,4 +30,49 @@ public interface SAML2ServiceProvider extends ClientApp {
     String getMetadataLocation();
 
     void setMetadataLocation(String location);
+
+    void setMetadataSignatureLocation(String location);
+
+    String getMetadataSignatureLocation();
+
+    void setSignAssertions(boolean location);
+
+    boolean isSignAssertions();
+
+    void setSignResponses(boolean location);
+
+    boolean isSignResponses();
+
+    void setEncryptionOptional(boolean location);
+
+    boolean isEncryptionOptional();
+
+    void setEncryptAssertions(boolean location);
+
+    boolean isEncryptAssertions();
+
+    void setRequiredAuthenticationContextClass(String location);
+
+    String getRequiredAuthenticationContextClass();
+
+    void setRequiredNameIdFormat(SAML2ServiceProviderNameId location);
+
+    SAML2ServiceProviderNameId getRequiredNameIdFormat();
+
+    void setSkewAllowance(Integer location);
+
+    Integer getSkewAllowance();
+
+    void setNameIdQualifier(String location);
+
+    String getNameIdQualifier();
+
+    void setAssertionAudiences(String location);
+
+    String getAssertionAudiences();
+
+    void setServiceProviderNameIdQualifier(String location);
+
+    String getServiceProviderNameIdQualifier();
+
 }

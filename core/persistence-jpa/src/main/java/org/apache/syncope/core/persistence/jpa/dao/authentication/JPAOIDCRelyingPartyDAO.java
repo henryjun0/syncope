@@ -29,8 +29,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class JPAOIDCRelyingPartyDAO extends AbstractDAO<OIDCRelyingParty>
-        implements OIDCRelyingPartyDAO {
+public class JPAOIDCRelyingPartyDAO extends AbstractDAO<OIDCRelyingParty> implements OIDCRelyingPartyDAO {
 
     @Override
     public OIDCRelyingParty find(final String key) {

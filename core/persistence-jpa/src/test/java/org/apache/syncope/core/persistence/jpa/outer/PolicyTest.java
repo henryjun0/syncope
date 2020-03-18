@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PolicyTest extends AbstractClientAppTest {
 
     @Autowired
-    private OIDCRelyingPartyDAO openIdConnectRelyingPartyDAO;
+    private OIDCRelyingPartyDAO oidcRelyingPartyDAO;
 
     @Autowired
     private RealmDAO realmDAO;
@@ -64,7 +64,7 @@ public class PolicyTest extends AbstractClientAppTest {
         rp.setAccessPolicy(accessPolicy);
         rp.setAuthPolicy(authPolicy);
 
-        rp = openIdConnectRelyingPartyDAO.save(rp);
+        rp = oidcRelyingPartyDAO.save(rp);
         assertNotNull(rp);
 
         assertThrows(PersistenceException.class, () -> {
@@ -91,7 +91,7 @@ public class PolicyTest extends AbstractClientAppTest {
         rp.setRealm(realm);
 
         assertDoesNotThrow(() -> {
-            openIdConnectRelyingPartyDAO.save(rp);
+            oidcRelyingPartyDAO.save(rp);
             entityManager().flush();
         });
     }

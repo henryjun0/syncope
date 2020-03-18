@@ -20,7 +20,6 @@ package org.apache.syncope.fit.core;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -32,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.apache.syncope.common.lib.to.AccessPolicyTO;
 import org.apache.syncope.common.lib.SyncopeClientException;
 import org.apache.syncope.common.lib.to.AuthPolicyTO;
+import org.apache.syncope.common.lib.types.OIDCSubjectType;
 
 public class OIDCRelyingPartyITCase extends AbstractITCase {
 
@@ -48,7 +48,10 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         OIDCRelyingPartyTO found = (OIDCRelyingPartyTO) clientAppService.read(rpTO.getKey());
         assertNotNull(found);
         assertFalse(StringUtils.isBlank(found.getClientId()));
-        assertTrue(StringUtils.isBlank(found.getClientSecret()));
+        assertFalse(StringUtils.isBlank(found.getClientSecret()));
+        assertNotNull(found.getSubjectType());
+        assertFalse(found.getSupportedGrantTypes().isEmpty());
+        assertFalse(found.getSupportedResponseTypes().isEmpty());
         assertNotNull(found.getAccessPolicy());
         assertNotNull(found.getAuthPolicy());
     }
@@ -107,7 +110,11 @@ public class OIDCRelyingPartyITCase extends AbstractITCase {
         rpTO.setName("ExampleRP_" + getUUIDString());
         rpTO.setDescription("Example OIDC RP application");
         rpTO.setClientId("clientId_" + getUUIDString());
-        rpTO.setClientSecret(StringUtils.EMPTY);
+        rpTO.setClientSecret("secret");
+        rpTO.setSubjectType(OIDCSubjectType.PUBLIC);
+        rpTO.getSupportedGrantTypes().add("something");
+        rpTO.getSupportedResponseTypes().add("something");
+
         rpTO.setAuthPolicy(authPolicyTO.getKey());
         rpTO.setAccessPolicy(accessPolicyTO.getKey());
 

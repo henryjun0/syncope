@@ -29,23 +29,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.apache.syncope.common.lib.types.OIDCSubjectType;
 import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 
 @Transactional("Master")
 public class OIDCRelyingPartyTest extends AbstractClientAppTest {
 
     @Autowired
-    private OIDCRelyingPartyDAO openIdConnectRelyingPartyDAO;
+    private OIDCRelyingPartyDAO oidcRelyingPartyDAO;
 
     @Test
     public void find() {
-        int beforeCount = openIdConnectRelyingPartyDAO.findAll().size();
+        int beforeCount = oidcRelyingPartyDAO.findAll().size();
 
         OIDCRelyingParty rp = entityFactory.newEntity(OIDCRelyingParty.class);
         rp.setName("OIDC");
         rp.setDescription("This is a sample OIDC RP");
         rp.setClientId("clientid");
         rp.setClientSecret("secret");
+        rp.setSubjectType(OIDCSubjectType.PUBLIC);
+        rp.getSupportedGrantTypes().add("something");
+        rp.getSupportedResponseTypes().add("something");
 
         AccessPolicy accessPolicy = buildAndSaveAccessPolicy();
         rp.setAccessPolicy(accessPolicy);
@@ -53,23 +57,23 @@ public class OIDCRelyingPartyTest extends AbstractClientAppTest {
         AuthPolicy authPolicy = buildAndSaveAuthPolicy();
         rp.setAuthPolicy(authPolicy);
 
-        openIdConnectRelyingPartyDAO.save(rp);
+        oidcRelyingPartyDAO.save(rp);
 
         assertNotNull(rp);
         assertNotNull(rp.getKey());
 
-        int afterCount = openIdConnectRelyingPartyDAO.findAll().size();
+        int afterCount = oidcRelyingPartyDAO.findAll().size();
         assertEquals(afterCount, beforeCount + 1);
 
-        rp = openIdConnectRelyingPartyDAO.findByClientId("clientid");
+        rp = oidcRelyingPartyDAO.findByClientId("clientid");
         assertNotNull(rp);
         assertNotNull(rp.getAuthPolicy());
 
-        rp = openIdConnectRelyingPartyDAO.findByName("OIDC");
+        rp = oidcRelyingPartyDAO.findByName("OIDC");
         assertNotNull(rp);
 
-        openIdConnectRelyingPartyDAO.deleteByClientId("clientid");
-        assertNull(openIdConnectRelyingPartyDAO.findByName("OIDC"));
+        oidcRelyingPartyDAO.deleteByClientId("clientid");
+        assertNull(oidcRelyingPartyDAO.findByName("OIDC"));
     }
 
 }

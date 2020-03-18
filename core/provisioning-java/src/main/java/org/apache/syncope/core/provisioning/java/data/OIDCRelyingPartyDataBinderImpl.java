@@ -37,7 +37,7 @@ import org.apache.syncope.core.persistence.api.entity.policy.AuthPolicy;
 public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinder {
 
     @Autowired
-    private OIDCRelyingPartyDAO openIdConnectRelyingPartyDAO;
+    private OIDCRelyingPartyDAO oidcRelyingPartyDAO;
 
     @Autowired
     private EntityFactory entityFactory;
@@ -55,13 +55,18 @@ public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinde
             final OIDCRelyingParty toBeUpdated,
             final OIDCRelyingPartyTO applicationTO) {
 
-        OIDCRelyingParty application = openIdConnectRelyingPartyDAO.save(toBeUpdated);
+        OIDCRelyingParty application = oidcRelyingPartyDAO.save(toBeUpdated);
 
-        application.setDescription(applicationTO.getDescription());
         application.setName(applicationTO.getName());
+        application.setDescription(applicationTO.getDescription());
         application.setClientSecret(applicationTO.getClientSecret());
         application.setClientId(applicationTO.getClientId());
-        application.setRedirectUris(applicationTO.getRedirectUris());
+        application.setSignIdToken(applicationTO.isSignIdToken());
+        application.setJwks(applicationTO.getJwks());
+        application.setSubjectType(applicationTO.getSubjectType());
+        application.getRedirectUris().addAll(applicationTO.getRedirectUris());
+        application.getSupportedGrantTypes().addAll(applicationTO.getSupportedGrantTypes());
+        application.getSupportedResponseTypes().addAll(applicationTO.getSupportedResponseTypes());
 
         if (applicationTO.getAuthPolicy() == null) {
             application.setAuthPolicy(null);
@@ -112,12 +117,17 @@ public class OIDCRelyingPartyDataBinderImpl implements OIDCRelyingPartyDataBinde
     public OIDCRelyingPartyTO getClientApplicationTO(final OIDCRelyingParty rp) {
         OIDCRelyingPartyTO applicationTO = new OIDCRelyingPartyTO();
 
+        applicationTO.setName(rp.getName());
         applicationTO.setKey(rp.getKey());
         applicationTO.setDescription(rp.getDescription());
         applicationTO.setClientId(rp.getClientId());
         applicationTO.setClientSecret(rp.getClientSecret());
+        applicationTO.setSignIdToken(rp.isSignIdToken());
+        applicationTO.setJwks(rp.getJwks());
+        applicationTO.setSubjectType(rp.getSubjectType());
         applicationTO.getRedirectUris().addAll(rp.getRedirectUris());
-        applicationTO.setName(rp.getName());
+        applicationTO.getSupportedGrantTypes().addAll(rp.getSupportedGrantTypes());
+        applicationTO.getSupportedResponseTypes().addAll(rp.getSupportedResponseTypes());
 
         applicationTO.setAuthPolicy(rp.getAuthPolicy() == null
                 ? null : rp.getAuthPolicy().getKey());

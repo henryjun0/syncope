@@ -61,6 +61,17 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
         application.setName(applicationTO.getName());
         application.setEntityId(applicationTO.getEntityId());
         application.setMetadataLocation(applicationTO.getMetadataLocation());
+        application.setMetadataSignatureLocation(applicationTO.getMetadataLocation());
+        application.setSignAssertions(applicationTO.isSignAssertions());
+        application.setSignResponses(applicationTO.isSignResponses());
+        application.setEncryptionOptional(applicationTO.isEncryptionOptional());
+        application.setEncryptAssertions(applicationTO.isEncryptAssertions());
+        application.setRequiredAuthenticationContextClass(applicationTO.getRequiredAuthenticationContextClass());
+        application.setRequiredNameIdFormat(applicationTO.getRequiredNameIdFormat());
+        application.setSkewAllowance(applicationTO.getSkewAllowance());
+        application.setNameIdQualifier(applicationTO.getNameIdQualifier());
+        application.setAssertionAudiences(applicationTO.getAssertionAudiences());
+        application.setServiceProviderNameIdQualifier(applicationTO.getServiceProviderNameIdQualifier());
 
         if (applicationTO.getAuthPolicy() == null) {
             application.setAuthPolicy(null);
@@ -110,11 +121,22 @@ public class SAML2ServiceProviderDataBinderImpl implements SAML2ServiceProviderD
     public SAML2ServiceProviderTO getClientApplicationTO(final SAML2ServiceProvider sp) {
         SAML2ServiceProviderTO applicationTO = new SAML2ServiceProviderTO();
 
+        applicationTO.setName(sp.getName());
         applicationTO.setKey(sp.getKey());
         applicationTO.setDescription(sp.getDescription());
         applicationTO.setEntityId(sp.getEntityId());
         applicationTO.setMetadataLocation(sp.getMetadataLocation());
-        applicationTO.setName(sp.getName());
+        applicationTO.setMetadataSignatureLocation(sp.getMetadataLocation());
+        applicationTO.setSignAssertions(sp.isSignAssertions());
+        applicationTO.setSignResponses(sp.isSignResponses());
+        applicationTO.setEncryptionOptional(sp.isEncryptionOptional());
+        applicationTO.setEncryptAssertions(sp.isEncryptAssertions());
+        applicationTO.setRequiredAuthenticationContextClass(sp.getRequiredAuthenticationContextClass());
+        applicationTO.setRequiredNameIdFormat(sp.getRequiredNameIdFormat());
+        applicationTO.setSkewAllowance(sp.getSkewAllowance());
+        applicationTO.setNameIdQualifier(sp.getNameIdQualifier());
+        applicationTO.setAssertionAudiences(sp.getAssertionAudiences());
+        applicationTO.setServiceProviderNameIdQualifier(sp.getServiceProviderNameIdQualifier());
 
         applicationTO.setAuthPolicy(sp.getAuthPolicy() == null
                 ? null : sp.getAuthPolicy().getKey());

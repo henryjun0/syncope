@@ -25,6 +25,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apache.syncope.common.lib.types.SAML2ServiceProviderNameId;
 
 @XmlRootElement(name = "saml2ServiceProvider")
 @XmlType
@@ -37,9 +38,32 @@ public class SAML2ServiceProviderTO extends ClientAppTO {
 
     private String metadataLocation;
 
+    private String metadataSignatureLocation;
+
+    private boolean signAssertions;
+
+    private boolean signResponses;
+
+    private boolean encryptionOptional;
+
+    private boolean encryptAssertions;
+
+    private String requiredAuthenticationContextClass;
+
+    private SAML2ServiceProviderNameId requiredNameIdFormat;
+
+    private Integer skewAllowance;
+
+    private String nameIdQualifier;
+
+    private String assertionAudiences;
+
+    private String serviceProviderNameIdQualifier;
+
     @XmlTransient
     @JsonProperty("@class")
-    @Schema(name = "@class", required = true, example = "org.apache.syncope.common.lib.to.SAML2ServiceProviderTO")
+    @Schema(name = "@class", required = true,
+            example = "org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO")
     @Override
     public String getDiscriminator() {
         return getClass().getName();
@@ -61,6 +85,94 @@ public class SAML2ServiceProviderTO extends ClientAppTO {
         this.metadataLocation = metadataLocation;
     }
 
+    public String getMetadataSignatureLocation() {
+        return metadataSignatureLocation;
+    }
+
+    public void setMetadataSignatureLocation(final String metadataSignatureLocation) {
+        this.metadataSignatureLocation = metadataSignatureLocation;
+    }
+
+    public boolean isSignAssertions() {
+        return signAssertions;
+    }
+
+    public void setSignAssertions(final boolean signAssertions) {
+        this.signAssertions = signAssertions;
+    }
+
+    public boolean isSignResponses() {
+        return signResponses;
+    }
+
+    public void setSignResponses(final boolean signResponses) {
+        this.signResponses = signResponses;
+    }
+
+    public boolean isEncryptionOptional() {
+        return encryptionOptional;
+    }
+
+    public void setEncryptionOptional(final boolean encryptionOptional) {
+        this.encryptionOptional = encryptionOptional;
+    }
+
+    public boolean isEncryptAssertions() {
+        return encryptAssertions;
+    }
+
+    public void setEncryptAssertions(final boolean encryptAssertions) {
+        this.encryptAssertions = encryptAssertions;
+    }
+
+    public String getRequiredAuthenticationContextClass() {
+        return requiredAuthenticationContextClass;
+    }
+
+    public void setRequiredAuthenticationContextClass(final String requiredAuthenticationContextClass) {
+        this.requiredAuthenticationContextClass = requiredAuthenticationContextClass;
+    }
+
+    public SAML2ServiceProviderNameId getRequiredNameIdFormat() {
+        return requiredNameIdFormat;
+    }
+
+    public void setRequiredNameIdFormat(final SAML2ServiceProviderNameId requiredNameIdFormat) {
+        this.requiredNameIdFormat = requiredNameIdFormat;
+    }
+
+    public Integer getSkewAllowance() {
+        return skewAllowance;
+    }
+
+    public void setSkewAllowance(final Integer skewAllowance) {
+        this.skewAllowance = skewAllowance;
+    }
+
+    public String getNameIdQualifier() {
+        return nameIdQualifier;
+    }
+
+    public void setNameIdQualifier(final String nameIdQualifier) {
+        this.nameIdQualifier = nameIdQualifier;
+    }
+
+    public String getAssertionAudiences() {
+        return assertionAudiences;
+    }
+
+    public void setAssertionAudiences(final String assertionAudiences) {
+        this.assertionAudiences = assertionAudiences;
+    }
+
+    public String getServiceProviderNameIdQualifier() {
+        return serviceProviderNameIdQualifier;
+    }
+
+    public void setServiceProviderNameIdQualifier(final String serviceProviderNameIdQualifier) {
+        this.serviceProviderNameIdQualifier = serviceProviderNameIdQualifier;
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {
@@ -77,6 +189,17 @@ public class SAML2ServiceProviderTO extends ClientAppTO {
                 .appendSuper(super.equals(obj))
                 .append(this.entityId, rhs.entityId)
                 .append(this.metadataLocation, rhs.metadataLocation)
+                .append(this.metadataSignatureLocation, rhs.metadataSignatureLocation)
+                .append(this.signAssertions, rhs.signAssertions)
+                .append(this.signResponses, rhs.signResponses)
+                .append(this.encryptionOptional, rhs.encryptionOptional)
+                .append(this.encryptAssertions, rhs.encryptAssertions)
+                .append(this.requiredAuthenticationContextClass, rhs.requiredAuthenticationContextClass)
+                .append(this.requiredNameIdFormat, rhs.requiredNameIdFormat)
+                .append(this.skewAllowance, rhs.skewAllowance)
+                .append(this.nameIdQualifier, rhs.nameIdQualifier)
+                .append(this.assertionAudiences, rhs.assertionAudiences)
+                .append(this.serviceProviderNameIdQualifier, rhs.serviceProviderNameIdQualifier)
                 .isEquals();
     }
 
@@ -86,6 +209,17 @@ public class SAML2ServiceProviderTO extends ClientAppTO {
                 .appendSuper(super.hashCode())
                 .append(entityId)
                 .append(metadataLocation)
+                .append(metadataSignatureLocation)
+                .append(signAssertions)
+                .append(signResponses)
+                .append(encryptionOptional)
+                .append(encryptAssertions)
+                .append(requiredAuthenticationContextClass)
+                .append(requiredNameIdFormat)
+                .append(skewAllowance)
+                .append(nameIdQualifier)
+                .append(assertionAudiences)
+                .append(serviceProviderNameIdQualifier)
                 .toHashCode();
     }
 }

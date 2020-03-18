@@ -21,6 +21,7 @@ package org.apache.syncope.fit.core;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ import org.apache.syncope.common.lib.to.AccessPolicyTO;
 import org.apache.syncope.common.lib.to.AuthPolicyTO;
 import org.apache.syncope.common.lib.to.client.SAML2ServiceProviderTO;
 import org.apache.syncope.common.lib.types.PolicyType;
+import org.apache.syncope.common.lib.types.SAML2ServiceProviderNameId;
 import org.apache.syncope.fit.AbstractITCase;
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +50,9 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
         assertNotNull(found);
         assertFalse(StringUtils.isBlank(found.getEntityId()));
         assertFalse(StringUtils.isBlank(found.getMetadataLocation()));
+        assertTrue(found.isEncryptAssertions());
+        assertTrue(found.isEncryptionOptional());
+        assertNotNull(found.getRequiredNameIdFormat());
         assertNotNull(found.getAccessPolicy());
         assertNotNull(found.getAuthPolicy());
     }
@@ -106,7 +111,11 @@ public class SAML2ServiceProviderITCase extends AbstractITCase {
         saml2spto.setName("ExampleSAML2SP_" + getUUIDString());
         saml2spto.setDescription("Example SAML 2.0 service provider");
         saml2spto.setEntityId("SAML2SPEntityId_" + getUUIDString());
-        saml2spto.setMetadataLocation("file:./test");
+        saml2spto.setMetadataLocation("file:./test.xml");
+        saml2spto.setRequiredNameIdFormat(SAML2ServiceProviderNameId.EMAIL_ADDRESS);
+        saml2spto.setEncryptionOptional(true);
+        saml2spto.setEncryptAssertions(true);
+
         saml2spto.setAuthPolicy(authPolicyTO.getKey());
         saml2spto.setAccessPolicy(accessPolicyTO.getKey());
 
