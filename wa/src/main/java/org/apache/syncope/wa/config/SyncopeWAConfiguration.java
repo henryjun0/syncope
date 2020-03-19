@@ -18,7 +18,6 @@
  */
 package org.apache.syncope.wa.config;
 
-import org.apereo.cas.services.ServiceRegistry;
 import org.apereo.cas.services.ServiceRegistryExecutionPlanConfigurer;
 import org.apereo.cas.services.ServiceRegistryListener;
 
