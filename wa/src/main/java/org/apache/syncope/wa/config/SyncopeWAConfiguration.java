@@ -18,25 +18,25 @@
  */
 package org.apache.syncope.wa.config;
 
-import java.io.Serializable;
-import org.apereo.cas.services.DefaultRegisteredServiceEntityMapper;
-import org.apereo.cas.services.RegisteredServiceEntityMapper;
+import org.apereo.cas.services.ServiceRegistry;
+import org.apereo.cas.services.ServiceRegistryExecutionPlanConfigurer;
+import org.apereo.cas.services.ServiceRegistryListener;
+
 import org.apache.syncope.common.keymaster.client.api.model.NetworkService;
 import org.apache.syncope.common.keymaster.client.api.startstop.KeymasterStart;
 import org.apache.syncope.common.keymaster.client.api.startstop.KeymasterStop;
-import org.apereo.cas.services.RegisteredService;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.apache.syncope.wa.config.rest.SyncopeServiceRegistry;
+import org.apache.syncope.wa.config.rest.WARestClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Collection;
+
 @Configuration(proxyBeanMethods = false)
 public class SyncopeWAConfiguration {
-
-    @Bean
-    @ConditionalOnProperty(name = "cas.serviceRegistry.rest.url")
-    public RegisteredServiceEntityMapper<RegisteredService, Serializable> registeredServiceEntityMapper() {
-        return new DefaultRegisteredServiceEntityMapper();
-    }
 
     @Bean
     public KeymasterStart keymasterStart() {
@@ -47,4 +47,27 @@ public class SyncopeWAConfiguration {
     public KeymasterStop keymasterStop() {
         return new KeymasterStop(NetworkService.Type.WA);
     }
+
+    @Configuration
+    public static class SyncopeServiceRegistryConfiguration {
+        @Autowired
+        private ConfigurableApplicationContext applicationContext;
+
+        @Autowired
+        @Qualifier("serviceRegistryListeners")
+        private Collection<ServiceRegistryListener> serviceRegistryListeners;
+
+        @Bean
+        public WARestClient serviceRegistryRestClient() {
+            return new WARestClient();
+        }
+
+        @Bean
+        public ServiceRegistryExecutionPlanConfigurer syncopeServiceRegistryExecutionPlanConfigurer() {
+            SyncopeServiceRegistry registry = new SyncopeServiceRegistry(serviceRegistryRestClient(),
+                applicationContext, serviceRegistryListeners);
+            return plan -> plan.registerServiceRegistry(registry);
+        }
+    }
+
 }
